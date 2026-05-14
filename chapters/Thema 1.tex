@@ -1,0 +1,218 @@
+\section{Einführung}
+\subsection{Begriffsbedeutung}
+\subsubsection*{Was bedeutet sicherheit?}
+\begin{multicols}{2} % Zwei Spalten definieren
+    \begin{defBox}[title=\blockTitle{Betriebssicherheit / Safety}]
+        \begin{itemize}
+            \item Schutz gegen \red{Fehler/Unfälle}
+            \item Fehler meist \enquote{unabsichtlich} verursacht
+            \item Gegenmaßnahmen: Verifikation, Testen
+        \end{itemize}
+    \end{defBox}
+
+    \columnbreak % Manuelle Spaltenunterbrechung
+
+    \begin{defBox}[title=\blockTitle{Angriffssicherheit / Security}]
+        \begin{itemize}
+            \item Schutz gegen \red{worst-case Angreifer}
+            \item Meist Schadabsicht
+            \item Verifikation und Testen hilf wenig
+        \end{itemize}
+    \end{defBox}
+\end{multicols}
+
+\fatsf{Security und Safety können im Konflikt zueinander stehen: Beispiel Notausgang}
+\begin{itemize}
+    \item Safety: Im Fall von Notfall können Personen aus dem Gebäude
+    \item Security: Für Gebäudeschutz am besten gar keine Tür
+\end{itemize}
+\subsubsection*{Sicherheitseigenschaften}
+\fatsf{Sicherheit kann vieles bedeuten ...}
+\begin{itemize}
+    \item \fatsf{Vertraulichkeit} von Daten/Nachrichten (z.B. von WhatsApp Nachrichten)
+    \item \fatsf{Anonymität} von Benutzern (z.B. beim Surfen im Web)
+    \item \fatsf{Integrität} von Daten/Berechnungen (z.B. bei Überweisungen im Online-Banking)
+    \item \fatsf{Authentizität} von Dateien (z.B. bei Software-Updates)
+    \item \fatsf{Verfügbarkeit} von Diensten (z.B. des Stromnetzes)
+\end{itemize}
+\clearpage
+\subsubsection*{Beispiel: Computersystem}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_1_Images/Computersystem.jpeg}
+\end{figure}
+\begin{infoBox}[title=Sandboxing]
+    \fatsf{Sandboxing} von Software ist eine Sicherheitsmaßnahme, die dazu dient, Anwendungen in einer isolierten Umgebung auszuführen. Diese Umgebung, die als \enquote{\fatsf{Sandbox}} bezeichnet wird, trennt die Software vom Rest des Systems. Das Hauptziel von Sandboxing ist es, potenzielle Schäden durch schädliche oder fehlerhafte Software zu begrenzen.\\
+    \fatsf{Grundprinzipiel des Sandboing:}
+    \begin{enumerate}
+        \item \fatsf{Isolation:} Die software wird in einer virtuellen Umgebung ausgeführt, die keine direkten Zugriffsrechte auf das Betriebssystem, Dateien oder andere Anwendungen hat.
+        \item \fatsf{Eingeschränkte Privilegien:} Die Software kann nur die Ressourcen verwenden, die ihr in der Sandbox explizit zugewiesen wurden.
+        \item \fatsf{Kontrolle und Überwachung:} Alle Aktivitäten der Software innerhalb der Sandbox können überwacht und gesteuert werden, um verdächtige oder unerwünschte Verhaltensweisen zu erkennen.
+    \end{enumerate}
+    \fatsf{Einsatzbereiche von Sandboxing:}
+    \begin{enumerate}
+        \item \fatsf{Malware-Analyse:} Sicherheitsexperten verwenden Sandboxing, um potenziell schädliche Dateien oder Programme sicher zu analysieren, ohne ihr System zu gefährden.
+        \item \fatsf{Webbrowser:} Browser wie Chrome oder Firefox verwenden Sandboxing, um Webseiten oder Plugins voneinander und vom Betriebssystem zu isolieren.
+        \item \fatsf{Mobile Apps:} In Betriebssystemen wie Android oder iOS laufen Apps standardmäßig in Sandboxes, um ihre Auswirkungne auf andere Apps und da System zu minimieren.
+        \item \fatsf{Virtuelle Maschinen und Container:} Technologien wie Docker oder VirtualBox nutzen Sandboxing, um Softwareumgebungen komplett zu isolieren.
+     \end{enumerate}
+\end{infoBox}
+\subsubsection*{Warum IT-Sicherheit?}
+Sicherheit wichtig für:
+\begin{itemize}
+    \item Privatsphäre einzelner Personen
+    \item Physische Sicherheit
+    \item Funktionalität
+    \item Schutz von Vermögenswerten
+    \item Erfolg eines Unternehmens
+    \item Wirtschaft eines ganzen Landes
+    \item Gesundheit
+    \item ...
+\end{itemize}
+\subsection{Sicherheitsvorfälle}
+\subsubsection*{Datendiebstahl}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_1_Images/Datendiebstrahl.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \fatsf{Mehr und mehr Elektronik in Autos:} Komplexität erhöht drastisch die Angriffsfläche
+    \item \fatsf{Vernetzung der intelligenten Infrastruktur:} massive Folgen für Gesellschaft und Wirtschaft
+    \item \fatsf{Kleine Computer sind überall von uns:} Kann unsere physische Gesundheit und Privatsphäre stark schädigen!
+    \item \fatsf{Blockchains}
+    \item \fatsf{Alles ist angreifbar}
+\end{itemize}
+\fatsf{Moral:} Sicherheit ist \red{überall enorm wichtig!}
+\subsection{Wie können wir uns schützen?}
+\subsubsection*{Sicherheitsprinzipien}
+\begin{itemize}
+    \item Kenne die Angreifer 
+    \item Berücksichtige menschliche Faktoren
+    \item Wirtschaftliche Faktoren beeinflussen Sicherheit
+    \item Detektieren falls nicht verhinderbar
+    \item Defense in depth (gestaffelte Verteidigung)
+    \item Fail-safe Standards
+\end{itemize}
+\subsubsection*{Kenne die Angreifer}
+\red{Bedrohungsmodel:} Wer ist die \fatsf{angreifende Partei} und was ist seine \fatsf{Motivation}
+\begin{multicols}{2}
+    \fatsf{Ressourcen:}
+    \begin{itemize}
+        \item Individuum
+        \item Organisierte Gruppen
+        \item Terroristen
+        \item Staatlich geförderte Organisationen
+    \end{itemize}
+    \columnbreak
+    \begin{itemize}
+        \item Geld
+        \item Politische Ansichten
+        \item Vergeltung
+        \item Aus Spaß
+    \end{itemize}
+\end{multicols}
+$\rightarrow$ Beeinflusst Auswahl an Gegenmaßnahmen\\
+\fatsf{Annahmen über Angreifer sind schwer zu treffen:}
+\begin{itemize}
+    \item \fatsf{Rechtzeitiges erkennen von Angriffen schwierig:} Angreifer kann unbemerkt mit dem System interagieren
+    \item \fatsf{Angreifer kennt das System:} Welches Betriebssystem wird verwendet, welche Hardware (kennt Schwachstellen, ...)
+    \item \fatsf{Kann Glück haben:} Selbst wenn die Erfolgswahrscheinlichkeit pro Versuch extrem gering ist (z.B. 1:1.000.000), besteht bei vielen Versuchen die reale Möglichkeit, dass ein Angriff zufällig gelingt
+    \begin{itemize}
+        \item Sicherheit darf sich \fatsf{nicht allein auf geringe Wahrscheinlichkeiten verlassen}, sondern muss auch praktische Schutzmechanismen wie Begrenzungen und Sperren enthalten
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Berücksichtige menschliche Faktoren}
+Menschen spielen eine zentrale Rolle!
+\begin{itemize}
+    \item Als \fatsf{Benutzer}
+    \begin{itemize}
+        \item Mögen einfache Benutzbarkeit
+        \item Finden Wege Sicherheitsmechanismen zu umgehen, falls Benutzung einfacher (z.B. Passwörter)
+    \end{itemize}
+    \item Als \fatsf{Programmierer}
+    \begin{itemize}
+        \item Machen Fehler
+        \item Benutzen Tools, die erlauben Fehler zu machen (z.B. Sprache ohne Typsicherheit)
+    \end{itemize}
+    \item Als \fatsf{Angreifer}
+    \begin{itemize}
+        \item Nutzen Vertrauen oder Leichtgläubigkeit aus (social engineering)
+    \end{itemize}
+\end{itemize}
+$\rightarrow$ Alle verwendeten Tools und Systeme sollten narrensicher sein.
+\subsubsection*{Sicherheit ist wirtschaftliche Abwägung}
+\begin{itemize}
+    \item Bereits gesehen: organisierte Cyberkriminalität nimmt zu
+    \item Angriffsziele von organisierter Cyberkriminalität: wirtschaftliche Interessen
+    \begin{itemize}
+        \item Geld
+        \item Schaden eines feindlichen Gegenspielers (Unternehmen, Land)
+    \end{itemize}
+\end{itemize}
+\begin{multicols}{2}
+    \begin{defBox}[title=\blockTitle{Aus Sicht der angreifenden Partei:}]
+        \begin{itemize}
+            \item Angriff teurer als Belohnung $\rightarrow$ kein Angriffsversuch
+        \end{itemize}
+    \end{defBox}
+    \columnbreak
+    \begin{defBox}[title=\blockTitle{Aus Sicht der verteidigenden Partei:}]
+    \begin{itemize}
+        \item Viel Sicherheit kostet viel Geld
+        \item Abwägung zwischen Kosten-/Nutzen
+        \begin{itemize}
+            \item Nutzen der Sicherheitsmaßnahmen proportional zu Kosten eines erfolgreichen Angriffs
+        \end{itemize}
+    \end{itemize}
+    \end{defBox}
+\end{multicols}
+\subsubsection*{Detektieren falls nicht verhinderbar}
+\begin{enumerate}
+    \item \fatsf{Abschrecken:} Einen Angriff abschrecken bevor dieser stattfindet
+    \item \fatsf{Verhindern:} Falls Angriff stattfindet, verhindere dessen Erfolg
+    \item \fatsf{Detektieren:} Stelle fest, falls ein Angriff stattgefunden hat
+    \begin{itemize}
+        \item Falls nicht verhinderbar, dann wenigstens feststellen, dass ein Angriff stattgefunden hat
+    \end{itemize}
+    \item \fatsf{Reagieren:} Reaktion auf stattgefundenen Angriff
+    \begin{itemize}
+        \item Detektion ohne Reaktion ist nutzlos!
+    \end{itemize}
+\end{enumerate}
+\begin{itemize}
+    \item Gehe davon aus, dass ein Angriff stattfindet
+    \item Entwickle Plan, um in Arbeitsmodus zurückzukommen
+    \item Beispiel: Erdbeben %TODO
+    \begin{itemize}
+        \item Vorräte für 1-2 Wochen Zuhause haben
+    \end{itemize}
+    \item Beispiel: Ransomware
+    \begin{itemize}
+        \item Backups an entferntem Ort lagern
+    \end{itemize}
+    \begin{infoBox}[title=Backups]
+        Ein \fatsf{Backup} ist eine \fatsf{Sicherheitskopie} von Daten, Programmen oder Systemen. Es dient dazu, im \fatsf{Notfall} (z.B. durch Datenverlust, Hardwaredefekt, Ransomware oder versehentliches Löschen) die \fatsf{ursprünglichen Daten wiederherstellen} zu können
+    \end{infoBox}
+\end{itemize}
+\subsubsection*{Defense in depth}
+\begin{itemize}
+    \item Verschiedene Sicherheitsmaßnahmen implementieren
+    \item Schichtweiser Aufbau
+    \begin{itemize}
+        \item Angreifer muss alle Schutzmaßnahmen durchbrechen (z.B. Burg)
+    \end{itemize}
+    \item \fatsf{Achtung:} Sicherheit ist oft weniger als die Summe aller Teile
+    \begin{itemize}
+        \item Schwächste Glied einer Kette
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Fail-Safe Standards}
+Fail-safe-Standards sind technische und organisatorische Prinzipien, die sicherstellen sollen, dass Systeme auch bei Fehlern oder Ausfällen sicher funktionieren. Das Ziel dieser Standards ist es, potenzielle Gefahren für Menschen, Umwelt und Sachwerte zu minimieren. Bei einem Systemfehler muss die sicherheitskritische Funktion immer in einen sicheren Zustand übergehen.\\
+\fatsf{Wichtige Prinzipien der Fail-safe-Standards:}
+\begin{enumerate}
+    \item \fatsf{Fehlertoleranz:} Systeme werden so gestaltet, dass sie auch bei einem Teilausfall weiterhin sicher arbeiten. Beispielsweise kann bei einem Flugzeug ein redundantes System die Kontrolle übernehmen, wenn das Hauptsystem ausfällt.
+    \item \fatsf{Automatische Abschaltung:} enn ein sicherer Betrieb nicht mehr gewährleistet ist, schaltet sich das System automatisch ab, um größere Schäden zu vermeiden. Ein Beispiel ist eine Notabschaltung bei Maschinen, die bei Fehlfunktionen aktiviert wird.
+    \item \fatsf{Ausfallsicherer Zustand (Safe State)}: Systeme sollen bei einem Fehler in einen Zustand übergehen, der die Sicherheit maximiert. Zum Beispiel können elektrische Türen in einem Notfall automatisch entriegeln, um Fluchtwege freizugeben.
+    \item \fatsf{Selbstüberwachung:} Systeme sollen regelmäßig ihre eigene Funktionsfähigkeit prüfen und bei einem Fehler automatisch Maßnahmen ergreifen. Beispielsweise führen Bremssysteme in Autos regelmäßige Selbsttests durch.
+    \item \fatsf{Redundanz:} Kritische Systeme werden mehrfach ausgeführt, um im Falle eines Fehlers eine alternative Funktionsweise bereitzustellen. Bei Flugzeugen oder Atomkraftwerken sind sicherheitsrelevante Systeme oft doppelt oder dreifach vorhanden.
+\end{enumerate}

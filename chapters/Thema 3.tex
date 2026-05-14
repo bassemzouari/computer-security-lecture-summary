@@ -1,0 +1,983 @@
+\section{Symmetrische Kryptographie}
+\fatsf{Symmetrische Kryptographie:} Es gibt nur \fatsf{einen} Schlüssel für alle Algorithmen\\
+Beispiel Verschlüsselung:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Symmetrische Kryptographie.jpeg}
+\end{figure}
+Einigung auf geheimen Schlüssel:
+\begin{itemize}
+    \item Physikalisches Treffen
+    \item Kryptographisches Protokoll (später mehr)
+\end{itemize}
+
+\subsection{Definition symmetrischer Chiffren}
+\subsubsection*{Schutzziel}
+Welches kryptographisches Schutzziel möchten wir mit symmetrischen Chiffren erreichen?
+\begin{itemize}
+    \item \fatsf{Vertraulichkeit:} Angreifer kann Inhalt der Nachrichten \red{nicht} lernen
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Schutzziel.jpeg}
+\end{figure}
+
+\subsubsection*{Funktionale Definition}
+\begin{itemize}
+    \item \fatsf{Funktionale Definition:} Beschreibt Input/Output-Verhalten der Algorithmen
+    \item \fatsf{Algorithmen:} (Gen, Enc, Dec)
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Funktionale Definiton.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \fatsf{Korrektheit:} Die Entschlüsselung eines gültigen Chiffretexts resultiert in die original verschlüsselte Nachricht\\
+    $\rightarrow$ \red{Dec(k, Enc(k,m)) = m} für alle Nachrichten \red{m} und Schlüssel \red{k $\leftarrow$ Gen}
+    \item \fatsf{Effizienz:} Verschlüsselung und Entschlüsselung sind effizient (> 1GB/s)
+\end{itemize}
+
+\subsubsection*{Sicherheitsdefinition}
+\begin{itemize}
+    \item \fatsf{Ziel des Angreifers:} Was ist ein erfolgreicher Angriff?
+    \begin{itemize}
+        \item Naive Option: Angreifer lernt den Schlüssel \red{k} nicht
+        \item In der Kryptographie: Angreifer lernt \blue{\enquote{nichts Neues}} über \red{m}
+    \end{itemize}
+    \item \fatsf{Angreifermodell:} Was kann der Angreifer tun und sehen?
+    \begin{itemize}
+        \item Angreifer lernt nur Chiffretexte (known ciphertext attack), z.B. durch Abhören des Kanals
+        \item Angreifer lernt Paare von Klartexten/Chiffretexten (known plaintext/ciphertext attack), z.B. bestimmter Teil der verschlüsselten Nachricht kann bekannt sein
+        \item Angreifer wählt Klartexte und lernt zugehörige Chiffretexte (chosen plainext attack), z.B. Angreifer überzeugt Challenger davon, Nachrichten seiner Wahl zu verschlüsseln
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Sicherheitsspiel (IND-CPA)}
+\begin{infoBox}
+    IND-CPA: Indistinguishability under Chosen Plaintext Attack
+\end{infoBox}
+Sicherheit wird in der Kryptographie durch ein \blue{Spiel} zwischen \blue{\enquote{Angreifer}} und \blue{\enquote{Challenger}} definiert
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Sicherheitsspiel.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Sicherheitsspiel gewonnen.jpeg}
+\end{figure}
+Angreifer gewinnt das Sicherheitsspiel wenn \red{b = b'}\\
+\blue{Sicherheit:} Symmetrische Chiffre ist \fatsf{IND-CPA sicher}, falls alle \fatsf{\enquote{effizienten}} Angreifer das Sicherheitsspiel maximal mit Wharscheinlichkeit \red{$\approx \frac{1}{2}$} gewinnen können
+
+\subsubsection*{Implikationen}
+Falls Verschlüsselungsverfahren \blue{IND-CPA sicher}, dann:\\
+$\rightarrow$ Angreifer darf so viele Nachrichten \blue{verschlüsseln} lassen, wie er will\\
+$\rightarrow$ Aber: Die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei $\approx \frac{1}{2}$\\
+$\rightarrow$ Das ist so, wie wenn der Angreifer \red{b} raten würde\\
+$\rightarrow$ Angreifer kann Chiffretext \red{$c^{*}$} im wesentlichen ignorieren\\
+$\rightarrow$ Chiffretext \red{$c^{*}$} gibt \blue{keine zusätzlichen Informationen} über verschlüsselte Nachricht \red{m}
+\begin{infoBox}
+    Ein Verschlüsselungsverfahren, das \fatsf{IND-CPA-sicher} ist, bietet dem Angreifer \fatsf{keinerlei zusätzlichen Erkenntnisse} über den Klartext, selbst wenn er zahlreiche Nachrichten seiner Wahl verschlüsseln lassen kann. Das System verhält sich so, als ob der Angreifer raten würde, und die Wahrscheinlichkeit, den Klartext korrekt zu erraten, liegt maximal bei 50\%, genau wie beim zufälligen Raten.
+\end{infoBox}
+
+\subsubsection*{Was bedeutet \enquote{\red{$\approx \frac{1}{2}$}}}
+\begin{itemize}
+    \item \blue{Wiederholung:} Symmetrische Chiffre ist \fatsf{IND-CPA sicher}, falls alle \fatsf{\enquote{effizienten}} Angreifer Sicherheitsspiel maximal mit Wahrscheinlichkeit \red{$\approx \frac{1}{2}$} gewinnen können
+    \item Alle Angreifer gewinnen das Spiel mit Wahrscheinlichkeit, die \blue{sehr nahe} bei $\frac{1}{2}$ liegt.
+    \begin{itemize}
+        \item Wenn Wahrscheinlichkeit für Angreifer bei $\approx \frac{1}{2}$ liegt, kann er nicht signifikant unterscheiden, welche Nachricht verschlüsselt wurde
+        \item Wäre Wahrscheinlichkeit deutlich größer als $\frac{1}{2}$, könnte Angreifer unterscheiden, zu welche Nachricht der Chiffretext gehört $\rightarrow$ unsicher!
+    \end{itemize}
+    \item Abweichungen von dieser Wahrscheinlichkeit sind in der Praxis \blue{vernachlässigbar}.
+    \item Formal nutzt man das Konzept der \blue{\enquote{vernachlässigbare Funktion}}
+\end{itemize}
+\begin{infoBox}
+    \begin{itemize}
+        \item Bei einem sicheren Verschlüsselungssystem liegt die \fatsf{Wahrscheinlichkeit, dass der Angreifer erfolgreich ist, bei höchstens 50 \%} (wie beim Raten).
+        \item \fatsf{Vernachlässigbare Abweichungen} von dieser 50 \%-Wahrscheinlichkeit sind so klein, dass sie für den Angreifer keinen nennenswerten Vorteil bieten.
+        \item Das bedeutet, dass jeder Versuch des Angreifers, die Nachricht zu erraten, nahezu chancenlos bleibt, selbst wenn er viele verschlüsselte Nachrichten analysieren kann.
+    \end{itemize}
+\end{infoBox}
+
+\subsubsection*{Vernachlässigbare Funktionen (Nicht Klausurrelevant)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Vernachlässigbare Funktionen.jpeg}
+\end{figure}
+
+\subsubsection*{Was bedeutet \enquote{Effizient}?}
+\begin{minipage}{0.5\textwidth}
+    \begin{defBox}
+        \blue{Effizient:} Laufzeit \fatsf{polynomiell} in der Schlüssellänge (mehr in \enquote{Einführung in die Kryptographie})
+    \end{defBox}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{defBox}
+        \blue{Nicht effizient:} Laufzeit \fatsf{exponentiell} in der Schlüssellänge\\
+        Brechen kryptographische Annahmen (z.B. Faktorisierung, Diskreter Logarithmus) auf klassischen Computern nicht effizient
+    \end{defBox}
+\end{minipage}
+
+\subsubsection*{Bietet IND-CPA die stärkste Sicherheit?}
+\begin{itemize}
+    \item \blue{IND-CPA} Sicherheit schützt gegen Angreifer, die nur Zugang zu \blue{Verschlüsselungen} haben
+    \item Aber: In der Praxis haben Angreifer oft mehr Möglichkeiten (z.B. Zugriff auf Entschlüsselungen)
+    \item Gefahr: \blue{Chosen Ciphertext Angriff}
+    \begin{itemize}
+        \item Angreifer hat auch Zugang zu \blue{Entschlüsselung} von (bestimmten) Chiffretexten.
+        \item Angreifer kann diese Informationen ausnutzen, um sensitive Informationen zu erlangen.
+    \end{itemize}
+    \item Beispiel: \blue{Padding Orakel Angriff}
+    \begin{infoBox}
+        Der \fatsf{Padding-Oracle-Angriff} ist ein bekanntes Beispiel eines Chosen Ciphertext Attacks. Bei diesem Angriff nutzt der Angreifer die Art und Weise, wie das Verschlüsselungssystem \fatsf{Fehlermeldungen} beim Entschlüsseln von Chiffretexten zurückgibt:
+        \begin{itemize}
+            \item Bei manchen Verschlüsselungsverfahren wird beim Entschlüsseln geprüft, ob das Paddin (Auffüllen des letzten Blocks) korrekt ist.
+            \item Falls das Padding fehlerhaft ist, erhält der Angreifer eine Fehlermeldung.
+            \item Der Angreifer kann diese Fehlermeldungen nutzen, um \fatsf{Informationen über den Chiffretext} zu gewinnen und Schritt für Schritt den Klartext zu rekonstruieren.
+        \end{itemize}
+    \end{infoBox}
+\end{itemize}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{IND-CPA-Sicherheit} schützt nur gegen gewählte Klartextangriffe (nur Verschlüsselungen).
+        \item \fatsf{IND-CCA-Sicherheit} schützt auch gegen gewählte Chiffretextangriffe (also Entschlüsselungen), was in der Praxis mehr Sicherheit bietet.
+    \end{itemize}
+\end{infoBox}
+
+\subsubsection*{Stärkere Sicherheit (IND-CCA)}
+\blue{Chosen Ciphertext Angriff:} Angreifer bekommt Zugang zu Orakel, das ausgewählte Chiffretexte \fatsf{entschlüsseln} kann
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Stärkere Sicherheit.jpeg}
+\end{figure}
+Angreifer gewinnt das Sicherheitspiel, wenn \red{b = b'}\\
+\blue{Sicherheit:} Symmetrische Chiffre ist \fatsf{IND-CCA sicher}, falls alle \fatsf{\enquote{effizienten}} Angreifer das Sicherheitsspiel maximal mit Wahrscheinlichkeit \red{$\approx \frac{1}{2}$} gewinnen können
+
+\subsubsection*{Unterschied zwischen IND-CPA \& IND-CCA}
+\begin{itemize}
+    \item \fatsf{IND-CPA Sicherheit:}
+    \begin{itemize}
+        \item Schützt vor Angriffen, bei denen Angreifer \blue{Verschlüsseluungen} seiner Wahl erzeugen kann
+        \item Reicht nicht aus, wenn Angreifer auch Zugriff auf \blue{Entschlüsselungen} hat
+    \end{itemize}
+    \item \fatsf{IND-CCA Sicherheit:}
+    \begin{itemize}
+        \item Stärkere Sicherheit: Schützt selbst dann, wenn Angreifer zusätzlich \blue{Entschlüsselungen anfordern} kann (außer dem zu entschlüsselnden Chiffretext)
+    \end{itemize}
+    \item \fatsf{Fazit:}
+    \begin{itemize}
+        \item \blue{IND-CCA-Sicherheit} ist notwendig, wenn Angreifer auf Entschlüsselungsoperationen zugreifen kann 
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Wie zeigen wir (Un)sicherheit?}
+Welche Annahmen machen wir über die Strategie des Angreifers? \fatsf{Keine}, außer dass sie effizient sind!\\
+\blue{Unsicheres Verfahren:} Konstruiere effizienten Angreifer, der mit W-keit signifikant \red{> $\frac{1}{2}$} Sicherheitsspiel gewinnt\\
+\blue{Sicheres Verfahren:} Zeige, dass \blue{alle} effizienten Angreifer das Sicherheitsspiel mit W-keit \red{$\approx \frac{1}{2}$} gewinnen
+\begin{itemize}
+    \item Reduktionsbeweis auf Annahmen
+\end{itemize}
+
+\subsection{One-Time-Pad Verschlüsselung}
+\subsubsection*{Wiederholung: XOR}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/XOR.jpeg}
+\end{figure}
+
+\subsubsection*{One-Time-Pad}
+Wird häufig auch Vernam Chiffre genannt nach Gilbert Vernam\\
+One-Time-Pad zur Verschlüsselung von Bitstrings der Länge \red{n}
+\begin{itemize}
+    \item \red{Gen:} Ausgabe zufälliger Schlüssel \red{$\overset{\text{R}}{\longleftarrow}$} \{0,1\}$^{n}$
+    \item \red{Enc:} Für \red{m $\in$ M:} Ausgabe \red{Enc(k, m) = k $\oplus$ m}
+    \item \red{Dec:} Für \red{c $\in$ C:} Ausgabe \red{Dec(k, c) = k $\oplus$ c}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/One Time Pad.jpeg}
+\end{figure}
+
+\subsubsection*{Sicherheit: One-Time-Pad}
+\fatsf{Beschränktes Sicherheitsspiel:} Angreifer erhält keinen Zugriff auf Chiffretexte (wichtig: siehe nächste Slide)
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Sicherheit: One-Time-Pad.jpeg}
+\end{figure}
+
+Angreifer gewinnt das Sicherheitsspiel wenn \red{b = b'}\\
+Analyse ergibt: Perfekte Sicherheit - \red{c*} gibt keine Information über \red{$m_{b}$} preis
+
+\subsubsection*{Schlüssel nur einmal verwenden}
+One-Time-Pad ist unsicher bei Wiederverwendung des gleichen Schlüssels
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Schlüssel nur einmal verwenden.jpeg}
+\end{figure}
+
+Lernen des XORs kann nützliche Informationen preisgeben
+\begin{itemize}
+	\item z.B. welche Bits von $m_{0}$ und $m_{1}$ gleich sind
+	\item Wenn $m_{0}$ bekannt ist dann ist auch $m_{1}$ bekannt (und vice versa)\\
+	$\rightarrow$ Moral: Zur Verschlüsselung jeder Nachricht muss ein neuer zufälliger Schlüssel gewählt werden
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Heißer Draht.jpeg}
+\end{figure}
+
+\subsubsection*{Venona-Projekt: Die Risiken von One-Time-Pads}
+\begin{itemize}
+	\item \blue{Venona-Projekt} während 2. Weltkrieg und Klatem Krieg (1943-1980)
+	\begin{itemize}
+		\item Gemeinschaftsprojekt der Geheimdienste der USA und Großbritannien
+		\item Ziel: Entschlüsselung der sowjetische Kommunikation
+	\end{itemize}
+	\item Sowjetische Kommunikation wurde per \blue{One-Time-Pad} verschlüsselt
+	\begin{itemize}
+		\item Die Schlüssel für das OTP wurden in Bücher verteilt
+		\item \fatsf{Kritischer Fehler:} Bei der Produktion wurden (unter Zeitdruck) Seiten teilweise mehrfach kopiert 
+		$\rightarrow$ \blue{Mehrfachnutzung von Schlüsseln}
+	\end{itemize}
+	\item US-Geheimdiensten gelang es, die verschlüsselung teilweise zu brechen
+	\begin{itemize}
+		\item \fatsf{Folge:} Sowjetische Spione wurden enttarnt, Einblicke in sowjetische Operationen gewonnen
+	\end{itemize}
+	\item \fatsf{Wichtige Lektion: One-Time-Padding ist nur sicher, wenn es richtig angewendet wird!}
+\end{itemize}
+
+\subsubsection*{Nachteile One-Time-Pad}
+\begin{enumerate}
+    \item Schlüssel ist \blue{so lang} wie Nachricht\\
+    $\rightarrow$ Für große Mengen von Daten müssen lange zufällige Schlüssel gespeichert und ausgetauscht werden\\
+    $\rightarrow$ Gute Zufälligkeit zu erzeugen, ist sehr aufwendig
+    \item Schlüssel \blue{kann nur einmal benutzt} werden\\
+    $\rightarrow$ Mehrfache Verwendung kann etwas über Klartexte preisgeben\\
+    $\rightarrow$ Für viele Nachrichten benötigt man viele Schlüssel\\
+    \item Sicherheit im \blue{beschränkte} Angreifermodell\\
+    $\rightarrow$ Chiffretext-Only Angriffe
+\end{enumerate}
+\begin{infoBox}
+    Das OTP ist theoretisch sicher, aber seine \fatsf{praktische Umsetzung ist extrem aufwendig und fehleranfällig.} Die nötige Schlüssellänge, die sichere Schlüsselverteilung und die absolute Einmaligkeit machen das OTP in vielen praktischen Anwendungen unhandlich und riskant.
+\end{infoBox}
+
+\subsection{Blockchiffren}
+\subsubsection*{Blockchiffre}
+Verschlüsselung/Entschlüsselung von Nachrichten/Chiffretextblöcken mit \blue{fixer Länge}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Blockchiffre.jpeg}
+\end{figure}
+
+\begin{itemize}
+	\item \blue{Blocklänge} \red{n = |m| = |c|}: häufig 64 - 128 Bits
+	\item \blue{Schlüssellänge} \red{k}: häufig 128 - 256 Bits
+\end{itemize}
+\begin{defBox}
+	\fatsf{Wesentlicher Unterschied zu One-Time-Pad:} Schlüssel kann wiederverwendet werden!
+\end{defBox}
+
+
+\subsubsection*{Eigenschaften von Blockchiffren}
+\begin{itemize}
+	\item \blue{Korrektheit:} Für jeder Nachricht \red{M} und jeden Schlüssel \red{K}
+	\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Thema_3_Images/Eigenschaften von Blockchiffren.jpeg}
+    \end{figure}
+	
+	\item \blue{Effizienz:}
+	\begin{itemize}
+		\item \red{Enc(.)} und \red{Dec(.)} sollte in Mikrosekunden berechenbar sein: XOR, bit-shifting, Lookup Tabellen, ...
+		\item Häufig Hardware Support auf modernen CPUs
+	\end{itemize}
+	\item \blue{Sicherheit:}
+	\begin{itemize}
+		\item Was soll ein Angreifer nicht können?
+	\end{itemize}
+\end{itemize}
+
+\clearpage
+\subsubsection*{Sicherheit von Blockchiffren}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Sicherheit von Blockchiffren.jpeg}
+\end{figure}
+
+\subsubsection*{Data Encryption Standard (DES)}
+Entwickelt von IBM im Auftrag des NIST Ende der 1970er
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Data Encryption Standard (DES).jpeg}
+\end{figure}
+
+\begin{itemize}
+	\item Blocklänge \red{n = 64}
+	\item Schlüssellänge \red{k = 56} Bits
+\end{itemize}
+
+\subsubsection*{DES: Angriffe}
+\blue{Theoretische Angriffe:} \red{Differenzielle Kryptoanalyse} und \red{Lineare Kryptoanalyse}
+\begin{itemize}
+	\item DES bietet Schutz gegen Differenzielle Kryptoanalyse
+\end{itemize}
+\blue{Hauptschwachpunkt:} Kurzer Schlüssel (nur 56 Bits)
+\begin{itemize}
+	\item Brute-Force Angriff ist möglich
+	\item DES Cracker: Bricht DES in wenigen Tagen
+\end{itemize}
+\blue{Erweiterungen:}
+\begin{itemize}
+	\item Mehrfachanwendung von DES zur Verlängerung des Schlüssels (z.B. Triple DES)
+\end{itemize}
+
+\subsubsection*{Triple DES}
+\begin{itemize}
+	\item Idee: Kombiniere DES mit sich selbst um die Sicherheit zu erhöhen
+	\begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_3_Images/Triple DES.jpeg}
+    \end{figure}
+    \item Schlüssellänge: 3 $\times$ 56 = 168 Bits
+    \item Erreichen wir auch 3-faches Sicherheitsniveau?
+    \item Nein! Angenommen wir besitzen eine Nachricht \red{M} und den dazugehörigen Chiffretext \red{C}
+    \begin{itemize}
+        \item Berechne \red{X} = DES(\red{M, $K_{0}$} (für alle möglichen Schlüssel \red{$K_{0}$}) $2^{56}$ Möglichkeiten)
+        \item Berechne \red{Y} = $DES^{-1}$(\red{X, $K_{1}$} (für alle \red{X} und alle möglichen Schlüssel \red{$K_{1}$}) $2_{56} \cdot 2_{56}$ Möglichkeiten)
+        \item Berechne \red{Z} = DES(\red{C, $K_{2}$} (für alle möglichen Schlüssel \red{$K_{2}$}) $2^{56}$ Möglichkeiten)
+        \item Vergleiche alle \red{Y} mit allen \red{Z}
+    \end{itemize}
+    $\rightarrow$ \enquote{Meet-in-the-Middle Angriff} mit $2^{122} + 2^{56} \approx 2^{112}$ Ver- bzw. Entschlüsselungen, statt $2^{168}$
+\end{itemize}
+
+\subsubsection*{Advanced Encryption Standard (AES)}
+\begin{itemize}
+    \item Januar 1997: Wettbewerb zum Bestimmen eines \fatsf{DES-}Nachfolgers von US \fatsf{National Institute of Standards and Technology} (NIST) angekündigt
+    \item 15 Chiffren wurden eingereicht
+    \item 5 Finalisten: \blue{MARS}, \blue{RC6}, \blue{Rijndael}, \blue{Serpent} und \blue{Twofish}
+    \item 2. Oktober 2000: \blue{Rijndael} wird als Gewinner gewählt, Umbenennung in \fatsf{AES}
+    \item 26. Novermber 2001: \fatsf{AES} wird offizieller Standard
+    \item Entwickler: Vincent Rijmen, Joan Daemen (KU Leuven, Belgien)
+    \item \blue{Schlüssel-Größe:} 128, 192 or 256 Bit
+    \item \blue{Block-Größe:} 128 Bit
+    \item \fatsf{Gilt als ungebrochen:} In den USA Zulassung für höchste Geheimhaltungsstufe
+\end{itemize}
+
+\subsubsection*{Brute Force Angriffe}
+Wie schwer ist ein Brute-Force-Angriff auf einen \red{128} Bit Schlüssel?
+\begin{itemize}
+    \item Probiere \red{$2^128$} Schlüssel aus
+\end{itemize}
+Wie groß ist \red{$2^128$}?\\
+$\rightarrow$ \red{$2^{128} = 2^{10\cdot 12,8} \approx 10^{3\cdot 13} = 10^{39}$}
+Angenommen wir haben Zugriff auf eine extrem leistungsstarke Hardware, die \red{$10^{9}$} (1 Miliarden) Schlüssel pro \fatsf{Nanosekunde} testen kann
+\begin{itemize}
+    \item D.h.: \red{$10^{18}$} Schlüssel pro Sekunde
+    \item D.h.: Wir benötigen \red{$\frac{10^{39}}{10^{18}} = 10^{21}$} Sekunden
+    \item \fatsf{Das sind ca.} \red{30} \fatsf{Billionen Jahre}
+\end{itemize}
+\blue{Takeaway:} Brute-Force Angriffe auf moderne Chiffren mit Schlüsseln \red{$\geq$ 128} Bits \fatsf{unmöglich} 
+
+\subsubsection*{Angriffe in der Praxis}
+
+\begin{enumerate}
+    \item \blue{Seiten-Kanal-Angriffe}\\
+    \red{Beobachte} das Gerät bei Ver-/Entschlüsselung
+    \begin{itemize}
+        \item Messe die \red{Zeit}, die für kryptographische Operationen benötigt wird.
+        \item Messe den \red{Stromverbrauch}
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Thema_3_Images/Angriffe in der Praxis.jpeg}
+    \end{figure}
+    \item \blue{Fehlerangriffe}\\
+    \red{Füge Fehler} (z.B. mit einem Laserstrahl) in die Berechnung ein
+    \begin{itemize}
+        \item Beobachte die \red{Veränderungen} im Verhalten der \red{Ein-/Ausgabe}
+        \item z.B. Berechnungsfehler in den letzten paar Runden von DES erlauben es, den Schlüssel \red{K} zu berechnen
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection*{Blockchiffren im Einsatz}
+Blockchiffren besitzen zwei Probleme bei direktem Einsatz als Verschlüsselung:
+\begin{itemize}
+    \item \blue{Nicht IND-CPA sicher:}
+	\begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_3_Images/Blockchiffren im Einsatz.jpeg}
+    \end{figure}
+    \item Nicht möglich Nachrichten \blue{beliebiger Länge} zu verschlüsseln
+\end{itemize}
+\begin{infoBox}
+    Für die \fatsf{IND-Sicherheit} ist es also notwendig, dass bei jeder Verschlüsselung der gleiche Klartext \fatsf{unterschiedliche Chiffretexte} erzeugt, um sicherzustellen, dass ein Angreifer keine nützlichen Informationen aus der Wiederholung oder Ähnlichkeit der Chiffretexte gewinnen kann.
+\end{infoBox}
+
+\subsection{Modes of Operation}
+Ziel: Verschlüsselung von Nachrichten mit \blue{beliebiger Länge}
+\begin{itemize}
+    \item Ohne Vergrößerung des Chiffretexts (im Vergleich zum Klartext)
+    \item Blockchiffren können \red{nicht direkt für die Verschlüsselung} benutzt werden
+    \item Sie werden immer in bestimmten \blue{\enquote{Modes of Operations}} benutzt
+    .\begin{itemize}
+        \item \blue{Electronic Codebook (ECB)} Modus \fatsf{(Nicht IND-CPA sicher!)}
+        \item \blue{Cipher-Block Chaining (CBC)} Modus
+        \item \blue{Counter (CTR)} Modus
+        \item ...
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Electronic Code Book (ECB) Modus}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/ECB Modus.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{Schwäche des ECB Modus}
+ECB Modus ist nicht \blue{IND-CPA} sicher, da \blue{deterministisch}!
+\begin{center}
+    \red{$M_{1} = M_{2} \rightarrow C_{1} = C_{2}$}
+\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Schwäche des ECB Modus.jpeg}
+\end{figure}
+$\rightarrow$ ECB Modus nicht in der Praxis einsetzen!
+
+\subsubsection*{ECB in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/ECB in der Praxis.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{Cipher Block Chaining (CBC) Modus}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CBC 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CBC 2.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{CBC Modus: Sicherheit}
+Was passiert, wenn zweimal die gleiche Nachricht verschlüsselt wird?
+\begin{center}
+    \red{$M_{1} = M_{2} \rightarrow C_{1} \neq C_{2}$} (wegen zufälligen IV)
+\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_3_Images/CBC Modus.jpeg}
+\end{figure}
+
+\subsubsection*{Padding Angriffe auf CBC}
+\begin{itemize}
+    \item Chosen-Ciphertext Angriffe können Informationen über Bits der Nachricht liefern!
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding Angriffe auf CBC.jpeg}
+\end{figure}
+Angriffsszenario: Angreifer hat Chiffretext und möchte Klartext bestimmen
+\begin{itemize}
+    \item Erstellung des Chiffretexts durch \blue{CBC Modus}
+    \item Angreifer \blue{kennt Schlüssel nicht}
+    \item Angreifer hat Zugriff auf \blue{Padding Orakel:} verifiziert für gegebenen Chiffretext, die Korrektheit des Paddings (in der Praxis z.B. durch Fehlermeldungen: Ungültige Entschlüsselung wird abgelehnt)
+\end{itemize}
+\clearpage
+\blue{Idee:}
+\begin{itemize}
+    \item Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht
+    \item Wenn der Angreifer weiß, wie ein gültiges Padding aussehen muss, kann er damit den ursprünglichen Klartext rekonstruieren
+\end{itemize}
+\begin{itemize}
+    \item Erinnerung zu Paddings: Wenn \blue{Nachrichtenlänge} kein Vielfaches der \blue{Blocklänge} ist, dann muss der Klartext um ein Padding \red{pad} ergänzt werden
+    \item Beispiel: Das PKCS\#7 Padding enthält \blue{Anzahl der Padding-Bytes} als Zahlenwert
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding Angriffe aud CBC 2.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding Angriffe CBC 3.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding auf CBC 3A.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding Angriff auf CBC True.jpeg}
+\end{figure}
+\clearpage
+\begin{itemize}
+    \item \blue{256 Versuche} $\rightarrow$ Angreifer hat \blue{letztes Byte} der Ausgabe von \fatsf{$DEC_{k}$}
+    \item XOR mit ursprünglichem Chiffretext $\rightarrow$ Angreifer lernt \blue{letztes Byte des Klartextes}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Angriff auf CBC.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Wiederholung für jedes Byte $\rightarrow$ Angreifer \blue{lernt gesamten Klartext Block}
+    \item \fatsf{Frage: Kann der Angreifer damit nur den letzten Block rekonstruieren?}
+    \item Nein! Angreifer kann den \blue{gesamten Klartext} lernen!
+    \item Hierfür: Jeweils letzten Block weglassen
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Padding Angriffe auf CBC Ende.jpeg}
+\end{figure}
+
+\subsubsection*{Sicherheit gegen Padding Angriffe VS. IND-CPA / IND-CCA}
+\begin{itemize}
+    \item Sicherheit gegen Padding Angriffe ist stärker als IND-CPA Sicherheit
+    \begin{itemize}
+        \item Beispiel: CBC-Mode ist IND-CPA sicher, aber nicht gegen Padding Angriffe
+    \end{itemize}
+    \item Im IND-CCA Spiel hat Angreifer Zugriff auf \blue{Entschlüsselungsorakel}
+    \begin{itemize}
+        \item Kann alles, was Padding Orakel auch kann (aber noch mehr!)\\
+        $\rightarrow$ Ist mächtiger als ein Padding Orakel\\
+        $\rightarrow$ IND-CCA bietet stärkere Sicherheit
+    \end{itemize}
+\end{itemize}
+$\rightarrow$ Sicherheit gegen Padding Angriffe liegt zwischen IND-CPA und IND-CCA Sicherheit
+
+\clearpage
+\subsubsection*{Counter Modus (CTR)}
+\fatsf{Wiederholung:} One-Time-Pad
+\begin{itemize}
+    \item Sicher, wenn Schlüssel \red{X} zufällig und nicht wiederverwendet wird
+\end{itemize}
+$\rightarrow$ \fatsf{Idee:} Nutze Ausgabe der Blockchiffre als One-Time-Pad
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CTR .jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CTR 2.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{Fehlerresistenz}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Fehrlerresistenz.jpeg}
+\end{figure}
+
+\subsubsection*{Parallelisierbarkeit}
+Können im CBC-Modus oder CTR-Modus Blöcke parallel verschlüsselt werden?
+\begin{itemize}
+    \item CBC ist nicht Parallelisierbar
+    \item CTR ist parallelisierbar
+\end{itemize}
+
+\subsubsection*{Vergleich der Modi}
+\begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+        \item \fatsf{CBC Modus}
+        \begin{itemize}
+            \item \blue{Fehlerresistanz}
+            \begin{itemize}
+                \item Fehler verbreiten sich nicht über mehr als zwei Blöcke
+            \end{itemize}
+            \item \blue{Parallelisierung}
+            \begin{itemize}
+                \item Verschlüsselung: \red{Nein}
+                \item Entschlüsselung: \blue{Ja}
+            \end{itemize}
+            \item \blue{IND-CPA Sicherheit}
+            \begin{itemize}
+                \item \blue{Ja}, aber Achtung bei Wahl des Paddings
+            \end{itemize}
+            \item \blue{IND-CCA Sicherheit}
+            \begin{itemize}
+                \item \red{Nein}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+        \item \fatsf{CTR Modus}
+        \begin{itemize}
+            \item \blue{Fehlerresistenz}
+            \begin{itemize}
+                \item Fehler wirken sich nur auf den aktuellen Block aus
+            \end{itemize}
+            \item \blue{Parallelisierung}
+            \begin{itemize}
+                \item Verschlüsselung: \blue{Ja}
+                \item Entschlüsselung: \blue{Ja}
+            \end{itemize}
+            \item \blue{IND-CPA Sicherheit}
+            \begin{itemize}
+                \item \blue{Ja,} aber Achtung auf Zufälligkeit des IV
+            \end{itemize}
+            \item \blue{IND-CCA Sicherheit}
+            \begin{itemize}
+                \item \red{Nein}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{minipage}
+
+\clearpage
+\subsubsection*{Übersicht Betriebsmodi}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Übersicht Betriebsmodi.jpeg}
+\end{figure}
+
+\subsection{Kryptographische Hashfunktionen}
+\subsubsection*{Hashfunktionen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Hashfunktionen.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{Haushfunktionen: Definition}
+\red{H: $\{0, 1\}^{*} \rightarrow \{0, 1\}^{n}$} bildet von großer Definitionsmenge auf kleinen Bildbereich ab
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_3_Images/Hashfunktion: Definition.jpeg}
+\end{figure}
+
+\subsubsection*{Sicherhetisdefinitionen}
+Es existieren 3 wichtige Sicherheitsdefinitionen für Hashfunktionen
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Sicherheitsdefinitionen.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \blue{Preimage Resistance:}
+    \begin{itemize}
+        \item Es ist schwer, Originalwert zu gegebenen Hash-Wert zurückzuverfolgen
+        \item \fatsf{Nutzen:} Schützt vor Rekonstruktion aus Hash-Wert, z.B. um Vertraulichkeit von Passwörtern zu sichern
+    \end{itemize}
+    \item \blue{Second Preimage Resistance:}
+    \begin{itemize}
+        \item Gegeben eine Eingabe, ist es schwer, eine weitere Eingabe zu finden, mit gleichem Hash-Wert
+        \item \fatsf{Nutzen:} Verhindert Finden verschiedener Daten mit gleichem Hash-Wert, z.B. schwierig zwei gültige Zertifikate zu erzeugen
+    \end{itemize}
+    \item \blue{Collision Resistance:}
+    \begin{itemize}
+        \item Es ist schwer, irgendwelche unterschiedliche Eingaben zu finden, mit demselben Hash-Wert
+        \item \fatsf{Nutzen:} Kollisionen sind ausgeschlossen und damit für beliebige Anwendungen anwendbar
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Beispielanwendung: Password Hashing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Password Hashing.jpeg}
+\end{figure}
+\begin{center}
+    Später mehr zu Passwords und eingesetzten Hashfunktionen
+\end{center}
+
+\subsubsection*{Beispielanwendung: Datenintegrität}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Datenintegrität.jpeg}
+\end{figure}\textbf{}
+
+\clearpage
+\subsubsection*{Beispiele für Hashfunktionen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Beispiele für Hashfunktionen.jpeg}
+\end{figure}
+
+\subsubsection*{Hashfunktionen: Kollisionen}
+\red{$H:\{0,1\}^{*} \rightarrow \{0,1\}^{n}$} bildet von großer Definitionsmenge auf kleinen Bildbereich ab\\
+\fatsf{Problem:} Definitionsmenge ist größer als der Bildbereich $\rightarrow$ \blue{Kollisionen existieren immer}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Kollisionen.jpeg}
+\end{figure}
+\subsubsection*{Kollisionsangriffe}
+Generischer \blue{Brute-Force Angriff} (Siehe Geburtstagsparadoxon):
+\begin{itemize}
+    \item |H(x)| = n Bits
+    \item Nach ca. $\sqrt{2^{n}} = 2^{\frac{n}{2}}$ Versuchen: Wahrscheinlichkeit eine Kollision zu finden, ist $\geq$ $\frac{1}{2}$\\
+    $\rightarrow$ Für 128-bit Sicherheit muss |H(x)| = 256 Bits
+\end{itemize}
+Praktische Beispiele:
+\begin{itemize}
+    \item MD5 Kollision in $2^{24.1}$ Schritten (Stevens 2009): wenige Sekunden auf modernem PC
+    \item SHA1 (Stevens at al 2017): Zwei kollidierende PDF-Dokumente berechnet
+\end{itemize}
+\begin{infoBox}[title=Generischer Brute-Force-Angriff auf Hashfunktionen]
+    \begin{enumerate}
+        \item \fatsf{Eigenschaften von Hashfunktionen:}
+        \begin{itemize}
+            \item Eine Hashfunktion H(x) bildet Eingaben beliebiger Länge auf eine Ausgabe fester Länge (n Bits) ab
+            \item Ziel: Finden von zwei unterschiedliche Eingaben $x_{1} \neq x_{2}$, sodass H($x_{1}$) = H($x_{2}$) (\fatsf{Kollision})
+        \end{itemize}
+        \item \fatsf{Geburtstagsparadoxon:}
+        \begin{itemize}
+            \item Für n-Bit-Ausgabe reicht es, \fatsf{ungefähr $2^{\frac{n}{2}}$} zufällige Versuche, um mit hoher Wahrscheinlichkeit eine Kollision zu finden
+            \item Dies basiert auf der Kombinatorik: Die Wahrscheinlichkeit, dass keine Kollision eintritt, sinkt bei k Versuchen dramatisch, sobald $k \approx \sqrt{2^{n}}$
+        \end{itemize}
+        \item \fatsf{Schlussfolgereung:}
+        \begin{itemize}
+            \item Für eine gewünschte \fatsf{sichere Hashfunktion} mit einer effektiven Sicherheit von k-bit muss die Ausgabe mindestens 2k-Bits lang sein.
+            \item Beispiel: Für 128-Bit-Sicherheit muss |H(x)| = 256-Bits sein
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+
+\subsection{Message Authentication Codes}
+\subsubsection*{Message Authentication}
+\begin{itemize}
+    \item \fatsf{Integrität?}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_3_Images/Message Authentication.jpeg}
+\end{figure}
+Sichere Kommunikation muss \blue{Vertraulichkeit} und \blue{Integrität} der Nachricht gleichzeitig garantieren
+\begin{itemize}
+    \item \fatsf{Garantiert Verschlüsselung Integrität?}
+\end{itemize}
+\red{Im Allgemeinen ist diese Aussage nicht korrekt!}
+\fatsf{Beispiel:} One-Time-Pad
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Garantiert Verschlüsselung Integrität.jpeg}
+\end{figure}
+\subsubsection*{Erinnerung: ECB Mode}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Erinnerung ECB Mode.jpeg}
+\end{figure}
+\subsubsection*{Schwäche des ECB Modes}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Schwäche des ECB Modes.jpeg}
+\end{figure}
+
+\clearpage
+\subsubsection*{Was wird benötigt?}
+\fatsf{Message Authentication Code (MACs)}
+\begin{itemize}
+    \item \fatsf{Algorithmen:} (Gen, Mac, Vrfy)
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_3_Images/Algrithmen (Gen, Mac, Vrfy).jpeg}
+    \end{figure}
+    \item \fatsf{Korrektheit:} Die Verifizierung eines validen Tags \red{t} für \red{m} und \red{k} resultiert in \red{b = 1}\\
+    $\rightarrow$ \red{$Vrfy_{k}(m, Mac_{k}(m)) = 1$} für alle Nachrichten \red{m} und Schlüssel \red{k $\leftarrow$ Gen}
+    \item \fatsf{Effizienz:} Authentifizierung und Verifizierung sind effizient(> 10 GB/s)
+\end{itemize}
+\begin{infoBox}[title=Algorithmen von MAC]
+    Ein MAC basiert auf drei Algorithmen:
+    \begin{enumerate}
+        \item \fatsf{Gen (Schlüsselerzeugung):}
+        \begin{itemize}
+            \item Erzeugt einen geheimen Schlüssel k (aus einer sicheren Quelle oder einem Zufallsgenerator)
+            \item k wird von Sender und Empfänger geteilt
+        \end{itemize}
+        \item \fatsf{Mac (Authentifizierung):}
+        \begin{itemize}
+            \item Berechnet den \fatsf{Tag} t, der die Nachricht m authentifiziert:
+            \[
+                t = Mac_{k}(m)
+            \]
+            \item Der Schlüssel k wird dabei verwendet, um t zu erzeugen
+        \end{itemize}
+        \item \fatsf{Vrfy (Verifizierung)}
+        \begin{itemize}
+            \item Überprüft die Gültigkeit des Tags t für die Nachricht m und den Schlüssel k:
+            \[
+                Vrfy_{k}(m,t) = b, \text{wobei }b \in \{0, 1\}
+            \]
+            \item b = 1: Tag ist gültig
+            \item b = 0: Tag ist ungültig
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Sicherheitsdefinition}
+\begin{itemize}
+    \item Ziel des Angreifers: Was ist ein erfolgreicher Angriff?
+    \begin{itemize}
+        \item Naive Option: Angreifer lernt den Schlüssel \red{k} nicht
+        \item In der Kryptographie: Angreifer kann \blue{keinen validen Tag} \red{t} für \red{m} erzeugen
+    \end{itemize}
+    \item Arten von MACs?
+    \begin{itemize}
+        \item Informationstheoretisch sichere MACs $\rightarrow$ \blue{nicht effizient} für Authentifizierung von vielen Nachrichten
+        \item Komplexitätstheoretisch sichere MACs
+        \begin{itemize}
+            \item Für Nachrichten \blue{fixer} Länge
+            \item Für Nachrichten mit \blue{beliebiger} Länge: z.B. \blue{CBC-MAC} und \blue{HMAC}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{CBC-MAC}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CBC-MAC.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{CBC-MAC mit Nachrichten unterschiedlicher Länge}
+\begin{itemize}
+    \item Nachrichten \red{m} mit \red{$CBC-MAC_{k} = t$} und \red{m'} mit \red{$CBC-MAC_{k}(m) = t$}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CBC-MAC mit gleicher Länge.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/CBC-MAC mit unterschiedlicher Länge.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Wir können den Tag der \blue{modifizierten Nachricht} berechnen, \blue{ohne} \red{k} \blue{zu kennen!}
+\end{itemize}
+\subsubsection*{Hash-und-Mac}
+\red{CBC-MAC} ist nur für \blue{fixe Nachrichtenlängen} sicher $\rightarrow$ Wie geht es für beliegibe Nachrichtenlänge?\\
+\fatsf{Konstruktionsidee:}
+\begin{enumerate}
+    \item Berechne \red{y = H(m)} der langen Nachricht \red{m} mit Hilfe von Domain-Extension für Hashfunktionen
+    \item Berechne \red{$MAC_{k}(y)$} mit MAC für fixe Nachrichtenlänge
+\end{enumerate}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Hash und Mac.jpeg}
+\end{figure}
+\fatsf{Frage:} Ist es möglich einen sicheren MAC \fatsf{nur} basierend auf Hashfunktionen zu konstruieren?
+\subsubsection*{HMAC}
+Trivialer Ansatz: \red{$MAC_{k}(y) = H(k||y)$}\\
+\fatsf{Ist diese Konstruktion sicher?}\\
+\fatsf{$\rightarrow$ Nur für bestimmte Hash Funktionen}
+\begin{itemize}
+    \item Sicher für manche Hash-Funktionen, bspw. SHA-3
+    \item Unsicher für andere, bspw. SHA-256
+    \begin{itemize}
+        \item Arbeitet mit fixen Eingabelängen und iterativem Hashing
+        \item Trivialer Ansatz ist anfällig für \enquote{length extension attacks}
+    \end{itemize}
+\end{itemize}
+\fatsf{Besser: Nutze HMAC} (RFC 2104)
+\red{\[
+    MAC_{k}(y) = H(k \oplus op || H(k \oplus ip || m))
+\]}
+\begin{itemize}
+    \item op: Outer Padding
+    \item ip: Inner Padding
+\end{itemize}
+
+\begin{infoBox}[title=CBC-MAC (Cipher Block Chaining Message Authentication Code)]
+    CBC-MAC ist eine Möglichkeit, eine Nachricht zu authentifizieren, indem sie mit einer Blockchiffre (wie AES) im CBC-Modus verschlüsselt wird. Im Wesentilichen wird CBC-MAC verwendet, um sicherzustellen, dass eine Nachricht nicht verändert wurde, und um die Authentizität der Nachricht zu prüfen.\\
+    \fatsf{Wie funktioniert CBC-MAC?}
+    \begin{enumerate}
+        \item \fatsf{Verschlüsselung mit einer Blockchiffre:}
+        \begin{itemize}
+            \item Angenommen, wir haben eine Blockchiffre $F_{K}$, die einen Schlüssel K verwendet und Nachrichten der Länge n blockweise verarbeitet.
+            \item Um eine Nachricht m zu authentifizieren, wird die Nachricht in \fatsf{Blöcke} geteilt.
+        \end{itemize}
+        \item \fatsf{Prozess der Verschlüsselung (Tag-Berechnung):}
+        \begin{itemize}
+            \item Zuerst wird die Nachricht m in n-Bit Blöcke unterteilt: m = (m1, m2, ..., mt).
+            \item Der \fatsf{Initialisierungsverktor (IV)} wird auf 0 gesetzt.
+            \item Für den ersten Block $m_{1}$ wird der IV mit $m_{1}$ verXORt:
+            \[
+                x_{1} = IV \oplus m_{1}
+            \]
+            (IV ist zu Beginn 0, daher $x_{1} = m_{1}$ )
+            \item Danach wird der Block $x_{1}$ mit der Blockchiffre $F_{K}$ verschlüsselt, und das Ergebnis wird mit dem nächsten Block $m_{2}$ verXORt:
+            \[
+                x_{2} = F_{K}(x_{1}) \oplus m_{2}
+            \]
+            \item Dieser Prozess wird für alle weiteren Blöcke fortgesetzt. Am Ende erhält man den \fatsf{letzten Block} $x_{t}$, der als \fatsf{Tag} t der Nachricht ausgegeben wird
+        \end{itemize}
+        \item \fatsf{Tag:} Der Tag ist der letzte Block der Verschlüsselung, der das Authentizitätsmerkmal der Nachricht darstellt:
+        \[
+            Tag = x_{t}
+        \]
+    \end{enumerate}
+    \fatsf{Verifizierung:}\\
+    Um die Nachricht zu verifizieren, wird der Tag t berechnet und mit dem empfangenen Tag verglichen:
+    \begin{enumerate}
+        \item Der Empfänger erhält die Nachricht m und den Tag t
+        \item Die gleiche Berechnung wie oben wird auf die Nachricht angewendet. Wenn der berechnete Tag mit dem empfangenen Tag übereinstimmt, ist die Nachricht authentisch und wurde nicht verändert
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Probleme mit CBC-MAC für Nachrichten unterschiedlicher Länge]
+    Ein großes Problem von CBC-MAC ist, dass es nur \fatsf{für Nachrichten fester Länge sicher} ist. Wenn eine Nachricht eine variable Länge hat, könnte ein Angreifer in der Lage sein, den Tag einer kürzeren Nachricht zu verwenden, um eine längere Nachricht zu fälschen.Dies kann durch gezielte Manipulation der Blöcke erfolgen\\
+    \fatsf{Angreifermodell für Nachrichten unterschiedlicher Länge:}
+    \begin{enumerate}
+        \item \fatsf{Angreifer mit Zugang zu CBC-MAC-Tag der Nachricht m:} Der Angreifer könnte den Tag der ursprüglichen Nachricht m als t kennen
+        \item \fatsf{Angreifer sendet modifizierte Nachricht m':} Der Angreifer kann die Nachricht m' ändern (z.B. Blocke hinzufügen oder löschen) und den Tag basierend auf den CBC-MAC-Verfahren neu berechnen.
+        \item \fatsf{Angreifer kann gültigen Tag für modifizierte Nachricht berechnen, ohne den geheimen Schlüssel zu kennen}
+    \end{enumerate}
+    Dies wird als \fatsf{Sicherheitslücke} betrachtet, da der Angreifer durch das Kopieren eines Tags und das Manipulieren der Nachricht den MAC für eine neue Nachricht berechnen kann, ohne den Schlüssel zu kennen. Ein Beispiel für so einen Angriff ist der \fatsf{Modifizierungsangriff}, bei dem der Angreifer den Tag der ursprüglichen Nachricht verwendet, um einen validen Tag für eine modifizierte Nachricht zu erzeugen.
+\end{infoBox}
+\begin{infoBox}[title=HMAC (Hash-based Message Authentification Code)]
+    Da CBC-MAC nur für Nachrichten fester Länge sicher ist, ist es notwendig, auf andere MAC-Verfahren zurückzugreifen, die für Nachrichten bliebiger Länge funktionieren. Ein solches Verfahren ist \fatsf{HMAC}, das eine Kombination von \fatsf{Hash-Funktionen} und einem \fatsf{geheimen Schlüssel} verwendet.\\
+    \fatsf{HMAC (RFC 2014):}
+    \begin{itemize}
+        \item HMAC verwendet eine Hash-Funktion (z.B. SHA-256) zusammen mit einem geheimen Schlüssel, um einen MAC zu berechnen.
+        \item Der Prozess wird mit zwei Padding-Operationen durchgeführt:
+        \begin{itemize}
+            \item \fatsf{Inner Padding (ip):} Der Schlüssel wird mit einer inneren Padding-Funktion (z.B. XOR mit einem festen Wert) bearbeitet und mit der Nachricht kombiniert.
+            \item \fatsf{Outer Padding (op):} Danach wird der Schlüssel mit einer äußeren Padding-Funktion (z.B. XOR mit einem anderen festen Wert) bearbeitet und mit dem Hash-Wert des inneren Ergebnisses kombiniert.
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\clearpage
+\subsection{Authentifizierte Verschlüsselung}
+\subsubsection*{Authentifizierte Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Authentifizierte Verschlüsselung.jpeg}
+\end{figure}
+
+\subsubsection*{\enquote{Encrypt-then-MAC}}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Encrypt-then-mac.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{\enquote{MAC-then-Encrypt}?}
+\blue{Encrypt-then-MAC:}
+\begin{itemize}
+    \item Nur \blue{authentische} Chiffretexte werden entschlüsselt
+    \item Beweisbar sicher
+    \item Durch Authentifizierung auch \blue{IND-CCA sicher}!
+\end{itemize}
+\blue{MAC-then-Encrypt:}
+\begin{itemize}
+    \item Konkrete Angriffe bekannt, z.B.:
+    \begin{itemize}
+        \item Lucky 13
+        \item BEAST
+    \end{itemize}
+    \item Nutzen Tatsache aus, dass auch dann entschlüsselt wird, falls Chiffretext verändert wurde
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_3_Images/Übersicht Betriebsmodi 2.jpeg}
+\end{figure}
+\subsubsection*{Themenübersicht}
+Folgende Themen haben wir behandelt:
+\begin{itemize}
+    \item Definition von symmetrischen Chiffren
+    \item Sicherheitsbegriff für symmetrische Chiffren (IND-CPA und IND-CCA)
+    \item OTP Verschlüsselung
+    \item Blockchiffren (DES, AES)
+    \item Modes of Operation
+    \item Hashfunktionen
+    \item MACs
+    \item Authentifizierte Verschlüsselung
+\end{itemize}

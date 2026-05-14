@@ -1,0 +1,605 @@
+\section{Authentisierung und Autorisierung}
+\subsection{Begriffe}
+\subsubsection*{Begriffsunterscheidung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Begriffsunterscheidung.jpeg}
+\end{figure}
+\subsubsection*{Identifizierung $\neq$ Authentisierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Identifizierung Authentisierung.jpeg}
+\end{figure}
+\subsubsection*{Authentisierung}
+\fatsf{Mittel zur Authentisierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_5_Images/Authentisierung.jpeg}
+\end{figure}
+Weitere Faktoren: Wo man ist, Was man tut\\
+Multi-faktor Authentisierung: Kombinationen von mehreren Faktoren:\\
+
+\fatsf{Was man weiß} z.B. Passwörter \fatsf{Fdfjd\#s3}
+\begin{itemize}
+    \item \fatsf{Vorteile:}
+    \begin{itemize}
+        \item einfach zu ändern
+        \item einfach mitnehmbar
+    \end{itemize}
+    \item \fatsf{Nachteile:}
+    \begin{itemize}
+        \item kann vergessen werden
+        \item leicht zu duplizieren
+    \end{itemize}
+\end{itemize}
+\fatsf{Was man hat} z.B. Chipkarte
+\begin{itemize}
+    \item \fatsf{Vorteile:}
+    \begin{itemize}
+        \item einfach mitnehmbar
+        \item nicht leicht zu duplizieren
+    \end{itemize}
+    \item \fatsf{Nachteile:}
+    \begin{itemize}
+        \item einfach übertragbar
+        \item einfach zu stehlen/verlieren
+    \end{itemize}
+\end{itemize}
+\fatsf{Was man ist} z.B. biometrische Merkmale
+\begin{itemize}
+    \item \fatsf{Vorteile:}
+    \begin{itemize}
+        \item nicht übertragbar
+        \item individuell
+    \end{itemize}
+    \item \fatsf{Nachteile:}
+    \begin{itemize}
+        \item oft leicht fälschbar
+        \item unveränderbar
+        \item Privacy-Probleme
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsubsection*{Heute meistens 2-Faktor-Authentisierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_5_Images/Heute meistens 2-Faktor-Authentisierung.jpeg}
+\end{figure}
+\subsection{Passwort (Authentisierung mittels Wissen)}
+\subsubsection*{Naive Passwortspeicherung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Naive Passwortspeicherung.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Beispiel von 2016}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Beispiel von 2016.jpeg}
+\end{figure}
+\subsubsection*{Ziel von sicherer Passwortspeicherung}
+Speichere Passwörter so, dass
+\begin{enumerate}
+    \item Geprüft werden kann, ob ein gegebenes Passwort \enquote{korrekt} ist
+    \item Ein Angreifer, \fatsf{der alle auf dem Server gespeicherten Daten lesen} kann (inkl. Passwort-Datenbank), nicht einfach in der Lage ist, diese Passwörter zum Login zu verwenden
+\end{enumerate}
+\subsubsection*{Schlechte Lösung \#1: Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_5_Images/Schlechte Lösung 1: Verschlüsselung.jpeg}
+\end{figure}
+\subsubsection*{Ansatz zur Passwortspeicherung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Ansatz zur Passwortspeicherung.jpeg}
+\end{figure}
+\subsubsection*{Einwegfunktionen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Einwegfunktionen.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Schlechte Lösung \#2: Hashen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Hashen.jpeg}
+\end{figure}
+\subsubsection*{Beipsiel von 2012}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Beispiel von 2012.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Rainbow Table}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Raibow Table.jpeg}
+\end{figure}
+\fatsf{Scenario:}
+\begin{itemize}
+    \item Angreifer hat riesige vorberechnete Liste aus (Passwort, Passwort-Hash)-Paaren
+    \item Nach Datenklau vergleicht Angreifer Hashes aus Benutzertabelle mit Passwort-Hashes\\
+    $\rightarrow$ kann so \enquote{effizient} eine große Menge an Passwörtern im Klartext erhalten
+\end{itemize}
+\subsubsection*{Rainbow Table: Time-Memory Tradeoff}
+\fatsf{Tools:}
+\begin{itemize}
+    \item Hashfunktion H: Passwort $\rightarrow$ Hash
+    \item Reduktionsfunktion R: Hash $\rightarrow$ Passwort
+\end{itemize}
+\begin{infoBox}[title= Tools]
+    \begin{enumerate}
+        \item \fatsf{Hashfunktion H:}
+        \begin{itemize}
+            \item Eine Einwegfunktion, die ein Passwort (oder einen Eingabewert) in einen Hash-Wert umwandelt.
+            \item Beispiel: H("password123") → 5f4dcc3b5aa765d61d8327deb882cf99.
+        \end{itemize}
+        \item \fatsf{Reduktionsfunktion R:}
+        \begin{itemize}
+            \item Eine Funktion, die einen Hash zurück in einen möglichen Passwortwert umwandelt (nicht das Original, sondern einen Wert aus dem möglichen Passwortraum)
+            \item Beispiel: R("5f4dcc3b5aa765d61d8327deb882cf99") → "abc123".\\
+            \fatsf{Hinweis:} Die Reduktionsfunktion ist künstlich definiert und erzeugt nur einen Wert aus dem möglichen Passwortraum
+        \end{itemize}
+        \item \fatsf{Rainbow Table:}
+        \begin{itemize}
+            \item Sie speichert nur die ersten Werte und letzten Hashes aus mehreren Berechnungsketten
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Time-Memory Tradeoff.jpeg}
+\end{figure}
+\begin{defBox}
+    \red{Nur die Tabelle} und nicht alle Zwischenwerte sind gespeichert!
+\end{defBox}
+\fatsf{Anwendung:}
+\begin{enumerate}
+    \item Gegeben Hashwert \blue{h = m40cj}
+    \item Wiederhole max. n-1 Mal:
+    \begin{enumerate}
+        \item Berechne pwd = R(h)
+        \item Falls pwd in der rechten Spalte, Springe zu 3
+        \item Berechne h = H(pwd)
+    \end{enumerate}
+    \item Wenn Übereinstimmung mit Tabelle gefunden, nehme Passwort und gehen in Kette \blue{von links bis zum gesuchten Hashwert.} Zuletzt gehashtes Passwort ist die Lösung.
+\end{enumerate}
+\red{Warum Time-Memory Tradeoff?}\\
+Bei einer perfekten Rainbow Table (keine Kollisionen in den Ketten) gilt: Je länger die Ketten, desto \red{weniger} Speicherbedarf, aber desto \red{mehr} Zeitaufwand
+\subsubsection*{Lösung: Salted Hashing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Lösung: Salted Hashing.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Beispiel: Unix/Linux-Passwortdatei}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Beispiel Unix Linux.jpeg}
+\end{figure}
+\subsubsection*{Weitere Gegenmaßnahmen}
+\fatsf{Preppering:} Salt(s) geheim halten\\
+\fatsf{Iteratione:} Hashfunktion iterieren $h_{j+1}$ = H(pw, S, $h_{j}$) für j=1,2,3,..., um Aufwand für Angreifer merklich zu erhöhen\\
+Beispiel: Braucht 100ms statt 1ns beim Einloggen, aber Angreifer braucht 270 Jahre statt 1 Tag zum Brechen\\
+Ansatz wird von Kandidaten PBKF2, bcrypt verwendet (einige tausend Iterationen)
+\subsubsection*{Passwort brechen mit Spezialhardware}
+\begin{itemize}
+    \item z.B. ASIC-basierte Special-Purpose Hardware zur Berechnung von Hashwerten
+    \begin{itemize}
+        \item Vornehmlich für Bitcoin Mining entwickelt
+        \item Kann auch zur Berechnung von Rainbow Tabellen genutzt werden
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Passwort Brechen mit Spezialhardware.jpeg}
+\end{figure}
+\subsubsection*{Gutes Passwort Hashing}
+\begin{itemize}
+    \item \fatsf{Ziel:} Mit Spezialhardware nicht signifikant effizienter zu berechnen als mit Standard-Hardware
+    \begin{itemize}
+        \item z.B. \enquote{Memory-Hard Functions}: Intensive Nutzung von Speicher $\rightarrow$ erschwert den Einsatz von ASIC Spezialhardware
+    \end{itemize}
+    \item Passwort Hasing Competition (2013-2015)
+    \begin{itemize}
+        \item Sieger: Argon2
+        \begin{itemize}
+            \item Alex Biryukov, Daniel Dinu, Dmitry Khovratovich, University of Luxembourg
+            \item Argon2d: Resistenz gegen GPU Cracking
+            \item Argon2i: Resistenz gegen Side-Channel Attacks
+            \begin{itemize}
+                \item Erste Angriffe: Alwen-Blocki 2016
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Aktuelles Forschungsthema
+\end{itemize}
+\subsubsection*{Sicheres Verwalten ist das Eine...}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Sicheres Verwalten ist das eine.jpeg}
+\end{figure}
+\subsubsection*{Default-Passwörter}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Default-Passwörter.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Schwache Passwörter}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_5_Images/Schwache Passwörter.jpeg}
+\end{figure}
+\subsubsection*{Stärke von Passwörtern?}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Stärke von Passwörtern.jpeg}
+\end{figure}
+Entropei = Maß für Information\\
+n Bits Entropie bedeutet, dass Angreifer $2^{n}$ Möglichkeiten versuchen muss\\
+NIST Special Publication 800-63 (von 2004)\\
+8-stellige Passwörter mit spezialsymbolen haben ca. 20-30 Bits Entropie (Berechnung ist allerdings umstritten)
+\clearpage
+\subsubsection*{Gute Passwörter?}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Gute Passwörter.jpeg }
+\end{figure}
+\subsubsection*{Schlechte Passwörter vermeiden!}
+\blue{keine} kurzen Passwörter mit weniger als 8 Stellen\\
+\blue{nicht} mehrfach verwenden\\
+\blue{keine} persönlichen Daten wie Username, Geburtstag, ...\\
+\blue{keine} einfachen Wörter aus Dictionaries\\
+\blue{keine} einfachen Transformationen wie \fatsf{passw0rd}
+lokale Tests beim Erstellen können vieler dieser Regeln \enquote{erzwingen}
+\subsubsection*{Gute Passwörter}
+\underline{NIST SP800-63-3 Digital Identity Guidelines:}
+\begin{itemize}
+    \item Regeln für \enquote{komplexe} Passwörter:
+    \begin{itemize}
+        \item Nicht mehr empfohlen: Schwerer zu merken
+        \item Besser: Passphrasen erlauben
+    \end{itemize}
+    \item \fatsf{Kein Ablaufdatum mehr}
+    \begin{itemize}
+        \item Nur ändern, wenn Anzeichen für Password Leak
+    \end{itemize}
+    \item Nutzung von \fatsf{Passwort-Managern erlauben}
+    \begin{itemize}
+        \item Ermöglicht individuelles Passwort für jeden Dienst
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Passwörter Testen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Passwörter Testen.jpeg}
+\end{figure}
+\subsubsection*{Passwortmanager}
+Software zum Speichern und Verwalten von Zugangsdaten (Benutzername, Passwort, ...)\\
+Ziel: \red{Hohe Sicherheit auf einfachem Weg}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_5_Images/Passwortmanager.jpeg}
+\end{figure}\\
+\blue{Vorteile:}
+\begin{itemize}
+    \item Generierung starker und individueller Passwörter für jeden Dienst
+    \item Sichere Speicherung
+    \item Einfache Verwendung der Passwörter (Autofill)
+\end{itemize}
+\red{Risiken}
+\begin{itemize}
+    \item Single Point of Failure: Zugriff auf Master-Passworts $\rightarrow$ Zugriff auf alle Passwörter
+    \item Sicherheitslücken in der Paswortmanager-Software selbst
+\end{itemize}
+\blue{Best Practices}
+\begin{itemize}
+    \item Starkes Master-Passwort
+    \item Zwei-Faktor-Authentifizierung (2FA)
+    \item Open-Source Lösung
+\end{itemize}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_5_Images/Passwortmanager Risiken.jpeg}
+\end{figure}
+\subsection{Social Engineering}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_5_Images/Eine Frage der Sicherheit.jpeg}
+\end{figure}
+\subsubsection*{Phishing for Passwords}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Phishing for Passwords.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Gone Phishing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_5_Images/Gone Phishing.jpeg}
+\end{figure}
+\subsection{Tokens: Authentisierung mittels Besitz}
+\subsubsection{Token-Basierte Authentisierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Token-Basierte Authentisierun.jpeg}
+\end{figure}
+\subsubsection*{Replay-Angriffe bei statischen Tokens}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Thema_5_Images/Replay-Angriffe bei statischen Tokens.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Gegenmaßnahme: Dynamische Tokens}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Thema_5_Images/Gegenmaßnahme: Dynamischen Tokens.jpeg}
+\end{figure}
+\subsubsection*{Implementierung per Signaturen oder MACs}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Implementierung per Signaturen oder MACs.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Implementierung per Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Implementierung per Verschlüsselung.jpeg}
+\end{figure}
+\subsubsection*{Umfrage}
+Ist das folgendem 1-Runden Challenge-Response-Verfahren problematisch? Alice wählt sich ein zufälliges r selbst und sendet s = Sig(sk, r)
+\begin{itemize}
+    \item Ja, bei diesem Verfahren sind Replay-Attacken möglich
+\end{itemize}
+\subsection{Biometrie: Authentisierung mittels persönlicher Charakteristika}
+\subsubsection*{Biometrische Systeme}
+\begin{itemize}
+    \item Fingerabdrücke
+    \item Retina und Iris
+    \item Gesichtserkennung
+    \item Handschrift
+    \item Sprache
+    \item ...
+\end{itemize}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_5_Images/Biometrische Systeme.jpeg}
+\end{figure}
+\subsubsection*{Fingerabdruck-Minuten}
+Feine Merkmale des Fingerabdrucks
+\begin{itemize}
+    \item Verzweigungen und Endpunkte sind für jeden Menschen individuell
+\end{itemize}
+ \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_5_Images/Fingerabdruck-Minuten.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Weitere Merkmale: Schleifen, Deltas oder Wirbel
+\end{itemize}
+\clearpage
+\subsubsection*{Fehler in der Biometrie}
+false positives: wird akzeptiert, ist aber nicht die Person\\
+false negatives: wird verworfen, obwohl die richitge Person
+ \begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Fehler in der Binometrie.jpeg}
+\end{figure}
+\subsubsection*{Probleme biometrischer Authentisierung}
+\begin{itemize}
+    \item nicht widerrufbar
+    \item benötigt vertrauenswürdige Geräte vor Ort
+    \item oft leicht zu fälschen (Bild statt Gesicht, Fingerattrappe,...)
+\end{itemize}
+ \begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Probleme biometrischer Authentisierung.jpeg}
+\end{figure}
+\subsection{Single Sign-ON (SSO)}
+\subsubsection*{SSO der TU}
+\fatsf{Ziel:} Zentraler und einmaliger Login für mehrere Dienste\\
+\blue{Voteile:}
+\begin{itemize}
+    \item Nur ein Passwort notwendig $\rightarrow$ ein starkes Passwort anstatt vieler unsicherer
+    \item Phising-Attacken schwerer, da einzelne Login-Stellen leichter auf Korrektheit überprüft werden kann
+    \item IT-Sicherheitsmaßnehmen fokussieren sich auf zentrale Stelle
+\end{itemize}
+\red{Nachteile:}
+\begin{itemize}
+    \item Verfügbareit von Dienst hängt von Verfügbarkeit des SSO ab
+\end{itemize}
+\subsubsection*{Kerberos Protokoll}
+\begin{itemize}
+    \item Authentifizierungsprotokoll für SSO
+    \item Entwickelt Ende der 1980er Jahre am MIT
+    \item Aktuelle Version 5 von 2005
+    \item Benannt nach dem dreiköpfigen Höllenhund Kerberos (bewacht den Eingang zur Unterwelt)
+    \item Basiert auf symmetrischer Verschlüsselung
+\end{itemize}
+Im folgenden: vereinfachte Version des Protokolls
+ \begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Kerberos Protokoll Übersicht.jpeg}
+\end{figure}
+\subsection{Autorisierung: Zuweisung von Rechten}
+\subsubsection*{Zugriffskontrolle}
+Computersystem schränkt ein:
+\begin{enumerate}
+    \item \fatsf{Wem} Zugriff gewährt wird
+    \begin{itemize}
+        \item \blue{Identifikation} (Wer greift zu?)
+        \item \blue{Authentisierung} (Kann er/sie es beweisen?)
+    \end{itemize}
+    \item \fatsf{Worauf} jemand Zugriff bekommt
+    \begin{itemize}
+        \item Dateien, Speicherbereiche, Prozessorzeit, ...
+        \item \red{Zugriffskontrolle}
+    \end{itemize}
+\end{enumerate}
+Schutzziele: \red{Integrität \& Vertraulichkeit}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_5_Images/Zugriffskontolle.jpeg}
+\end{figure}
+\subsubsection*{Sicherheitsmodelle}
+\fatsf{Discretionary Access Control (DAC):}
+\begin{itemize}
+    \item Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest
+    \item Bsp.: UNIX-Dateisystem
+\end{itemize}
+\fatsf{Mandatory Access Control (MAC):}
+\begin{itemize}
+    \item Autorität setzt Zugriffsrechte fest
+    \item Bsp.: Geheimhaltung staatlicher Dokumente, Unterscheidung Systemdateien und Benutzerdateien
+\end{itemize}
+\fatsf{Role-based Access Control (RBAC):}
+\begin{itemize}
+    \item Zugriffsrechte durch Rolle festgelegt
+    \item i.d.R. mit MAC
+    \item Bsp.: Administrator, Manager, Benutzer
+\end{itemize}
+\fatsf{Attribute-based Access Control (ABAC):}
+\begin{itemize}
+    \item feinere Zugriffsrechte gemäß logischer Formel
+    \item i.d.R. mit RBAC
+    \item Bsp.: Wenn MANAGER und TOKEN=AVAILABLE, dann ...
+\end{itemize}
+\subsection{Beispiele für Discretionary Access Control (DAC): Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest}
+\subsubsection*{DAC: Access Matrix Model}
+\begin{itemize}
+    \item Matrix beschreibt Rechte von Subjekten an Objekten
+    \item Menge an Objekten: O (z.B. Dateien)
+    \item Menge an Subjekten: S (z.B. Prozesse)
+    \item Menge an Rechten: R (z.B. read, write, execute, ...)
+    \item Matrix bestimmt Abbildung M: S $\times$ O $\rightarrow$ $2^{R}$, die Zugriffsrechte beschreibt
+\end{itemize}
+\fatsf{Vorteile:}
+\begin{itemize}
+    \item Sehr einfach und intuitive nutzbar
+    \item Einfach zu implementieren
+    \item Grundlage der (Datei-)Zugriffskontrolle fast aller Betriebssysteme!
+\end{itemize}
+\fatsf{Nachteile:}
+\begin{itemize}
+    \item Keine formale Garantien für Informationsfluss
+    \item Kann dynamische Rechte nicht gut abbilden
+    \item Beschränkter Zugriff, z.B. Ändern des eigenen Passworts, schwierig zu implementieren
+\end{itemize}
+\subsubsection*{DAC: Access Control List}
+\begin{itemize}
+    \item Spaltenweise Speicherung der Zugriffskontrollmatrix
+    \item Weit verbreitetes Konzept in Betriebssystemen (z.B. UNIX, Windows, MacOS)
+    \item Vorteil: Rechte können am Ort wo das Objekt liegt gespeichert werden
+    \item Nachteil: Schlechte Skalierbarkeit bei dynamischen Subjektmengen
+\end{itemize}
+ACL(Datei1) = \{(Prozess1, \{read, write\}), (Prozess3, \{read, write, execute\})\} \\
+ACL(Datei2) = \{(Prozess2, \{read, write\})\}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Thema_5_Images/DAC: Access Control List.jpeg}
+\end{figure}
+\subsubsection*{Beispiel ACL: Datei Zugriffsrechte (UNIX)}
+\begin{itemize}
+    \item Rechte können nur für Besitzer, Gruppe und andere vergeben werden
+    \item Eindeutige Identifikation durch User-IDs in /etc/passwd
+    \item Zuordnung zu Gruppen in /etc/groups
+    \item Änderung der Rechte mit Befehl chmod
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Beispiel ACL.jpeg}
+\end{figure}
+\subsection{Beispiel für Mandatory Access Control (MAC): Autorität setzt Zugriffsrechte fest}
+\subsubsection*{Motivation}
+\begin{itemize}
+    \item Feste Regeln für Zugriffskontrollen (Regeln abhängig vom System)
+\end{itemize}
+\fatsf{Ziel:} systematische Sicherheit von Informationen und unautorisiertem Zugriff\\
+\fatsf{Anwendung:}
+\begin{itemize}
+    \item ursprünglich Militär
+    \item heute aber auch in einigen Betriebssystemen (Security-Enhanced Linux Features, FreeBSD, ...)
+    \begin{itemize}
+        \item z.B. Verhindern, dass Benutzerprogramme Systemdateien verändern können durch unterschiedliche Sicherheitslevels (Auch unter dem Begriff \blue{Multilevel Security} bekannt)
+    \end{itemize}
+\end{itemize}
+\fatsf{Systematische Formalisierungen:}
+\begin{itemize}
+    \item Bell-La Padula Modell (Vertraulichkeit)
+    \item Biba Modell (Integrität)
+\end{itemize}
+\subsubsection*{Bell-La Padula Modell}
+\begin{itemize}
+    \item In den 1970'ern für US Air Force entwickelt
+    \item Gilt als erste vollständig formalisierte Sicherheitsmodell
+    \item Regelt die \red{Informationsflüsse} in einer Hierarchie, um \red{Vertraulichkeit} zu gewährleisten
+    \begin{itemize}
+        \item No-Read-Up Regel: Lesezugriff nur erlaubt, wenn Subjekt in Hierarchie $\geq$ Hierarchie Objekt
+        \item No-Write-Down Regel: Erzeugung von Objekten nur für Hierarchie $\geq$ Hierarchie des Subjekts
+    \end{itemize}
+\end{itemize}
+\underline{Formalisierung des Bell-La Padula Modells:}
+\begin{itemize}
+    \item Erweitert Matrix-basiertes Zugriffskontrollsystem um \fatsf{Sicherheitsklassen}
+    \begin{itemize}
+        \item \fatsf{Sicherheitsklassen} SC definiert durch \red{Tupel(A, B)} mit:
+        \begin{itemize}
+            \item A definiert total geordnete Sicherheitsmarken (labels)\\
+            Bsp.: vertraulich < geheim < streng geheim
+            \item B enthält eine Menge von Kategorien (compartments)\\
+            Bsp.: \{Arzt, Schwester, Patient, ...\}
+        \end{itemize}
+        $\Rightarrow$ Jedem Subjekt und Objekt wird eine Sicherheitsklasse zugeordnet
+    \end{itemize}
+\end{itemize}
+\fatsf{Bell-La Padula Modell, Fortsetzung:}
+\begin{itemize}
+    \item Jedem Subjekt wird eine Sicherheitsklasse SC(s) $\in$ SC zugewiesen (Clearance)
+    \item Jedem Objekt wird eine Sicherheitsklasse SC(o) $\in$ SC zugewiesen (Classification)
+    \item Auf SC wird eine partielle Ordnung $\leq$ definiert
+    \begin{itemize}
+        \item (A, B) $\leq$ (A', B') $\iff$ A $\leq$ A' $\land$ B $\subseteq$ B'
+    \end{itemize}
+\end{itemize}
+\underline{Beispiel:}\\
+Sicherheitsmarken: unklassifiziert < vertraulich < geheim < streng geheim\\
+Sicherheitskategorien: \{Arzt, Schwester, Patient, Verwaltung\}\\
+Es gilt z.B.: (vertraulich, \{Schwester\}) $\leq$ (geheim, \{Arzt, Schwester\})
+\begin{itemize}
+    \item Modell erlaubt das Beschreiben von Informationsflüssen
+    \item Erweitert eine Zugriffsmatrix M um Sicherheitsklassen
+\end{itemize}
+\fatsf{Beispiel 1: No read-up-Regel}
+\begin{itemize}
+    \item Lesezugriff (oder Ausführung) nur erlaubt, falls read $\in$ M(s,o) $\land$ SC(s) $\geq$ SC(o)
+\end{itemize}
+\fatsf{Beispiel 2: no write down-Regel}
+\begin{itemize}
+    \item Append nur erlaubt, falls append $\in$ M(s,o) $\land$ SC(s) $\leq$ SC(o)
+\end{itemize}
+\fatsf{Kombination}
+\begin{itemize}
+    \item Read-write nur erlaubt, falls read - write $\in$ M(s,o) $\land$ SC(s) = SC(o)
+\end{itemize}
+ \begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_5_Images/Bell-La Padula Modell 3.jpeg}
+\end{figure}
+\fatsf{Vorteile:}
+\begin{itemize}
+    \item Einfach zu implementierendes Modell
+    \item Gut geeignet zum Nachbinden \blue{hierarchischer Informationsflüsse}
+\end{itemize}
+\fatsf{Probleme:}
+\begin{itemize}
+    \item Blindes Schreiben: Subjekt darf unter Umständen Objekte schreiben, aber nicht mehr lesen!
+    \begin{itemize}
+        \item \red{Problem der Integrität!}
+    \end{itemize}
+    \item Keine Modellierung von \enquote{covert channels} (Bsp. Bob liest Alice's Nachricht und erzeugt sie neu bzw. Alice erzählt Bob davon)
+\end{itemize}
+\begin{infoBox}
+    Das Bell-La Padula-Modell eigent sich gut für Umgebungen, in denen \fatsf{Vertraulichkeit} im Vordergrund steht, ist aber nicht ausreichend, wenn auch \fatsf{Integrität} und \fatsf{Verfügbarkeit} kritisch sind.
+\end{infoBox}

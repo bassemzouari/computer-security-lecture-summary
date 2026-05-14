@@ -1,0 +1,1029 @@
+\section{Systemsicherheit}
+\subsection{Malware (\blue{MAL}ixious Soft\blue{WARE})}
+\fatsf{Definition:} Schädlicher Code des Angreifers, der auf der Maschine des Opfers ausgeführt wird\\
+\fatsf{Ziel:} Vielseitige Angriffe möglich, u.a.
+\begin{itemize}
+    \item Löschen von Dateien
+    \item Senden von Spam Nachrichten von Opfermaschine
+    \item Denial of Service Angriff als Teil eines Botnets
+    \item Harddisk Verschlüsselung zur Erpressung von Lösegeld
+    \item Private Informationen extrahieren (Passwörter etc.)
+    \item Physikalische Zerstörung des Computers
+\end{itemize}
+\subsubsection*{Arten von Malware}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Arten von Malware.jpeg}
+\end{figure}
+\subsubsection*{Spezialfälle}
+\begin{itemize}
+    \item \blue{Ransomware:} Trojaner, der Dateien verschlüsselt und nur gegen \enquote{Lösegeld}-Zahlung wieder freigibt (oder auch nicht)
+    \item \blue{Scareware:} Trojaner, der z.B. als Virenscanner vermeintlich gefundene Viren gegen Bezahlung löschen soll
+\end{itemize}
+\begin{defBox}
+    \fatsf{Zero-Day-Exploits:} Malware nutzt häufig neue Schwachstellen, bei der Entwickler keine Zeit hat (zero days), um Security Patch bereitzustellen
+\end{defBox}
+\subsubsection*{Malware als Spionage Tool}
+\blue{Flame malware}-Angriff auf den Microsoft Windows Update Mechanismus nutzte \red{MD5} Kollisionen aus, um Zertifikat von Microsoft zu fälschen
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Thema_8_Images/Malware als spionage Tool.jpeg}
+\end{figure}
+\subsubsection*{Malware verbreiten}
+\begin{itemize}
+    \item \blue{klassisch:} als E-Mail-Anhang oder während einer Programm-Installation
+    \begin{itemize}
+        \item Gegenmaßnahmen: \red{nur vertrauenswürdige Quellen} akzeptieren
+    \end{itemize}
+    \item \blue{drive-by-download:} beim Besuch einer Web-Seite (via Java, Javascript, Flash, ...)
+    \begin{itemize}
+        \item Gegenmaßnahmen: \red{Ausführung von Skripten deaktivieren, Sandboxing}
+    \end{itemize}
+    \item \blue{physisch:} durch infizierte Tokens
+    \begin{itemize}
+        \item Gegenmaßnahmen: \red{nur vertrauenswürdige Quellen} akzeptieren
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Malware: Verbreiten.jpeg}
+\end{figure}
+\subsubsection*{Würmer}
+\begin{itemize}
+    \item Programme, die sich automatisch \red{über das Netz selbst verbreiten}
+    \begin{itemize}
+        \item \fatsf{Mit oder sogar ganz ohne Nutzerinteraktion}, daher auch die Klassifikation \enquote{wormable} für Schwachstellen, die komplett automatische Verbreitung erlauben
+    \end{itemize}
+    \item \blue{Beispiel:} Sasser (2004)
+    \begin{itemize}
+        \item Nutzte eine Schwachstelle (Buffer Overflow) im Windows 2000/XP Dienst LSASS aus, um sich selbst auf Zielsystem zu kopieren
+        \begin{itemize}
+            \item Patch zur Schließung der Schwachstelle war schon veröffentlicht, aber nicht überall installiert
+        \end{itemize}
+        \item Auf dem Zielsystem angekommen scannt der IP Bereiche nach neuen verwundbaren Zielen
+        \item Schadfunktion: Herunterfahren des Computers in unregelmäßigen Abständen
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Viren}
+\begin{itemize}
+    \item Programme, die ihre \red{eigenen Code in \enquote{Wirtsprogramme}} einfügen und sich bei Nutzerinteraktion verbreiten
+    \item Bekannte Virentypen:
+    \begin{itemize}
+        \item Executable infectors
+        \item Polymorphic viruses
+        \item Metamorphic viruses
+        \item ...
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Viren: Executable Infectors}
+\begin{itemize}
+    \item Virus infiziert ein ausführbares Programm
+    \item Virencode wird im Wirtsprogramm eingefügt und Kontrollfluss entsprechend adaptiert
+    \item Aktion des Virus (\enquote{payload}) kann von externen Faktoren abhängig sein (z.B. Zeit, Netzwerkadresse, ...)
+    \begin{infoBox}
+        Ein \fatsf{Payload} ist die eigentliche \fatsf{Schadfunktion} eines Virus, Wurms oder einer anderen Malware.\\
+        \fatsf{Vergleich:} Der Virus ist das \enquote{Transportmittel}, der Payload ist die \enquote{gefährliche Fracht}
+    \end{infoBox}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_8_Images/Viren: Executable Infectors.jpeg}
+    \end{figure}
+    \item Erkennung einfach anhand des Virus Codes $\rightarrow$ statische Virussignatur
+\end{itemize}
+\subsubsection*{Statische Virussignatur}
+\begin{itemize}
+    \item Berechnung eines Algorithmus oder Hashes, um Virus eindeutig zu identifizieren
+    \item Format: <Virus CRC16/CRC32/Hash Value> | <Virus Name>
+    \begin{itemize}
+        \item 0095C3A4|STONED.LESZOP.A
+        \item 0086C7BE|STONED.MARCH6.A
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Viren: Polymorphe Viren}
+\begin{itemize}
+    \item Virus ist (bis auf kurze Entschlüsselungsroutine) \red{verschlüsselt}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Thema_8_Images/Viren: Polymorphe Viren.jpeg}
+    \end{figure}
+    \item Code für die Entschlüsselung besagt: \enquote{Entschlüssele verschlüsselten Viruscode mit Schlüssel und führe den Virus Code aus}
+\end{itemize}
+\begin{itemize}
+    \item Virus verändert Erscheinungsbild mit jeder Replikation
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Thema_8_Images/Viren: Polymorphe Viren 2.jpeg}
+    \end{figure}
+    \item Beide Viren nutzen \fatsf{unterschiedliche} Schlüssel $\rightarrow$ Alles bis auf den kurzen Code für die Entschlüsselung sieht \enquote{zufällig} aus
+    \item \red{Erkennung deutlich schwieriger} (großer Teil ist zufälliger String) $\rightarrow$ Erkennung fokussiert auf Entschlüsselungsroutine
+\end{itemize}
+\subsubsection*{Viren: Metamorphe Viren}
+Jedes mal wenn sich der Virus repliziert, erzeugt er eine semantisch unterschiedliche Version des Virus Codes\\
+$\rightarrow$ Gleiche High-level Aktionen aber mit kleinen unbedeutenden Abweichungen\\
+$\rightarrow$ Beispiele für äquivalenten Code
+\begin{itemize}
+    \item add 0 to register
+    \item subtract 0 from register
+    \item xor 0 with register
+    \item no-op
+    \item Veränderung von conditional statements (if/else)
+    \item Ersetzen eines Algorithmus durch anderen (z.B. mergesort durch quicksort)
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Viren: Metamorphe Viren.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \red{Rwriter Code} besagt: \enquote{Erzeuge semantisch unterschiedlichen Code des Virus Codes}
+    \item \red{Achtung:} Rewriter Code kann selbst modifiziert werden
+\end{itemize}
+\subsubsection*{Metamorphe Viren: Gegenmaßnahmen}
+Erkennung anhand des Verhaltens:
+\begin{itemize}
+    \item Anstelle des Syntax muss das Verhalten des Virus analysiert werden
+    \item Untersuchung der Aktionen, die der Virus ausführt
+    \item Antiviren Firmen suchen nach Verhaltensmustern, um eine Virussignatur zu erstellen
+\end{itemize}
+Strategien eines Virus, um Erkennung zu verhindern:
+\begin{itemize}
+    \item Bösartiger Viruscode wird erst nach langer Wartezeit ausgeführt
+    \item Erkenne Codeanalyse und stoppe die Ausführung des Virus Codes
+\end{itemize}
+$\rightarrow$ Katz- und Mausspiel zwischen Viren- und Antivirenentwicklern
+\subsubsection*{Trojaner}
+\begin{itemize}
+    \item Programm, das neben bekannter Funktion \red{auch \enquote{unerwünschte} Nebeneffekte} hat
+    \item Beispiel: Sunburst (2020)
+    \begin{itemize}
+        \item Kontroller über Systeme von Behörden weltweit (Dateien ableiten, Systemdienste deaktivieren)
+        \item Aktiv seit März, gefunden im Dezember
+        \item Einfallstor: Updateroutine der Software Orion (IT Administrationssoftware)
+    \end{itemize}
+    \item Thompson's Compiler (1984) - eher theoretisch interessant
+    \begin{itemize}
+        \item Modifiziere C Compiler so, dass bei Übersetzung von Tools wie Login-Modul bekannte Passwörter akzeptiert werden
+        \item Sobald Compiler eine neue Version seines eigenen Codes übersetzt, wird der gleiche Schadcode eingefügt\\
+        $\rightarrow$ Schwierig zu finden, da modifizierter Quellcode gelöscht und nur der modifizierter Compiler bereitgestellt wird
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Ransomware}
+\begin{itemize}
+    \item Bezeichnet eine \red{Schadfunktion}, keinen Verbreitungsweg
+    \begin{itemize}
+        \item Bsp. Wannacry: Ransomware und gleichzeitig Wurm
+    \end{itemize}
+    \item \red{Verschlüsselt nahezu alle Dateien auf den PC} (keine Systemdateien)
+    \item z.B. hybride Verschlüsselung:
+    \begin{itemize}
+        \item jede Datei wird mit einem neuen symmetrischen Schlüssel verschlüsselt
+        \item dieser wird mit dem public key des Angreifers verschlüsselt und an die Datei angehängt
+    \end{itemize}
+    \item Fordern Lösegeld (\enquote{ransom}) für Zugriff auf den privaten Schlüssel (häufig in Kryptowährungen)
+    \item Meist ein Schlüsselpaar pro Opfer auf dem Server gespeichert
+\end{itemize}
+\subsection{Schutz vor viren}
+\subsubsection*{Methoden der Antivirenprogramme}
+\fatsf{Reaktiv}
+\begin{itemize}
+    \item Systemscan: sucht auf Festplatte nach verdächtigen Dateien (z.B. anhand statischer \fatsf{Virensignaturdatenbank})
+    \item Real-Time Detection (On-Access Scanning): überprüft beim Speicher, Öffnen, Ausführen, ...
+    \begin{itemize}
+        \item z.B., schützt Ihr System vor Malware-Bedrohungen, während Sie im Internet surfen, Ihren Posteingang überprüfen oder Dateien herunterladen
+    \end{itemize}
+\end{itemize}
+\fatsf{Proaktiv}
+\begin{itemize}
+    \item Activily Monitoring: verwendet Strategien zur Überwachung des \fatsf{virentypisches Verhalten}
+    \begin{itemize}
+        \item z.B. Replikation in AutoStart, auffällige DNS-Anfragen, ...
+    \end{itemize}
+    \item Heuristische Erkennungsalgorithmen zur Identifizierung verdächtiger Dateien und Codeteile, die noch nicht als Malware klassifiziert werden
+\end{itemize}
+\subsubsection*{Reaktives Scannen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/reaktives Scannen.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Prüfe, ob Signatur bekannt
+    \item Prüfe auch auf Mutationen, 
+    \begin{itemize}
+        \item z.B. wenn Virus verschlüsselt, und sich erst in Sandbox entschlüsseln lässt
+    \end{itemize}
+\end{itemize}
+\subsubsection*{EICAR-Test für Virenschutz}
+\begin{itemize}
+    \item Einfaches Testen von Antiviren-Programmen durch (harmlose) Testdatei von \red{EICAR} (European Institute for Computer Anti-Virus Research e.V.):
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/EICAR-Test.jpeg}
+\end{figure}
+\subsubsection*{Effektivität von Virenscannern?}
+\enquote{People thought that virus protected them, but we can \fatsf{never} block all viruses}
+\begin{itemize}
+    \item Erfolgsstatistik von AV-Software variiert zwischen 40\% und 99.9\%
+    \item Tests beziehen sich aber meistens auf bekannte Massen-Malware
+    \item Erfolgsquote bei neuen gezielten Virenangriffen unklar
+    \item Was ist mit Verzögerung bei Signatur-Updates?\\
+    $\rightarrow$ Verhaltensbasierte Malware-Erkennung
+\end{itemize}
+\subsection{Ausführung von C Programmen}
+\subsubsection*{Call: Compiler, Assembler, Linker, Loader}
+\fatsf{4 Schritte zur Ausführung eines C-Programms:}
+\begin{itemize}
+    \item \fatsf{Compiler:} Konvertiert C-Code in Assembler-Code (RISC-V, x86)
+    \item \fatsf{Assembler:} Konvertiert Assembler-Code in Maschinencode (raw bits)
+    \item \fatsf{Linker:} Löst Abhängigkeiten von externen Bibliotheken auf (brauchen wir hier nicht)
+    \item \fatsf{Loader:} Einrichtung von Speicherplatz und Ausführung des Maschinencodes
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Call.jpeg}
+\end{figure}
+\subsubsection*{Memory Layout}
+\fatsf{Loader} weist das Betriebssystem an, dem Programm einen großen Speicherbereich zur Ausfürhung zuzuweisen
+\begin{itemize}
+    \item Jedes \fatsf{Byte} des Speichers hat eine eindeutige \fatsf{Adresse}
+    \item Bei einem \fatsf{32-Bit-System} hat der Speicher \fatsf{32-Bit-Adressen}
+    \item Jede \fatsf{Adresse} bezieht sich auf ein \fatsf{Byte}, d.h. wir haben $2^{32}$ Bytes Speicherplatz (32-Bit-System)
+\end{itemize}
+Häufige Darstellung des Speichers als \fatsf{Tabelle:}
+\begin{itemize}
+    \item In jeder \fatsf{Zelle} steht ein \fatsf{Byte}
+    \item Die Zellen einer Zeile können zusammengefasst werden zu einem \fatsf{Wort (4 Bytes = 1 Wort)}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_8_Images/Memory Layout.jpeg}
+\end{figure}
+\subsection{X86 Architektur}
+\subsubsection*{X86 Memory Layout}
+\fatsf{Speichernutzung bei Ausführung eines Programms}
+\begin{itemize}
+    \item \fatsf{Code:}
+    \begin{itemize}
+        \item Der Programmcode selbst (acuh \enquote{Text} genannt) in Maschinencode
+    \end{itemize}
+    \item \fatsf{Daten:}
+    \begin{itemize}
+        \item Statische Variablen/Konstanten, die beim Start des Programms zugewiesen werden
+    \end{itemize}
+    \item \fatsf{Heap:}
+    \begin{itemize}
+        \item Dynamisch zugewiesener Speicher mit \fatsf{malloc} und \fatsf{free} 
+    \end{itemize}
+    \item \fatsf{Stack:}
+    \begin{itemize}
+        \item Lokale Variablen und Stack Frames
+        \item Bei tieferen Funktionsaufrufen, wächst er nach unten
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Stack Frame}
+\begin{itemize}
+    \item Wenn der Code eine Funktion aufruft, wird auf dem Stack Platz für lokale Variablen geschaffen
+    \begin{itemize}
+        \item Dieser Platz wird als \fatsf{Stack Frame} für die Funktion bezeichnet
+        \item Der Stack Frame verschwindet, sobald die Funktion zurückkehrt
+    \end{itemize}
+    \item Der Stack startet an höherer Adresse
+    \item Jedes Mal, wenn Code eine Funktion aufruft, \fatsf{wächst der Stack nach unten} und schafft zusätzlichen Platz
+    \begin{itemize}
+        \item Hinweis: Daten auf dem Stack, z.B. eine Zeichenkette (String), werden nach wie vor von der niedrigsten Adresse bis zur höchsten Adresse gespeichert
+        \item Das \enquote{Herunterwachsen} geschieht nur, wenn zusätzlicher Speicher zugewiesen werden muss
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_8_Images/Stack Frame.jpeg}
+\end{figure}
+\subsubsection*{Register}
+Spezielle \fatsf{Speicherbereiche} auf der \fatsf{CPU}, die jeweils \fatsf{4 Bytes} speichern können
+\begin{itemize}
+    \item \fatsf{Adressierung} unterscheidet sich zu Memory Layout
+    \begin{itemize}
+        \item \fatsf{Speicher:} Adressen als 32-Bit-Zahlen
+        \item \red{Register werden mit Namen bezeichnet} (EBP, ESP, EIP, ...), nicht mit Adressen
+    \end{itemize}
+    \item Um Überblick über aktuellen Stack-Frame zu behalten, speichern wir zwei Zeiger in Register:
+    \begin{itemize}
+        \item \fatsf{EBP}-Register (\enquote{Basiszeiger}) zeigt auf den Anfang des aktuellen Stack Frames
+        \item \fatsf{ESP}-Register (\enquote{Stackzeiger}) zeigt auf das untere Ende des aktuellen Stack-Frame
+        \item \fatsf{EIP}-Register (\enquote{Befehlszeiger}) speichert die Adresse des gerade ausgeführten Maschinenbefehls im Code Segment
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_8_Images/Register.jpeg}
+\end{figure}
+\subsubsection*{Pushing und Popping}
+\begin{itemize}
+    \item Die \fatsf{Push}-Anweisung fügt dem Stack ein Element aus dem Register hinzu
+    \begin{itemize}
+        \item Dekrementiere den ESP, um mehr Speicher auf dem Stack zuzuweisen
+        \item Speichern des neuen Wertes auf dem niedrigsten Wert des Stacks
+    \end{itemize}
+\end{itemize}
+\clearpage
+\begin{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.75\textwidth]{Thema_8_Images/pushing .jpeg}
+    \end{figure}
+    \item Die \fatsf{Pop}-Anweisung entfernt ein Element vom Stack
+    \begin{itemize}
+        \item Laden des Wertes vom niedrigsten Wert auf dem Stack und speichern in einem Register
+        \item ESP inkrementieren, um den Speicher auf dem Stack freizugeben
+    \end{itemize}
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_8_Images/popping.jpeg}
+\end{figure}
+\end{itemize}
+\subsection{X86 Funktionsaufruf}
+\subsubsection*{Aufruf einer Funktion}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_8_Images/Aufruf einer Funktion.jpeg}
+\end{figure}
+\subsubsection*{Funktionsaufruf in X86}
+\begin{itemize}
+    \item Beim Aufruf einer Funktion müssen ESP und EBP verschoben werden, um einen neuen Stack Frame zu erstellen
+    \item EIP wird in den Code der aufgerufenen Funktion verschoben
+    \item Bei der Rückkehr aus einer Funktion müssen ESP, EBP und EIP auf ihre alten Werte zurückkehren
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Funktionsaufruf in X86.jpeg}
+\end{figure}
+\subsubsection*{Wiederholung: Stack, Register}
+\begin{itemize}
+    \item Während Funktionsaufruf wird auf dem Stack Platz für lokale Variablen geschaffen (Stack Frame)
+    \item Dieser Platz wird gelöscht, sobald die Funktion zurückkehrt
+    \item Der Stack beginnt bei höheren Adressen und wächst nach unten
+    \item Der Codeabschnitt enthält in Raw Bit, die Assembleranweisungen der Funktionen
+    \item Wir speichern zwei Zeiger, die den Umfang des aktuellen Stack Frames definieren
+    \item EBP wird für den oberen Teil des Stack Frames verwendet
+    \item ESP für den unteren Teil des Stack Frames 
+    \begin{itemize}
+        \item Alles unter ESP ist undefiniert und wird ignoriert
+        \item Beim Schreiben in Stack muss ESP angepasst werden, so dass er auf niedrigsten Wert referenziert
+    \end{itemize}
+    \item EIP zeigt auf den aktuellen Befehl in der Programmausführung
+\end{itemize}
+\subsubsection*{0. Initialer Stack}
+\begin{itemize}
+    \item Im Stack existiert ein Stack Frame für Funktion \fatsf{main}
+    \item Jeder Stack Frame muss Platz für lokale Variablen haben und wächst nach unten (hier keine lokalen Variablen)
+\end{itemize}
+\fatsf{Merke:} Alle Werte der Register EBP, ESP und EIP müssen auf dem Stack abgelegt werden bei einem Funktionsaufruf, da diese sonst verloren gehen
+\subsubsection*{1. Argumente der aufgerufenen Funktion}
+\begin{itemize}
+    \item Die Argumente werden dem Stack in umgekehrter Reihenfolge hinzugefügt
+    \item ESP muss auf den untersten Wert des Stack Frames für die Funktion \fatsf{main} verweisen
+\end{itemize}
+\subsubsection*{2. Zwischenspeicherung EIP}
+\begin{itemize}
+    \item Als nächstes wird der aktuelle Wert von EIP auf den Stack gelegt
+    \begin{itemize}
+        \item Dies ermöglicht das Programm fortzusetzen nachdem die Funktion \fatsf{foo} zurückgekehrt ist
+    \end{itemize}
+    \item Wird manchmal auch als RIP (Return Instruction Pointer) bezeichnet
+    \begin{itemize}
+        \item Er zeigt, wohin wir im Programm in der Funktion \fatsf{main} als nächstes gehen müssen
+    \end{itemize}
+\end{itemize}
+\subsubsection*{3. Zwischenspeicherung EBP}
+\begin{itemize}
+    \item Als nächstes wird der aktuelle Wert von EBP auf den Stack gelegt
+    \begin{itemize}
+        \item Dadurch können wir den obersten Punkt des vorherigen Stack Frames wiederherstellen, wenn wir zurückkehren
+    \end{itemize}
+\end{itemize}
+\subsubsection*{4. Einstellen des Stack Frames}
+\begin{itemize}
+    \item Um den Stack Frame anzupassen, müssen wir alle drei Register aktualisieren
+    \item Gefahrlos möglich da die alten Werte von EBP und EIP gespeichert wurden
+    \item Altes ESP ist immer das untere Ende des Stacks, daher besteht keine Notwendigkeit, es zu speichern
+\end{itemize}
+\subsubsection*{5. Führe die Funktion aus}
+\begin{itemize}
+    \item Stack Frame bereit, die Anweisungen der Funktion zu verarbeiten
+    \item Alle lokalen Variablen können auf Stack verschoben werden
+    \item Durch aktuellen Wert von EBP können wir auch auf Variablen außerhalb des aktuellen Stack Frames zugreifen (z.B. Argumente)
+\end{itemize}
+\subsubsection*{6. Wiederherstellen}
+\begin{itemize}
+    \item Nach Beendigung der Funktion setzen wir alle drei Register wieder an ihren alten Wert zurück
+    \item Verwende die in RIP und SFP gespeicherten Adressen, um EIP und EBP auf ihre alten Werte zurückzusetzen (durch Aufruf von pop)
+    \item ESP wird auf das Ende des Stack Frames von \fatsf{main} zurückgesetzt 
+    \begin{itemize}
+        \item Beachte: Die Werte, die wir auf Stack geschoben haben sind immer noch da (wir überschreiben sie nicht, um Zeit zu sparen)
+        \item Sie befinden sich unter ESP, so dass \fatsf{main} nicht mehr darauf zugreifen kann
+    \end{itemize}
+\end{itemize}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_8_Images/Stack.jpeg}
+\end{figure}
+\subsection{Buffer Overflow}
+\subsubsection*{2023 CWE TOP 25 most dangerous software weaknesses}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Buffer Overflow.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Buffer Overflow}
+\begin{itemize}
+    \item Weit verbreitet insbesondere in C/C++
+    \item C hat kein Konzept der Array Länge und sieht nur eine List von Bytes
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Thema_8_Images/Buffer Overflow 2.jpeg}
+    \end{figure}
+    \item Erstes bekanntes Beispiel: Internet Wurm Morris (1988)
+    \item Vermeidung von Buffer Overflows: Kein Einsatz von C/C++\\
+    $\rightarrow$ Ist jedoch nicht immer möglich
+\end{itemize}
+\subsubsection*{Anfälliger Code}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Anfälliger Code .jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{enumerate}
+        \item \fatsf{Speicheranordnung im statischen Speicher:}\\
+        Da name UNTERHALB von instrux im Speicher liegt, kann eine zu lange Eingabe instrux überschreiben
+        \item \fatsf{Benutzer gibt eine lange Eingabe ein:}\\
+        Wenn du mehr als 20 Zeichen eingibst, überschreibst du instrux:
+        \begin{codeBlock}{}
+            Gib deinen Namen ein: aaaaaaaaaaaaaaaaaaaaaaaaaa (mehr als 20 Zeichen)
+        \end{codeBlock}
+        \begin{itemize}
+            \item Dadurch wird instrux überschrieben und könnte sich z.B. in \fatsf{bösartigen Code} verwandeln!
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Anfälliger Code 2.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Anfälliger Code 3.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Anfälliger Code 4.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Anfälliger Code 5.jpeg}
+\end{figure}
+\clearpage
+\subsection{Stack Smashing}
+\begin{itemize}
+    \item Die häufigste Art des Buffer Overflows
+    \item Tritt im Stack Speicher auf
+    \item Wiederholung:
+    \begin{itemize}
+        \item Was sind Werte auf dem Stack, die ein Angreifer überlaufen lassen kann?
+        \begin{itemize}
+            \item Lokale Variablen
+            \item Funktionsargumente
+            \item Gespeicherter Framezeiger (SFP):
+            \item Rückgabe-Instruktion Zeiger (RIP): Springt auf diese Anweisung nach Rückkehr aus Funktion
+        \end{itemize}
+        \item Beispiel: Bei Rückkehr aus einer Funktion setzen wir EIP auf den im Stack abgelegten RIP Wert
+        \begin{itemize}
+            \item Wenn Angreifer RIP überschreibt, kann er an eine beliebige Adresse springen und dort Shellcode ausführen
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Überschreiben des RIP}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Überschreiben des RIP 1.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Überschreiben des RIP 2.jpeg}
+\end{figure}
+\subsubsection*{Konstruktion von Exploits}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Konstruktion von Exploits 1.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Konstruktion von Exploits 2.jpeg}
+\end{figure}
+\subsubsection*{Beispiel: Remote Stack Smashing}
+\begin{itemize}
+    \item Overflow in Windows animated cursors (ANI) - \fatsf{LoadAniIcon()}
+    \begin{itemize}
+        \item Beschreibung:
+        \begin{itemize}
+            \item Animierte Cursordateien (.ani) enthalten animierte Grafiken für Symbole und Cursor
+            \item Ein Stack Overflow tritt auf, da Microsoft Windows nicht die Größe des Headers einer fehlerhaften animierten Cursordateien überprüft
+        \end{itemize}
+        \item Auswirkungen:
+        \begin{itemize}
+            \item Ein Angreifer kann beliebigen Code ausführen oder einen Denial-of-Service-Angriff durchführen
+        \end{itemize}
+    \end{itemize}
+    \item Buffer overflow in Symantec virus detection (Mai 2016)
+    \begin{itemize}
+        \item Buffer overflow beim Parsen von ausführbaren gepackten Dateien \\
+        $\rightarrow$ Kernel Memory Korruption
+        \item Häufigste Auswirkung: Erfolgreicher Angriff führt zu Systemabsturz oder Bluescreen of Death
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsection{Integer Overflow}
+\subsubsection*{Signed/Unsigned Schwachstelle}
+Ist folgender Code sicher?
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Thema_8_Images/Signed-Unsigned Schwachstelle.jpeg}
+\end{figure}
+\begin{infoBox}[title=Was passiert bei Signed/Unsigned-Mischung?]
+    Ein gefährliches Problem entsteht, wenn len ein \fatsf{signed int} ist, aber mit \fatsf{einem unsigned Wert} verglichen wird
+    \begin{codeBlock}{}
+        void func(int len) {
+            if (len > (size_t)64)  // len wird zu unsigned gecastet!
+                printf("len ist größer als 64\n");
+        }
+    \end{codeBlock}
+    \begin{itemize}
+        \item \fatsf{Gefahr:} Wenn len == -1, dann wird es zu 4294967295 auf 32-Bit-Systemen gecastet!
+        \item \fatsf{Ergebnis:} -1 > 64 ist plötzlich WAHR!
+    \end{itemize}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/signed-unsigned schwachstelle 2.jpeg}
+\end{figure}
+\subsubsection*{Integer Overflows verhindern}
+Von allen Integers müssen die Bereiche überprüft werden
+\begin{codeBlock}{}
+    void safe (size_t len, char *data){
+        if (len > SIZE_MAX - 2) //Überprüfe ob Überlauf möglich
+            return;
+        char *buf = malloc(len + 2);
+        if (!buf)
+            return;
+        memcpy(buf, data, len);
+        buf[len] = '\n';
+        buf[len + 1] = '\0';
+    }
+\end{codeBlock}
+Sehr aufwendig und fehleranfällig!
+\subsection{Gegenmaßnahmen}
+\subsubsection*{Memory Safe Programming Languages}
+\begin{itemize}
+    \item Hauptgrund für Buffer Overflows: C/C++ ist nicht Memory Safe
+    \item Lösung: Benutze Programmiersprache mit \enquote{Memory Safety} (z.B. Java, Python, Go, Rust, ...)
+    \begin{itemize}
+        \item Überprüfe reservierte Speichergröße und verhindere undefinierten Zugriff auf Speicherbereiche
+    \end{itemize}
+    \item Warum werden nicht nur Programmiesprachen mit \enquote{Memory Safety} verwendet?
+    \begin{itemize}
+        \item Effizienz: in vielen Anwendungen nicht relevant
+        \item Legacy Code
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Programmieren}
+\begin{itemize}
+    \item Defensives Programmieren: Füge Gültigkeitsprüfungen ein wo immer möglich 
+    \begin{itemize}
+        \item Beispiel: Überprüfe, ob ein Zeiger null ist bevor er dereferenziert wird
+    \end{itemize}
+    \item \enquote{Gefährliche} Operationen wie \fatsf{gets/strcpy/strcat/sprintf} vermeiden
+    \begin{itemize}
+        \item Varianten fgets/strncpy/strncat/snprintf benutzen
+        \item Aber das ist gar nicht so einfach, z.B. \fatsf{gets(buf) $\rightarrow$ fgets(buf, size, src)}
+        \item Wobei \fatsf{size} so gesetzt werden sollte, dass nicht über \fatsf{buf} hinaus geschrieben werden kann
+    \end{itemize}
+    \item Verwendung von Preconditions, Postconditions und Invarianten, die der Code erfüllen muss
+    \begin{itemize}
+        \item Sehr aufwendig $\rightarrow$ daher kaum verwendet in der Praxis
+    \end{itemize}
+    \item Testen
+    \begin{itemize}
+        \item z.B. Fuzzing: Teste Programmcode auf zufälligen Eingaben
+        \item Problem: Code Coverage
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Ausnutzen eines Memory Safety Schwachstelle}
+\begin{enumerate}
+    \item Finde eine Memory Safety Schwachstelle (z.B. Buffer Overflow)
+    \item Schreibe Shellcode des Angreifers an eine bekannte Adresse des Speichers
+    \begin{itemize}
+        \item Randomisierung der Adressen im Speicherbereich
+    \end{itemize}
+    \item Überschreibe den RIP mit der Adresse des Shellcodes
+    \begin{itemize}
+        \item Gegenmaßnahme: Stack canaries
+    \end{itemize}
+    \item Springe aus der angegriffenen Funktion zurück
+    \item Führe Shellcode des Angreifers aus
+    \begin{itemize}
+        \item Markiere Speicherbereiche als nicht ausführbar
+    \end{itemize}
+\end{enumerate}
+\subsubsection*{Gegenmaßnahmen: Stack Canary}
+\fatsf{Idee:} Füge einen zufälligen Wert zum Stack hinzu und überprüfe, ob er verändert wurde
+\begin{itemize}
+    \item Beim Start des Programms erzeuge einen zufälligen geheimen Wert (\enquote{\blue{canary}}) und speichere ihn in einer globalen Variable
+    \item Beim Beginn der Ausführung der Funktion speichere \blue{canary} direkt unterhalb SFP/RIP
+    \item Beim Beenden der Funktion überprüfe, ob \blue{canary} gleich dem Wert der globalen Variable ist\\
+    $\rightarrow$ Angreifer kann RIP nur überschreiben, wenn er \blue{canary} zerstört\\
+    $\rightarrow$ Erkenne Buffer Overflow Angriff $\rightarrow$ Führe das Programm zum Absturz
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_8_Images/Stack Canary.jpeg}
+\end{figure}
+Stack Canaries werden vom Compiler eingefügt
+\begin{itemize}
+    \item z.B. in Visual C++ im Modus /GS (GuardStack)
+    \item Fügt automatisiert ein paar Befehle zu anfälligen Code hinzu $\rightarrow$ meistens nur geringer Effizienzverlust
+\end{itemize}
+Stack Canaries umgehen:
+\begin{itemize}
+    \item Extrahiere den Wert des Stack Canaries: z.B. durch andere Schwachstelle im Programm
+    \item Verhindere das Überschreiben des Stack Canaries: z.B. bestimmte Angriffe erlauben Überschreiben beliebiger Speicherpositionen
+    \item Raten des Stack Canaries: z.B. relativ einfach auf 32-bit Systemen
+\end{itemize}
+\subsubsection*{Gegenmaßnahmen: Nicht ausführbare Speicherbereiche}
+Speicherbereich muss häufig nicht gleichzeitig ausführbar und beschreibbar sein
+\begin{itemize}
+    \item Code: Ausführbar aber nicht beschreibbar
+    \item Stack, Heap: Beschreibbar aber nicht ausführbar
+    \item \fatsf{DEP:} Data Execution Prevention (alias $W_{rite} \oplus$ eXecute) in Windows
+    \begin{itemize}
+        \item Teile des Speichers werden als nicht ausführbar markiert\\
+        $\rightarrow$ Shellcode kann nicht mehr ausgeführt werden
+    \end{itemize}
+\end{itemize}
+\fatsf{Probleme:}
+\begin{itemize}
+    \item Im Code Speicherbereich befinden sich bereits zahlreiche ausführbare Befehle
+    \begin{itemize}
+        \item Beispiel: \fatsf{Return-Oriented Programming (ROP)}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Return-Oriented Programming}
+\begin{infoBox}
+    \fatsf{Return-Oriented Programming (ROP)} ist eine Technik, bei der \fatsf{bereits bestehende, ausführbare Codefragmente} (sogenannte \enquote{Gadgets}) genutzt werden, um den Codefluss \fatsf{umzuprogrammieren}. Diese Technik wird oft in \fatsf{Systemen verwendet}, bei denen DEP aktiviert ist
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.67\textwidth]{Thema_8_Images/Return-Oriented Programming.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{enumerate}
+        \item \fatsf{Angreifer sucht nach kurzen, wiederverwendbaren Code-Schnipseln} (Gadgets), die auf dem Stack oder im Speicher des Programms vorhanden sind
+        \item Diese \fatsf{Gadgets} enthalten Rückkehrbefehle (z.B. RET-Befehle), die vom Angreifer genutzt werden, um den Programmfluss umzuleiten un die Kontrolle zu übernehmen
+        \item Anstatt neuen Schadcode auszuführen, kombiniert der Angreifer einfach vorhandene Codefragmente in einer \fatsf{bestimmten Reihenfolge}, um die gewünschte Funktion zu erreichen
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Gegenmaßnahmen: Randomiesierung}
+\fatsf{ASLR:} Adress Space Layout Randomization
+\begin{itemize}
+    \item Angriffe benötigen Kenntnis an welcher Stelle im speicher Schadcode platziert wurde
+    \item Idee: Randomisiere Adressbereich eines Programms\\
+    $\rightarrow$ Angreifer kann RIP nicht mehr so leicht korrekt setzen
+\end{itemize}
+\fatsf{ASLR} umgehen:
+\begin{itemize}
+    \item Spraying: Verbreite den Schadecode großflächig im Speicher
+    \item Raten der Adresse: nur möglich auf 32-Bit Systemen
+\end{itemize}
+\subsection{Seitenkanalangriffe}
+\subsubsection*{Angriffsvektoren}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Angriffsvektoren.jpeg}
+\end{figure}
+\subsubsection*{Seitenkanalangriffe}
+\fatsf{Idee:}
+\begin{enumerate}
+    \item \blue{Beobachte das Gerät bei Ausführung} des Algorithmus
+    \begin{itemize}
+        \item Messe die Zeit, die für Operationen benötigt werden
+        \begin{itemize}
+            \item Timing attacks
+        \end{itemize}
+        \item Messe den Stromverbrauch
+        \begin{itemize}
+            \item Power analysis attacks
+        \end{itemize}
+    \end{itemize}
+    \item \blue{Füge Fehler in Berechnung ein} (z.B. mit einem Laserstrahl)
+    \begin{itemize}
+        \item Beobachte die Veränderungen im Verhalten
+        \item Leite dadurch Informationen über Daten ab (z.B. über kryptographischen Schlüssel)
+    \end{itemize}
+\end{enumerate}
+\subsubsection*{Beispiel: Passwort Check}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Beispiel: Passwort Check.jpeg}
+\end{figure}
+Angriff:
+\begin{itemize}
+    \item Messe Laufzeit für verschiedene Eingaben
+    \item Probiere erst alle möglichen Zeichen für die erste Position, wenn Laufzeit steigt, dann Zeichen korrekt
+    \item Wiederhole für die folgende Position
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Beispiel: Passwort Check 2.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Erwartete Laufzeit für Angriff auf Passwort der Länge l mit m möglichen Zeichen:
+    \begin{itemize}
+        \item Bruteforce Angriff: $\frac{1}{2} \cdot m^l$
+        \begin{itemize}
+            \item Für Passworter mit 26 Zeichen der Länge 10 $\rightarrow$ $\approx$ 70.000.000.000.000 Tests
+        \end{itemize}
+        \item Timing Angriff: $\frac{1}{2} \cdot m \cdot l$
+        \begin{itemize}
+            \item Für Passwörter mit 26 Zeichen der Länge 10 $\rightarrow$ $\approx$ 130 Tests
+        \end{itemize}
+    \end{itemize}
+    \item Laufzeit auch z.B. über Netzwerk messbar
+    \item In der Praxis oft mehrere Messungen pro Eingabe notwendig, um Noise zu vermeiden
+    \item Fundamentales Problem:
+    \begin{itemize}
+        \item \fatsf{Messbare Größe (Laufzeit, Stromverbrauch, ...) ist abhängig von geheimen Daten (Passwort, AES Schlüssel, ...)}
+    \end{itemize}
+\end{itemize}
+\subsection{Mikroarchitektur-Angriff: Meltdown und Spectre}
+\subsubsection*{Meltdown und Spectre}
+\begin{itemize}
+    \item Mikroarchitektur-Angriffe
+    \item Entdeckt in 2017 von 4 verschiedenen Forschergruppen
+    \item Veröffentlicht im Januar 2018
+    \item Seitdem einige neue Varianten
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.35\textwidth]{Thema_8_Images/Meltdown und Spectre.jpeg}
+\end{figure}
+\subsection{Caches und Cache Timing Angriffe}
+\subsubsection*{Cache und Cache Timing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_8_Images/Cache und Cache Timing.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{enumerate}
+        \item Der Angreifer führt einen Zugriff auf den Speicher durch
+        \item Er misst, wie lange ein Lesezugriff dauert:
+        \begin{itemize}
+            \item \fatsf{Kurze Zeit:} Daten waren bereits im Cache (daher vorher verwendet)
+            \item \fatsf{Lange Zeit:} Daten mussten aus dem Hauptspeicher geladen werden
+        \end{itemize}
+        \item Durch \fatsf{wiederholtes Testen} kann der Angreifer herausfinden, welche Speicherbereiche benutzt werden
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Cache Timing in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Cache Timing in der Praxis.jpeg}
+\end{figure}
+\subsubsection*{Ziel des Angreifers}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Ziel des Angreifers.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{Privilegiert (Kernel-Mode, Ring 0):}
+        \begin{itemize}
+            \item Hier läuft das \fatsf{Betriebssystem} (Kernel, Treiber, bestimmte Hardwarezugriffe)
+            \item Hat Zugriff auf \fatsf{alle Instruktionen} und \fatsf{gesamten Speicher}
+            \item Darf I/O-Hardware direkt ansprechen
+            \item Beispiel: Kernelcode liest oder schreibt eine Prozess-Tabelle
+        \end{itemize}
+        \item \fatsf{Nicht-privilegiert (User-Mode, Ring 3):}
+        \begin{itemize}
+            \item Hier laufen \fatsf{normale Programme} (Browser, Spiele, Texteditoren)
+            \item Zugriff \fatsf{nur auf ihren eigenen Adressraum}
+            \item Kein direkter Zugriff auf Kernel-Speicher oder Hardware
+            \item Müssen für Systemfunktionen einen \fatsf{System Call} machen $\rightarrow$ CPU wechselt in Kernel-Mode
+        \end{itemize}
+        \item \fatsf{Hardware Trap:} Eine \fatsf{Exception}, die direkt von der CPU ausgelöst wird, wenn etwas Unzulässiges passiert
+        \item \fatsf{Segfault (Segmentation Fault):} Ein Laufzeitfehler, den das Betriebssystem an einen Prozess schickt, wenn dieser auf einen Speicherbereich zugreifen will, den er \fatsf{nicht darf}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Cache Side-Channel Angriffe}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Cache Side-Channel Angriffe.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{Meltdown} ermöglicht es, \fatsf{geschützte Speicherbereiche} auszulesen, auf die ein normaler Prozess eigentlich \fatsf{keinen Zugriff} haben sollte
+        \item \fatsf{Spectre} nutzt \fatsf{Spekulationsausführung}, um Daten aus anderen Prozessen zu stehlen
+    \end{itemize}
+\end{infoBox}
+\clearpage
+\subsubsection*{Cache Timing Side Channels}
+\begin{itemize}
+    \item Wir können nicht \fatsf{direkt} aus dem Cache lesen
+    \item Grundidee:
+    \begin{itemize}
+        \item Wir können per Timing ermitteln, welche Adressen im Cache vorhanden sind
+        \item Idee: Mache die Adressen \fatsf{abhängig} von den zu lesenden Daten
+    \end{itemize}
+    \item Viele verschiedene Techniken:
+    \begin{itemize}
+        \item Prime + Probe (Percival, 2005)
+        \item Evict + Time (Osvik, Sheamir, Tromer, 2006)
+        \item \fatsf{Flush + Reload (Yarom, Falkner, 2014)}
+        \item Flush + Flush (Gruss, Maurice, Wagner, Mangard, 2016)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Flush + Reload: Überblick}
+\begin{infoBox}
+    Flush + Reload ist ein \fatsf{Cache Side-Channel Angriff}, der es einem Angreifer ermöglicht, geheime Daten aus dem Speicher eines anderen Prozesses zu lesen, indem er die \fatsf{Cache-Zugriffszeiten} misst\\
+    \fatsf{Ziel:}\\
+    Den Wert eines \fatsf{geheimen Bytes} (data) herausfinden, indem überprüft wird, welche Speicheradresse schneller zugreifbar ist (also im Cache liegt)
+\end{infoBox}
+\fatsf{Ziel:} Lese ein Byte \blue{data} aus dem Speicher
+\begin{enumerate}
+    \item Allokiere Speicher für ein \red{probe\_array}, sorge dafür, dass keine Daten davon im Cache sind
+    \item Lade einen Eintrag des Arrays in den Cache, dessen Adresse von \blue{data} abhängt
+    \item Ermittle die im Cache vorhandene Adresse und berechne daraus \blue{data}
+    \begin{itemize}
+        \item \enquote{Kurzes} Timing = Adresse \fatsf{in} Cache vorhanden
+        \item \enquote{Langes} Timing = Adresse \fatsf{nicht} im Cache
+    \end{itemize}
+\end{enumerate}
+\clearpage
+\subsubsection*{1. Vorbereitung des Probe Arrays}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_8_Images/Vorbereitung des Probe Arrays.jpeg}
+\end{figure}
+\subsubsection*{Meltdown: Out-Of-Order Ausführung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Meltdown Out-of-order ausfürhung.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{2. Array-Eintrag in den Cache laden}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Array-Eintrag in dne Cache laden.jpeg}
+\end{figure}
+\subsubsection*{3. Data durch Timing ermitteln}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_8_Images/Data durch Timing ermitteln 1.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Data durch Timing ermitteln.jpeg}
+\end{figure}
+\subsubsection*{Meltdown}
+\begin{itemize}
+    \item Viele Intel CPUs seit $\approx$2010 verwundbar
+    \begin{itemize}
+        \item AMD, ARM: Schwieriger anzugreifen
+    \end{itemize}
+    \item Erlaubt das Lesen beliebiger Kernel-Adressen
+    \begin{itemize}
+        \item Physischer Speicher via Kernel-Mapping
+    \end{itemize}
+    \item Unabhängig von Software-Schwachstellen
+    \begin{itemize}
+        \item Basiert auf out-of-order Ausführung (\fatsf{Speculative Execution})
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Out-Of-Order Ausführung}
+\begin{infoBox}
+    Out-of-Order Execution (OoOE) ist eine Technik, die moderne Prozessorenverwenden, um die Leistung zu verbessern. Dabei werden Befehle \fatsf{nicht in der Reihenfolge des Programmcodes ausgeführt}, sondern so umsortiert, dass der Prozessor effizient arbeiten kann
+\end{infoBox}
+\begin{itemize}
+    \item Ausführung zunächst ohne Zugriffskontrolle
+    \begin{itemize}
+        \item Kontrolle erst zum Ende der Ausführungspipeline
+    \end{itemize}
+    \item Instruktion \enquote{irrtümlich} ausgeführt:
+    \begin{itemize}
+        \item Rollback von Registern
+        \item \fatsf{KEIN Cache-Rollback}
+    \end{itemize}
+\end{itemize}
+\begin{infoBox}[title=Wie funktioniert Out-of-Order Execution?]
+    \begin{enumerate}
+        \item Der Prozessor analysiert die Befehle und sucht unabhängige Instruktionen
+        \begin{itemize}
+            \item Falls eine Instruktion auf das Ergebnis einer vorherigen wartet, kann eine spätere Instruktion bereits ausgeführt werden
+        \end{itemize}
+        \item Die Instruktionen werden \enquote{irrtümlich} ausgeführt, bevor alle Bedingungen geprüft werden
+        \begin{itemize}
+            \item Das bedeutet: Ein Zugriff auf geschützte Daten kann bereits stattfinden, bevor die CPU feststellt, dass der Zugriff nicht erlaubt ist
+        \end{itemize}
+        \item Am Ende der Pipeline wird geprüft, ob der Befehl erlaubt war
+        \begin{itemize}
+            \item Falls nicht, macht der Prozessor ein \fatsf{Rollback der Register} (die CPU \enquote{vergisst} die falsch Berechnung)
+            \item \fatsf{Aber:} Der Cache bleibt unverändert - und genau hier liegt das Problem!
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Meltdown mit Flush + Reload}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_8_Images/Meltdown mit Flush-Reload.jpeg}
+\end{figure}
+\subsubsection*{Spectre}
+\begin{itemize}
+    \item High-Level Funktion wie Meltdown, aber Cache Side-Channel nun durch \fatsf{Branch Prediction}
+\end{itemize}
+\subsubsection*{Branch vorhersage}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_8_Images/Branch vorhersage.jpeg}
+\end{figure}
+\begin{itemize}
+    \item In den allermeisten Fällen wird \red{pos} innerhalb des Arrays liegen
+    \item Moderne Prozessoren starten die Ausführung der nächsten Transaktion bevor die vorherige beendet ist \fatsf{(Pipelining)}
+    \item \fatsf{Branch Prediction Unit} in der CPU entscheidet welche Verzweigung wahrscheinlicher ist. Diese wird \fatsf{spekulativ ausgeführt}
+    \item Falsche Vorhersage führt zu Rollback, aber \fatsf{kein Cache Rollback}
+    \item \fatsf{Branch Prediction Unit} \enquote{lernt} dynamisch um Vorhersage zu verbessern
+\end{itemize}
+\begin{infoBox}[title=Wie funktioniert Branch Prediction?]
+    \begin{enumerate}
+        \item Verzweigungen im Code (if/else, loops) verursachen Pipeline-Stalls:
+        \begin{itemize}
+            \item Beispiel:
+            \begin{codeBlock}{}
+                if (0 <= pos && pos < array_len){
+                    res = array[pos];
+                }
+            \end{codeBlock}
+            \item Die CPU \fatsf{weiß nicht sofort}, ob pos im gültigen Bereich ist, weil sie erst den Wert aus dem Speicher holen muss
+        \end{itemize}
+        \item Die CPU rät (spekulative Ausführung):
+        \begin{itemize}
+            \item Die \fatsf{Branch Prediction Unit} (BPU) sagt voraus, dass der häufigere Fall (pos < array\_len) eintreten wird
+            \item Falls die Vorhersage falsch ist, wird ein \fatsf{Rollback durchgeführt}
+            \item \fatsf{Problem:} Der Cache wird nicht zurückgesetzt, was zu Seitenkanal-Angriffen führen kann!
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Missbrauch der Branch Prediction für Angriffe (Spectre)]
+    Angreifer können die \fatsf{CPU trainieren}, um falsche Speicherzugriffe spekulativ auszuführen:\\
+    \fatsf{Angriffsidee:}
+    \begin{enumerate}
+        \item Der Angreifer trainiert die CPU auf eine häufige Bedingung:
+        \begin{itemize}
+            \item Führt mehrmals \fatsf{valide} Zugriffe (pos < array\_len) aus, damit die CPU glaubt, dass das immer der Fall ist
+        \end{itemize}
+        \item Dann gibt er eine spezielle Eingabe, die außerhalb des erlaubten Bereichs liegt:
+        \begin{itemize}
+            \item pos = sehr große Zahl, sodass array1[pos] auf eine geschützte Kernel-Adresse zeigt
+        \end{itemize}
+        \item Die CPU glaubt, dass der Zugriff erlaubt ist und führt spekulativ aus:
+        \begin{codeBlock}{}
+            temp = probe_array[array1[x] * 4096];
+        \end{codeBlock}
+        \begin{itemize}
+            \item Der Wert aus dem geschützten Speicher beeinflusst den Cache!
+        \end{itemize}
+        \item Der Angreifer misst den Cache und kann den geheimen Wert rekonstruieren!
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_8_Images/Falsche Vorhersage der Branche.jpeg}
+\end{figure}
+\subsubsection*{Gegenmaßnahmen}
+\begin{itemize}
+    \item Einschränkung der spekulativen Ausführung
+    \item Performanzeinbußen, Neu-Kompilierung von Anwendungen
+    \item OpenBSD: Hyperthreading deaktiviert im Juni 2018 als Gegenmaßnahme für Spectre
+\end{itemize}
+$\Rightarrow$ Grundsätzliches Hardware/OS Re-Design
+
+\subsubsection*{Lessons Learned}
+\begin{itemize}
+    \item Nur privilegierter Speicer im User-Adressraum $\rightarrow$ \blue{Sicher}
+    \item Nur Out-of-Order und spekulative Ausfürhung $\rightarrow$ \blue{Sicher}
+    \item Nur Caching $\rightarrow$ \blue{Sicher}
+    \item Kombination $\rightarrow$ \red{Unsicher}
+\end{itemize}
+\begin{itemize}
+    \item IT-Sicherheit muss das \enquote{Big Picture} im Blick haben
+    \item Wir benötigen \fatsf{noch bessere Methodik}, um Security by Design zu erreichen!
+\end{itemize}

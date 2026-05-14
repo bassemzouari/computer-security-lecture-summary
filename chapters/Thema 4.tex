@@ -1,0 +1,523 @@
+\section{Asymmetrische Kryptographie}
+\begin{itemize}
+    \item \fatsf{Asymmetrische Kryptographie:} Es gibt ein \fatsf{Schlüsselpaar}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_4_Images/Asymmetrische Kryptographie.jpeg}
+    \end{figure}
+    \item Bob erstellt Schlüsselpaar und veröffentlicht den \enquote{öffentlichen Schlüssel} \red{pk}
+    \begin{itemize}
+        \item Kein Schlüsselaustausch notwendig (vgl.Symmetrische Kryptographie)
+    \end{itemize}
+\end{itemize}
+symmetrisch = \red{private key}\\
+asymmetrisch = \red{public key}
+
+\subsubsection*{Anzahl an Schlüssel}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Anzahl an Schlüssel.jpeg}
+\end{figure}
+
+\clearpage
+\subsection{Definition asymmetrischer Chiffren}
+\subsubsection*{Funktionale Definition}
+\begin{itemize}
+    \item \fatsf{Algorithmen:} (Gen, Enc, Dec)
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{Thema_4_Images/Funktionale Definition.jpeg}
+    \end{figure}
+    \item \fatsf{Korrektheit:} Die Entschlüsselung eines gültigen Chiffretexts resultiert in die original verschlüsselte Nachricht:\\
+    $\rightarrow$ \red{Dec(sk, Enc(pk,m)) = m} für alle Nachrichten \red{m} und Schlüsselpaare \red{(pk, sk) $\leftarrow$ Gen}
+\end{itemize}
+
+\subsubsection*{Sicherheitsdefinition}
+\begin{itemize}
+    \item \fatsf{Was bedeutet sicher?}
+    \begin{itemize}
+        \item Angreifer lernt \blue{\enquote{nichts Neues}} über Nachricht \red{m} (Gleiches Ziel wie bei symmetrischer Kryptographie)
+    \end{itemize}
+    \item \fatsf{Angreifer Modell:} Was kann der Angreifer tun und sehen?
+    \begin{itemize}
+        \item \red{Öffentlicher Schlüssel ist auch für Angreifer sichtbar}\\
+        $\rightarrow$ Das genügt, um gültige Chiffretexte zu erstellen\\
+        $\rightarrow$ Angreifer kann beliebige Klartexte \blue{selbst verschlüsseln} (\enquote{chosen plaintext attack})
+        \item \fatsf{Stärkeres Modell:} Angreifer wählt zusätzlich Chiffretexte und erhält zugehörige Klartexte (\enquote{chosen ciphertext attack}), z.B. Angreifer hat Zugriff auf Smart Card, die für den Angreifer entschlüsseln kann
+    \end{itemize}
+\end{itemize}
+$\rightarrow$ Analog zur symmetrischen Kryptographie definieren wir die Sicherheitsspiele
+\clearpage
+\subsubsection*{IND-CPA für PKE}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/IND-CPA für PKE.jpeg}
+\end{figure}
+
+\subsubsection*{Stärkere Sichrheit IND-CCA für PKE}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Stärkere Sicherheit IND-CCA.jpeg}
+\end{figure}
+
+\subsection{RSA Verschlüsselung}
+\subsubsection*{RSA Schlüsselerzeugung}
+\begin{itemize}
+    \item Schlüsselerzeugung \blue{GenRSA(n)} (Sicherheitsparameter n)
+    \begin{itemize}
+        \item Wähle zwei \blue{n-bit Primzahlen} \fatsf{p, q} mit \fatsf{p $\neq$ q}
+        \item Berechne \blue{N = p $\times$ q}
+        \item Wähle \blue{e > 1}, sodass \fatsf{ggT(e, $\varphi$(N)) = 1}
+        \begin{defBox}
+            Eulersche Phi-Funktion $\varphi$ = (p - 1)(q - 1) = Anzahl Elemente in $\mathbb{Z}^{*}_{N}$ (positive natürliche Zahlen < N, teilerfremd zu N) \red{(Ohne Wissen von p, q sehr schwer zu berechnen)}
+        \end{defBox}
+        \item Berechne \fatsf{d = $e^{-1}$ mod $\varphi$(N)}
+        \item Ausgabe: \fatsf{(N,e,d)}
+    \end{itemize}
+    $\rightarrow$ \fatsf{(N,e)} ist Öffentlicher Schlüssel\\
+    $\rightarrow$ \fatsf{(N,d)} ist Geheimer Schlüssel
+\end{itemize}
+
+\subsubsection*{Die RSA Funktion}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Die RSA Funktion.jpeg}
+\end{figure}
+
+\subsubsection*{RSA Annahme}
+Um die Invertierung der RSA Funktion zu berechnen, benötigen wir d
+\begin{itemize}
+    \item Seien \fatsf{(N,e,d) = GenRSA(n)}
+    \item Wähle y zufällig in $\mathbb{Z}^{*}_{N}$
+    \item Gegeben (N,e,y), es ist \red{schwierig} x zu berechnen, so dass: \fatsf{y $\equiv$ $x_{e}$ mod N}
+\end{itemize}
+Möglicher Angriff auf RSA Annahme:
+\begin{enumerate}
+    \item Faktorisiere \fatsf{N = p $\times$ q}
+    \item Berechne \fatsf{$\varphi$(N) = (p - 1) $\times$ (q - 1)}
+    \item Berechne \fatsf{d = $e^{-1}$ mod $\varphi$(N)}
+\end{enumerate}
+$\rightarrow$ Schwierigkeit der \blue{Faktorisierung} ist notwendige \blue{Annahme} für Sicherheit des RSA Verfahrens
+
+\subsubsection*{Wahl der RSA Parameter}
+Ist die Faktorisierung von $3 \times 5 = 15$ schwer?
+\begin{itemize}
+    \item Konkrete Schwierigkeit der Annahmen hängt von Parametern ab (z.B. Größe der Zahl (Gemessen in Bit-Länge (= log der Zahl)))
+\end{itemize}
+\fatsf{BSI Empfehlungen (2020):}
+\begin{itemize}
+    \item Faktorisierungsmodulus: \fatsf{3000 Bits}
+    \item Weitere Anforderungen an p, q, e und d
+\end{itemize}
+
+\subsubsection*{Textbuch RSA-Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Textbuch RSA-Verschlüsselung.jpeg}
+\end{figure}
+
+\subsubsection*{Einschub: Homomorphe Verschlüsselung}
+Verschlüsselungsverfahren heißt \blue{(multiplikativ) homomorph}, wenn:
+\fatsf{\[
+    Enc(pk,m_{0}) \times Enc(pk,m_{1}) = Enc(pk,m_{0} \times m_{1})
+\]}
+(Produkt zweier verschlüsselter Nachrichten entspricht Verschlüsselung des Produkts)
+\begin{itemize}
+    \item Textbuch RSA ist homomorph:
+    \[
+        (m_{0}^{e} mod N) \times (m_{1}^{e} mod N) = (m_{0} \times m_{1})^{e} mod N
+    \]
+    \item Wir können Operationen auf den Klartext ausführen, ohne entschlüsseln zu müssen!
+\end{itemize}
+$\rightarrow$ Hauptsächlich Problem für IND-CCA Sicherheit
+\subsubsection*{Sicherheit von Textbuch RSA}
+Textbuch RSA Verschlüsselung ist \blue{nicht} IND-CPA sicher
+\begin{itemize}
+    \item Grund: Die Verschlüsselung ist \blue{deterministisch}
+    \begin{defBox}
+        Faust-Regel: \fatsf{Kein deterministisches PKE ist IND-CPA-sicher}
+    \end{defBox}
+\end{itemize}
+Wie kann ein Angreifer das IND-CPA Spiel gewinnen?
+\begin{enumerate}
+    \item Wähle zwei Nachrichten $m_{0}, m_{1}$ (mit gleicher Länge)
+    \item Berechne $c_{0} = Enc(pk, m_{0})$ mit Hilfe des öffentlichen Schlüssels
+    \item Vergleiche den Challenge Chiffretext $c^{*}$ mit $c_{0}$
+\end{enumerate}
+
+\subsubsection*{RSA OAEP}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/RSA OAEP.jpeg}
+\end{figure}
+
+\subsubsection*{Angriffe auf RSA-Basierte Chiffren}
+\begin{itemize}
+    \item Textbuch RSA ist \blue{fast immer unsicher} in der Praxis (\red{Nicht Verwenden!})
+    \item Angriffe durch Ausnutzen von Padding Fehlern (Padding-Oracle-Attacks)
+    \begin{itemize}
+        \item Beispiel: Bleichenbacher Angriff auf RSA PKCS1v1.5 (und RSA OAEP)
+    \end{itemize}
+    \item Angriffe bei kleinen Exponenten e bzw. Teilwissen über einen Primfaktor
+    \begin{itemize}
+        \item Beispiel: Coppersmith Angriff/Hastads Angriff mit chinesischem Restsatz
+    \end{itemize}
+    \item Und viele mehr...
+    \item \fatsf{Erinnerung:} Vertraulichkeit $\neq$ Integrität $\neq$ Authentifizierung!
+    \begin{itemize}
+        \item Beispiel: Angriff auf Schlüsselmaterial in Nextcloud durch fehlende Authentifizierung von RSA-OAEP
+        \item Vergleichbare Angriffe bei anderen Cloud-Storage Anbietern (Sync, pCloud, Tresorit)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Alternative Verschlüsselungsverfahren: Das Elgamal Verfahren}
+\subsubsection*{Diskrete logarithmus Annahme}
+\begin{itemize}
+    \item Setup: zyklische Gruppe $\mathbb{G}$ der Ordnung q mit Generator g und q prim
+    \item Gegeben: zufälliges h $\in$ $\mathbb{G}$
+    \item Suche: x, sodass $g^{x} = h$
+    \item Annahme: \red{Diskreten Logarithmus zu finden ist schwer für geeignete Gruppe $\mathbb{G}$}
+\end{itemize}
+\blue{Weitere wichtige Varianten:} Computational Diffie Hellman (CDH), Decisional Diffie Hellman (DDH)
+
+\subsubsection*{Elgamal Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/ElGamal Verschlüsselung.jpeg}
+\end{figure}
+ElGamal ist ein homomorphes Verfahren
+
+\subsubsection*{Sicherheit von ElGamal}
+Ist die ElGamal Verschlüsselung deterministisch? Nein! $c_{0} = g^{r}$ ist zufällig in G\\
+Für geeignete Parameterwahl ist ElGamal \fatsf{IDN-CPA sicher} unter der DDH Annahme\\
+\fatsf{Einsatz in der Praxis:} eher selten, da wir stärker Sicherheitseigenschaften benötigen
+\subsubsection*{Wiederholung: Schlüssel in symmetrischer Kryptographie}
+Symmetrische Kryptographie: Parteien kennen \fatsf{identischen} Schlüssel
+\begin{itemize}
+    \item Wie kommen Parteien zu diesem Schlüssel?
+\end{itemize}
+Lösung: \red{Schlüsselaustauschprotokoll} basierend auf \fatsf{asymmetrischer Kryptographie}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Schlüssel in symmetrischer Kryptographie.jpeg}
+\end{figure}
+\subsubsection*{Diffie-Hellman 1976}
+Neues Konzept in der Kryptografie
+\begin{itemize}
+    \item Protokolle zum Schlüsselaustausch
+    \item Konzept der Asymmetrischen/Public Key Kryptografie
+\end{itemize}
+\subsubsection*{Diffie-Hellman Schlüsselaustausch}
+Öffentlich: Gruppe G der Ordnung q mit Generator g
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Diffie-Hellman Schlüsselaustausch.jpeg}
+\end{figure}
+\subsubsection*{Sicherheit des Schlüsselaustauschs}
+\red{Diskrete Logarithmus Annahme} muss schwer sein in G!
+\begin{itemize}
+    \item Was passiert, falls nicht?
+\end{itemize}
+Angreifer sieht X, Y
+\begin{itemize}
+    \item Löse diskreten Logarithmus: x = $log_{g}X$
+    \item Berechne Schlüssel: $K = Y^{x} = (g^{y^{x}}) = g^{xy}$
+\end{itemize}
+Diffie-Hellman Schlüsselaustausch ist \fatsf{sicher} unter der DDH Annahme\\
+\fatsf{Beachte:} In der Praxiswird DH nicht in der hier vorgestellten einfachen Form zum Schlüsselaustausch verwendet!\\
+Beispiel: Problem mit Authentisierung
+\subsection{Hybride Verschlüsselung}
+\subsubsection*{Vor- und Nachteile (A)symmetrischer Verschlüsselung}
+\fatsf{Symmetrische Verschlüsselung}
+\begin{itemize}
+    \item + sehr effizient
+    \item + Verschlüsselung langer Nachrichten möglich
+    \item - benötigt gemeinsamen Schlüssel
+\end{itemize}
+\fatsf{Asymmetrische Verschlüsselung}
+\begin{itemize}
+    \item + Protokoll für Schlüsselaustausch
+    \item - erlauben zunächst nur Verschlüsselung kurzer Nachrichten (z.B. < 3000 Bits für RSA)
+    \item - ineffizienter
+\end{itemize}
+\fatsf{Verschlüsselung in der Praxis:}\\
+Schlüsselaustausch mittels asymmetrischer Verschlüsselung + Effiziente symmetrische Verschlüsselung der Daten = Hybride Verschlüsselung
+\subsubsection*{Hybride Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Hybride Verschlüsselung.jpeg}
+\end{figure}
+\subsubsection*{Hybride Verschlüsselung (Entschlüsselung)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Hybride Entschlüsselung.jpeg}
+\end{figure}
+\subsection{Signaturen: Motivation und Definition}
+\subsubsection*{Physikalische Signaturen}
+Unterschrift auf physikalischen Dokumenten
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Physikalische Signaturen.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Physikalische Unterschriften lassen sich sehr leicht fälschen
+    \item Digitale Welt: Fälschung von Unterschriften noch leichter ...
+\end{itemize}
+\clearpage
+\subsubsection*{Digitale Signaturen}
+Digitale Version von physikalischen Signaturen: Signatur hängt stark vom Dokument ab!
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Digitale Signaturen.jpeg}
+\end{figure}
+\subsubsection*{Anwendung für Softwareupdates}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Anwendung für Softwareupdates.jpeg}
+\end{figure}
+\fatsf{Softwareupdates:}
+\begin{itemize}
+    \item Softwarehersteller signiert Codeupdate
+    \item Benutzer haben Zugriff auf den Öffentlichen Schlüssel \blue{pk} des Softwareherstellers
+    \item Software nur installieren, falls Signatur gültig!
+\end{itemize}
+\clearpage
+\subsubsection*{Mehrfachauthentifizierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Mehrfachauthentifizierung.jpeg}
+\end{figure}
+\subsubsection*{Funktionale Definition}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Funktionale Def.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Sicherheit - Informal}
+\begin{defBox}
+    Angreifer kann \fatsf{keine} Signaturen auf \red{neue} Nachricht \fatsf{fälschen}
+\end{defBox}
+Einfach Folgerung: Digitale Signatur \blue{hängt stark von Nachricht} ab! Sonst:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Sicherheit - infomal.jpeg}
+\end{figure}
+\subsubsection*{Sicherheitsspiel (EUF-CMA)}
+Angreifer kann \fatsf{keine} Signatur auf \red{neue} Nachricht \fatsf{fälschen} \\ 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Sicherheitsspiel (EUF-CMA).jpeg}
+\end{figure}
+\\
+Angreifer \blue{gewinnt} das Sicherheitsspiel wenn:
+\begin{enumerate}
+    \item \fatsf{m* neu ist,} d.h. m* $\neq$ m für alle Anfragen m in der ersten Phase des Sicherheitsspiels
+    \item Signatur \red{(m*,s*)} ist korrekt, d.h. \red{Ver(pk, m*, s*) = 1}
+\end{enumerate}
+\blue{Sicherheit:} Signaturverfahren ist \fatsf{EUF-CMA sicher}, falls alle \fatsf{\enquote{effizienten}} Angreifer das Sicherheitsspiel maximal mit Wahrscheinlichkeit \red{$\approx$ 0} gewinnen können\\
+Im Gegensatz zur \fatsf{IND-CPA Sicherheit} ist die Erfolgswahrscheinlichkeit des Angreifers \red{$\approx$ 0}\\
+Im Gegensatz zur \fatsf{IND-CPA Sicherheit} ist die Erfolgswahrscheinlichkeit des Angreifers \red{$\approx$ 0} 
+\begin{itemize}
+    \item Angreifer kann kein gültiges Nachricht/Signatur-Paar \red{(m*,s*)} raten
+    \item Trivialer Angriff: Wähle \red{s* $\in$ \{0,1\}$^{l}$} $\rightarrow$ erfolgreich mit Wahrscheinlichkeit \red{$2^{-l}$}
+\end{itemize}
+\subsubsection*{MACs VS. Signaturen}
+\fatsf{Vorteile:}\\
+\underline{MACs}
+\begin{itemize}
+    \item Signifikant \fatsf{schneller} und \fatsf{speichereffizienter}, da symmetrische Kryptoprimitive
+\end{itemize}
+\underline{Digitale Signaturen}
+\begin{itemize}
+    \item Ähnlich zu PKE: \fatsf{einfacheres Key Management}
+    \item \fatsf{Öffentlich verifizierbar:} Eine Signatur (m,s) kann an andere Partei weitergeleitet werden
+    \item \fatsf{Nicht Abstreitbarkeit:} Es ist eindeutig klar, wer die Nachricht signiert hat (bei MACs zwei Parteien)
+\end{itemize}
+\fatsf{Allgemeine Faustregel:}
+\begin{itemize}
+    \item MACs, wenn eine Person signiert und \red{eine} zweite Person verifiziert
+    \item Signaturen, wenn eine Person signiert und \red{viele} Personen verifizieren
+\end{itemize}
+\fatsf{3 Arten für Datenintegrität}\\
+Gegenüberstellung am Beispiel Softwareupdates:
+\begin{enumerate}
+    \item \fatsf{Kollisions-resistente Hashfunktion}
+    \begin{itemize}
+        \item Benötigt einen öffentlichen \blue{schreibgeschützten} Bereich (z.B. Webseite)
+    \end{itemize}
+    \item \fatsf{Digitale Signaturen}
+    \begin{itemize}
+        \item Hersteller muss über langen Zeitraum einen \blue{privaten Schlüssel aufbewahren}
+        \item Download-Seite muss nicht vertraut werden
+    \end{itemize}
+    \item \fatsf{MACs}
+    \begin{itemize}
+        \item Hersteller muss über langen Zeitraum \blue{Geheimnis aufbewahren} (für die Erstellung von MAC Schlüssel pro Benutzer)
+        \item Hersteller muss \blue{separaten MAC} der Software \blue{für jeden Benutzer} erstellen
+    \end{itemize}
+\end{enumerate}
+\subsection{Signaturen: Konkrete Verfahren}
+\subsubsection*{Signaturverfahren}
+\begin{itemize}
+    \item RSA-basierte Signaturen (z.B. RSA-FDH)
+    \item Diskreter-Logarithmus-basiert (z.B. DSA, Schnorr, ...)
+\end{itemize}
+Beide Verfahren folgen dem sogenannten \red{\enquote{Hash-and-Sign}-Prinzip}
+\subsubsection*{Hash-And-Sign-Prinzip}
+\begin{itemize}
+    \item Ermöglicht das Signieren von beliebig langen Nachrichten
+    \item Hashfunktion trägt zur Sicherheit des Verfahren bei
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_4_Images/Hash-and-sign-Prinzip.jpeg}
+\end{figure}
+\subsubsection*{RSA Signieren}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\textwidth]{Thema_4_Images/RSA Signieren.jpeg}
+\end{figure}
+Privater Schlüssel: \red{sk = (N, d)}
+\begin{enumerate}
+    \item \fatsf{Hashe} Nachricht m auf H(m)
+    \item \fatsf{Kodiere} \enquote{kurzen} Hashwert auf RSA-Länge
+    \begin{itemize}
+        \item Sichere Optionen für Kodierungen gibt z.B. das BSI an
+    \end{itemize}
+    \item \fatsf{\enquote{Kern}-Signaturverfahren}: wende RSA-Schlüssel $(.)^{d}$ mod N an
+\end{enumerate}
+\[
+    s = Encode(H(m))^{d} mod N
+\]
+\subsubsection*{RSA verifizieren}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/RSA Verifizieren.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Schnorr Signaturen}
+Alice möchte eine Nachricht \red{m} signieren und Bob möchte prüfen, ob die Signatur korrekt ist
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Schnorr Signaturen.jpeg}
+\end{figure}
+\\
+\begin{itemize}
+    \item Wert k wird \enquote{\blue{Nonce}} genannt
+    \item Zufälliger Wert, der \blue{nur einmal benutzt} werden darf
+    \item Verwendet man selbes k noch einmal $\rightarrow$ Geheimer Schlüssel kann berechnet werden!
+    \item Auch wenn k nicht zufällig ist $\rightarrow$ Geheimer Schlüssel kann berechnet werden!
+    \item (Mehr dazu in den Übungsaufgaben)
+\end{itemize}
+\subsection{Zertifikate}
+\subsubsection*{Nachrichtenursprung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Nachrichtenursprung.jpeg}
+\end{figure}
+\subsubsection*{Public Key Infrastruktur}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/public Key Infrastruktur.jpeg}
+\end{figure}
+\subsubsection*{Zertifikatsinhalt}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_4_Images/Zertifikatsinhalt 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_4_Images/Zertifikatsinhalt 2.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Zertifikatsinhalt 3.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Zertifizierungshierarchie}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Zertifizierungshierarchie.jpeg}
+\end{figure}
+\subsubsection*{Vertrauenswürdige CA}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Vertrauenswürdige CA.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Sicherheitsvorfall}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_4_Images/Sicherheitsvorfall.jpeg}
+\end{figure}
+\begin{defBox}
+    \red{Vertrauen kann ausgenutzt werden}! Gibt es bessere Alternativen (z.B. \enquote{Web of Trust})?
+\end{defBox}
+\subsubsection*{Zertifikate revozieren}
+Was passiert, wenn ein Zertifikat nicht mehr gültig ist?
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Zertifikate Revozieren.jpeg}
+\end{figure} 
+\\
+\begin{itemize}
+    \item \fatsf{CRLs:} Eine Liste widerrufener Zertifikate, die regelmäßig veröffentlicht wird
+    \item \fatsf{OCSP:} Ein Protokoll, das den Status eines einzelnen Zertifikats in Echtzeit abfragt
+\end{itemize}
+\subsection{Zufall in der Kryptographie}
+\subsubsection*{Bedeutung von Zufall in der Kryptographie}
+Wozu braucht man Zufall?
+\begin{itemize}
+    \item Zufälligkeit sorgt für \blue{Unvorhersehbarkeit}
+    \item Schlüsselgenerierung, Einmal-Passwörter, Signaturen, etc. brauchen \blue{sicheren Zufall}
+    \item \blue{Nicht deterministischen Verfahren} brauchen Zufall!
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_4_Images/Bedeutung von Zufall in der Kryptographie.jpeg}
+\end{figure}
+\blue{$\rightarrow$ Entscheidend für Sicherheit der Verfahren}
+\subsubsection*{Risiken schwacher Zufallsgenerierung}
+\begin{itemize}
+    \item Was kann schiefgehen?
+    \begin{itemize}
+        \item \blue{Vorhersehbarkeit} $\rightarrow$ Angreifer kann zufünftige \enquote{Zufalls} Werte berechnen
+        \item \blue{Geringe Entropie} $\rightarrow$ Brute Force Angriff wegen geringer Anzahl möglicher \enquote{Zufalls} Werte
+        \item \blue{Wiederhalbare Muster} $\rightarrow$ Schwache Zufallsgeneratoren können zyklische Muster erzeugen
+    \end{itemize}
+    \item Praktische Beispiele
+    \begin{itemize}
+        \item Debian OpenSSL Bug (2008)
+        \item Bitcoin Wallet Hack (2013)
+        \item Nextcloud Weak Passwort Generation (2023)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Quellen für Zufälligkeit}
+\begin{itemize}
+    \item \fatsf{Pseudozufallszahlengeneratoren (PRNGs)}
+    \begin{itemize}
+        \item \fatsf{Beschreibung:} \blue{Scheinbar zufällige} Zahlen auf Basis eines Anfangswertes (Seed)
+        \item \fatsf{Eigenschaften:} Schnell, deterministisch, wiederholbar
+        \item \fatsf{Anwendung:} In Software, wenn \blue{Geschwindigkeit \& Effizienz} im Vordergrund stehen
+        \item \fatsf{Risiko:} \blue{Vorhersehbar}, wenn Seed bekannt oder schwach\\
+        $\rightarrow$ Für Kryptographie und Passwörter nutze kryptographischen PRNG
+    \end{itemize}
+    \item \fatsf{Echte Zufallszahlengeneratoren (TRNGs)}
+    \begin{itemize}
+        \item \fatsf{Beschreibung:} \blue{Echte Zufallszahlen} ausphysikalischen Prozessen
+        \item \fatsf{Eigenschaften:} Hohe \blue{Unvorhersehbarkeit}, langsam, oft teurer in der Umsetzung
+        \item \fatsf{Beispiele:} Halbleiterrauschen, Atmosphärischen Rauschen, radioaktiver Zufall
+        \item \fatsf{Anwendung:} Kritische Sicherheitssysteme, z.B. in Hardware-Sicherheitsmodulen (HSMs)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Themenübersicht}
+Folgende Themen haben wir behandelt:
+\begin{itemize}
+    \item Was ist asymmetrische Kryptographie und welche Vor- und Nachteile gibt es?
+    \item Asymmetrische Verschlüsselung am Beispiel RSA
+    \item Protokoll für Schlüsselaustausch
+    \item Kommbination der Vorteile von symmetrischer und asymmetrischer Verschlüsselung $\rightarrow$ Hybride Verschlüsselung
+    \item Integrität mittels Signaturen
+    \item Zertifikate und Einblick in Public Key Infrastruktur
+    \item Rolle des Zufalls in der Kryptographie
+\end{itemize}

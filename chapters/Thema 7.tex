@@ -1,0 +1,768 @@
+\section{Websicherheit}
+\subsubsection*{Was ist das Web?}
+Das World Wide Web (WWW) ist eine \fatsf{Anwendung} im Internet
+\begin{itemize}
+    \item Sammlung aus \fatsf{Daten} und \fatsf{Diensten}
+    \begin{itemize}
+        \item angeboten von Webservern
+        \item darauf zugegriffen mit Webbrowsern (z.B. Chrome (Wird als Client-Server Architektur bezeichnet), Firefox, ...)
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_7_Images/Was ist das Web.jpeg}
+\end{figure}
+\subsubsection*{Bausteine des Webs}
+Wie werden Daten und Dienste eindeutig identifiziert?
+\begin{itemize}
+    \item Uniform Resource Locator (URL)
+\end{itemize}
+Wie kommunizieren Browser und Server, um Daten auszutauschen?
+\begin{itemize}
+    \item Hypertext Transfer Protocol (HTTP)
+\end{itemize}
+Aus welchen Bestandteilen besteht eine Webseite?
+\begin{itemize}
+    \item Hypertext Markup Language (HTML): Auszeichnungssprache, um statische Webseiten zu erstellen
+    \item Cascading Style Sheets (CSS): Stylesheet-Sprache, um Aussehen einer Webseite zu definieren
+    \item JavaScript (JS): Skriptsprache, die vom Browser ausgeführt wird und somit dynamische Webseiten ermöglicht
+\end{itemize}
+\clearpage
+\subsection{URL}
+\subsubsection*{URL}
+Grundlegender Aufbau:
+\begin{center}
+    <schema>:<shema-specifischer-Teil>
+\end{center}
+Beispiele für Schema: http(s), ftp, ssh, ...\\
+$\rightarrow$ Definiert mit welchem Protokoll wir im Internet kommunizieren\\
+Im folgenden betrachten wir eine URL für das http(s)-Schema:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/URL.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/URL 2.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{enumerate}
+        \item \fatsf{Schema (Protokoll)}
+        \item \fatsf{Subdomain (optional)}
+        \item \fatsf{Domain (Hauptdomain)}
+        \item \fatsf{Port (optional)}
+        \item \fatsf{Pfad (Path)}
+        \item \fatsf{Query-Parameter (optional)}
+        \begin{itemize}
+            \item \fatsf{Teil:} ?query=123
+            \item \fatsf{Erklärung:}\\
+            Diese \fatsf{Abfrageparameter} enthalten zusätzliche Informationen, die an den Server gesendet werden
+            \begin{itemize}
+                \item Beginnt immer mit \fatsf{?}
+                \item Mehrere Parameter werden mit \fatsf{\&} getrennt
+                \item Beispiel:
+                \begin{itemize}
+                    \item ?suchbegriff=auto $\rightarrow$ Suchanfrage nach \enquote{Auto}
+                    \item ?id=5\&sort=asc $\rightarrow$ ID = 5, Sortierung aufsteigend
+                \end{itemize}
+                Suchmaschinen nutzen häufig Query-Parameter in URLs
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Fragment (Anker, optional)}
+        \begin{itemize}
+            \item \fatsf{Teil:} \#section
+            \item \fatsf{Erklärung:}\\
+            Ein \fatsf{Fragment} verweist auf eine bestimmte Stelle innerhalb einer Webseite
+            \begin{itemize}
+                \item Wird mit \# eingeleitet
+                \item Beispiel:
+                \begin{itemize}
+                    \item \#kapitel3 $\rightarrow$ Springt zu Kapitel 3 einer Seite
+                    \item \#Kontakt $\rightarrow$ Springt zum Kontaktbereich
+                \end{itemize}
+            \end{itemize}
+            Der Anker wird \fatsf{nur im Browser verarbeitet}, aber nicht an den Server gesendet
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{URL-Kodierung}
+\begin{itemize}
+    \item URLs enthalten menschenlesbare Zeichen (ASCII)
+    \begin{itemize}
+        \item Was wenn Nicht-ASCII-Zeichen (z.B. Umlaute) in URL enthalten sein sollen?
+    \end{itemize}
+    \item URLs enthalten Spezialsymbole (?, \#, \textbackslash)
+    \begin{itemize}
+        \item Was wenn wir ein Spezialsymbol verwenden wollen (z.B. als Abfrage-Parameter)?
+    \end{itemize}
+\end{itemize}
+\underline{\fatsf{URL Encoding:}}
+\begin{itemize}
+    \item Prozentkodierung: \% gefolgt von Hexadezimalwert des Zeichens
+    \begin{itemize}
+        \item \%20 = \enquote{ } (Leerzeichen)
+        \item \%35 = \enquote{\#} (Hash)
+        \item \%50  = \enquote{2} (auch ASCII-Zeichen können kodiert werden)
+    \end{itemize}
+\end{itemize}
+\begin{infoBox}[title=Beispiel für URL-Kodierung]
+    \fatsf{Original-URL mit Sonderzeichen:}
+    \begin{codeBlock}{}
+        https://www.example.com/suche?query=Smartphone & Zubehör
+    \end{codeBlock}
+    \fatsf{Problem:}
+    \begin{itemize}
+        \item Das \fatsf{Leerzeichen} und das \&-Zeichen sind nicht erlaubt!
+    \end{itemize}
+    \fatsf{Kodierte URL:}
+    \begin{codeBlock}{}
+        https://www.example.com/suche?query=Smartphone%20%26%20Zubeh%C3%B6r
+    \end{codeBlock}
+    \begin{itemize}
+        \item Leerzeichen $\rightarrow$ \%20
+        \item \& $\rightarrow$ \%26
+        \item ö $\rightarrow$ \%C3\%B6
+    \end{itemize}
+\end{infoBox}
+\begin{itemize}
+    \item Problematik: Das erschwert das Filtern von bösartigen URLs
+    \begin{itemize}
+        \item z.B. Ziel Anfragen zu /etc/passwd blockieren
+        \item Was wenn Anfrage so aussieht \%2F\%65\%74\%63\%2F\%70\%61\%73\%73\%77\%64 ?
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Vereinfachte Sicht auf das Web}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Vereinfachte Sicht auf das Web.jpeg}
+\end{figure}
+\begin{enumerate}
+    \item Browser kann mit URL eine Datei vom Server abfragen:\\
+    \url{https://beispiel.de/pictures/solution.pdf}
+    \item Browser kann mit URL eine Berechnung des Server abfragen:\\
+    \url{https://beispiel.de/berechne?=breite=2&hoehe=5}
+\end{enumerate}
+\subsection{HTTP}
+\subsubsection*{HTTP}
+\begin{itemize}
+    \item Protokoll, um Daten an Server zu schicken und von Server zu Empfangen
+    \item Baut auf Anfrage-Antwort Prinzip auf (request-response)
+    \begin{itemize}
+        \item Browser sendet Anfrage an Server
+        \item Server verarbeitet die Anfrage und schickt Antwort zurück
+        \item Zustandsloses Protokoll $\rightarrow$ Verwalten einer Sitzung muss auf höherer Abstraktionsebene erfolgen
+        \begin{infoBox}
+            \begin{itemize}
+                \item HTTP ist \fatsf{zustandslos}, d.h. jede Anfrage wird unabhängig von vorherigen Anfragen behandelt
+                \item Ohne zusätzliche Mechanismen vergisst der Server \fatsf{alles} nach jeder Anfrage
+                \item Sitzungen müssen \fatsf{auf einer höheren Abstraktionsebene} verwaltet werden:
+                \begin{itemize}
+                    \item \fatsf{Cookies} (am häufigsten)
+                    \item \fatsf{Session-IDs} (Server-seitig gespeichert)
+                    \item \fatsf{JWTs} (Token-basierte Authentifizierung)
+                    \item \fatsf{Versteckte Formularfelder}
+                \end{itemize}
+            \end{itemize}
+        \end{infoBox}
+    \end{itemize}
+    \item HTTPS = Hypertext Transfer Protocol Secure
+    \begin{itemize}
+        \item Sichere Variante von HTTP
+        \item Verschlüsselung der Daten mittels TLS
+    \end{itemize}
+\end{itemize}
+\subsubsection*{HTTP Anfrage}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/HTTP Anfrage.jpeg}
+\end{figure}
+\subsubsection*{HTTP Antwort}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/HTTP Antwort.jpeg}
+\end{figure}
+\subsection{Bausteine einer Webseite (HTML, CSS, JS)}
+\subsubsection*{HTML}
+\begin{itemize}
+    \item HTML (Hypertext Markup Languge) ist eine Auszeichnungssprache, um strukturierte Dokumente zu erstellen
+    \item Browser kann Auszeichnungssprache interpretieren und zeigt Elemente an (Im Browser Rechtsklick und \enquote{Seitenquelltext anzeigen} für HTML Darstellung)
+    \item Elemente einer Webseite werden mit tags definiert 
+    \begin{itemize}
+        \item Tags sind durch spitze Klammern <> definiert und haben meistens einen Anfangs- und einen Endtag
+        \item  Tags können Attribute haben, um das Element zu spezifizieren und werden durch Anführungszeichen "..." eingeschlossen
+        \item Beispiele:
+        \begin{itemize}
+            \item <img src="pictures/bild.jpg"> erstellt ein Bild aus der Datei pictures/bild.jpg
+            \item <b>Hallo</b> erstellt einen fettgedruckten Text: \fatsf{Hallo}
+            \item <a href=„https://server.de/next-page.html“>Nächste Seite</a> erstellt Link zu “next-page.html“
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{CSS}
+\begin{itemize}
+    \item CSS (Cascading Style Sheets) ist eine Stylesheet-Sprache, um das Aussehen/Design einer Webseite festzulegen
+\end{itemize}
+\subsubsection*{Javascript}
+\begin{itemize}
+    \item Skriptsprache, die für dynamische Webseiten entwickelt wurde
+    \item Eingebettet in HTML-Seiten (z.B. mit <script> Tag)
+    \item Kann den Inhalt der Seiten verändern (HTML Tags verändern, löschen, hinzufügen)
+    \item Kann neue Inhalte laden
+    \item Wird im Browser des Clients ausgeführt
+    \begin{itemize}
+        \item Ausführung in abgesicherter Sandbox, um Schaden zu verhindern
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Javascript Beispiel}
+\begin{codeBlock}{}
+    <html>
+    <body>
+        <h1>Überschrift</h1>
+        <p id="absatz">Dies ist ein Absatz</p>
+        <button type="button" onclick="myFunction()>"Klick mich!</button>
+        <script>
+             function myFunction(){
+                document.getElementById("absatz").innerHTML = "Neuer Text!"
+             }
+         </script>
+    </body>
+    </html>
+\end{codeBlock}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_7_Images/Javascript Beispiel.jpeg}
+\end{figure}
+\subsection{Sicherheitsrisiken im Web}
+\subsubsection*{Sicherheitsrisiken im Web}
+\fatsf{Risiko 1:} Web Server müssen vor unautorisiertem Zugriff geschützt werden
+\begin{itemize}
+    \item \fatsf{Beispiel:} Angreifer kann sich nicht bei google.com einhacken und kompromittiert Suchresultate einschleusen
+    \item \fatsf{Schutzmechnismus:} Server-seitige Schutzmechanismen z.B. Verhinderung von Buffer Overflows
+\end{itemize}
+\fatsf{Risiko 2:} Bösartige Webseite darf den Client-Computer nicht beschädigen
+\begin{itemize}
+    \item \fatsf{Beispiel:} Aufruf von evil.com darf keine Malware auf unserem System einschleusen
+    \item \fatsf{Schutzmechanismus:} Browser-seitig z.B. durch Sandboxing kann JavaScript nicht auf lokale Dateien zugreifen
+\end{itemize}
+\fatsf{Risiko 3:} Bösartige Webseite darf nicht mit anderen Webseiten interagieren
+\begin{itemize}
+    \item \fatsf{Beispiel:} Aufruf von evil.com darf nicht in unserem Namen Einkäufe auf Amazon tätigen (typisches Problem von Cookies)
+    \item \fatsf{Schutzmechanismus:} Same-Origin Policy
+\end{itemize}
+\subsection{Same-Origin Policy}
+\subsubsection*{Sicherheitsrisiko}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_7_Images/Sicherheitsrisiko.jpeg}
+\end{figure}
+\subsubsection*{Gegenmaßnahme: Same-Origin Policy}
+\begin{itemize}
+    \item Eingeführt in 1996: JavaScript auf einer Webseite darf nicht auf Dokumente mit anderer Herkunft (Origin) zugreifen
+    \item Wird durch den Browser sichergestellt
+\end{itemize}
+\begin{infoBox}
+    Die \fatsf{Same-Origin Policy (SOP)} ist eine \fatsf{Sicherheitsrichtlinie} im Webbrowser, die verhindert, dass Skripte einer Webseite auf Daten einer anderen Webseite zugreifen, wenn diese \fatsf{nicht dieselbe Herkunft (Origin)} haben
+\end{infoBox}
+\red{Origin} setzt sich zusammen aus:
+\begin{itemize}
+    \item Protokoll
+    \item Domain 
+    \item Port
+\end{itemize}
+$\rightarrow$ Zwei Webseiten haben die gleiche Origin, falls alle drei Elemente übereinstimmen
+\begin{infoBox}
+    \fatsf{Eine Webseite darf nur mit sich selbst kommunizieren, wenn alle drei übereinstimmen!}
+\end{infoBox}
+\clearpage
+\subsubsection*{Origin-Beispiel}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Origin-Beispiel.jpeg}
+\end{figure}
+\subsection{Cookies}
+\subsubsection*{Warum Cookies?}
+\begin{itemize}
+    \item HTTP ist ein Anfrage-Antwort Protokoll (zustandslos)
+    \begin{itemize}
+        \item Server behandelt jede Anfrage unabhängig
+    \end{itemize}
+    \item Wie können wir Zustand über mehrere Anfragen hinweg behalten?
+    \begin{itemize}
+        \item z.B. Login, Einkaufswagen, Einstellungen, Kundenbezogene Werbung
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Cookies: Definition}
+\begin{itemize}
+    \item Cookie: Enthält Daten, um Zustand über mehrere Anfragen zu erhalten
+    \item Erstellung:
+    \begin{itemize}
+        \item Server kann in HTTP Response den Header \fatsf{set-cookie} setzen
+        \item JavaScript kann Cookie erzeugen
+        \item Manuelle Erzeugung im Browser ist möglich
+    \end{itemize}
+    \item Speicherung:
+    \begin{itemize}
+        \item Browser speichert die Cookies (nicht der Server!)
+    \end{itemize}
+    \item Senden:
+    \begin{itemize}
+        \item Browser fügt Cookies automatisch in jeder Anfrage hinzu
+        \item Server kann gesendete Informationen dann verarbeiten und nutzen, um z.B. kundenspezifische Inhalten anzuzeigen
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsubsection*{Cookies: Ablauf}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Cookies: Ablauf.jpeg}
+\end{figure}
+\subsubsection*{Cookies: Daten}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Cookies: Daten.jpeg}
+\end{figure}
+\subsubsection*{Cookies Policy}
+\fatsf{Sicherheitsrisiken:}
+\begin{itemize}
+    \item Webserver darf nicht Cookies für \fatsf{andere} Webserver setzen
+    \begin{itemize}
+        \item Beispiel: evil.com darf kein Cookie für google.com setzen
+    \end{itemize}
+    \item Cookies dürfen nicht an \fatsf{falsche Adressaten} gesendet werden
+\end{itemize}
+\fatsf{Cookie Policy:} Eine Menge an Regeln, die durch den Browser sichergestellt werden
+\begin{itemize}
+    \item Wenn Browser ein Cookie von Webserver empfängt, soll er es akzeptieren?
+    \begin{itemize}
+        \item z.B. Server \enquote{site.com} darf nicht Cookie für \enquote{bank.com} setzen
+    \end{itemize}
+    \item Wenn Browser eine Anfrage an Webseite stellt, soll er das Cookie mitsenden?
+    \begin{itemize}
+        \item z.B. Cookie mit domain \enquote{.site.com} wird auf bei Aufruf von \enquote{login.sites.com} mitgesendet
+    \end{itemize}
+\end{itemize}
+\subsection{Session Authentifizierung}
+\fatsf{Beispiel:} Zugriff auf jede Email bei Gamil benötigt Authentifizierung
+\begin{itemize}
+    \item Möglichkeit 1: Wiederholte Eingabe von Nutzername/Passwort für Zugriff auf jede Email
+    \item Möglichkeit 2: Session Tokens (häufig realisiert über Cookies)
+\end{itemize}
+\fatsf{Session Token:}
+\begin{enumerate}
+    \item Bei erstem Besuch einer Webseite: Eingabe von Nutzername/Passwort
+    \item Webserver sendet Session Token, das in Cookie abgelegt wird
+    \item Bei jeder neuen Anfrage wird der Session Token mitgesendet
+    \item Nach log-out löschen Webserver und Client-Browser das Session Token
+\end{enumerate}
+\subsubsection*{Session Tokens: Sicherheit}
+Server muss Session Token \fatsf{zufällig wählen} und \fatsf{sicher ablegen}\\
+$\rightarrow$ Ansonsten könnte Angreifer das Token \enquote{raten}\\
+Browser muss sicherstellen, dass bösartige Webseite Session Token nicht lernen kann\\
+$\rightarrow$ Wird sichergestellt durch \fatsf{Cookie Policy:} legt fest wann Cookie an Webseite mitgesendet wird\\
+$\rightarrow$ Wird sichergestellt durch \fatsf{Same Origin Policy}: verhindert dass bösartige Webseiten Zugriff auf Cookies erhalten (z.B. durch JavaScript)\\
+$\rightarrow$ Setzen das \fatsf{HttpOnly}-Felds, um Auslesen mittels JavaScript zu verhindern
+\subsection{Angriffe auf das Web}
+\subsubsection*{OWASP}
+Open Web Application Security Project (OWASP):
+\begin{itemize}
+    \item Non-Profit Organisation mit dem Ziel Sicherheit im WWW zu verbessern
+    \item Arbeitet an einer Vielzahl von Projekten
+    \begin{itemize}
+        \item OWASP Top Ten: Liste von besonders kritischen Sicherheitsschwachstellen von Web-Anwendungen
+        \item OWASP Juice Shop: besonders unsichere Demo zum Selbststudium
+        \item OWASP Web Security Testing Guide: Leitfaden zur Sicherheitsüberprüfung von Anwendungen
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsubsection*{OWASP Top 10}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/OWASP Top 10.jpeg}
+\end{figure}
+\subsection{Cross-Site Request Forgery (CSRF)}
+\subsubsection*{CSRF Angriff}
+Angriff ermöglicht Angreifer das \fatsf{Ausführen von Transaktionen} bei einer Webanwendung (z.B. Abfrage privater Informationen, Hinzufügen/Löschen von Inhalten, ...)
+\begin{itemize}
+    \item Angriff wird nicht direkt durchgeführt, sondern Angreifer nutzt ein Opfer
+    \item Opfer ist bei Webanwendung authentifiziert
+    \item Ermöglicht Ausführung von Transaktionen \enquote{im Namen} des Opfers (Aus \red{Sicht des Servers} kommt die Anfrage \red{vom Opfer}!)
+\end{itemize}
+\subsubsection*{Erinnerung Cookies}
+\begin{itemize}
+    \item Cookies erlauben Zustand über mehrere Anfragen zu behalten
+    \begin{itemize}
+        \item z.B. Session Token, um erneutes einloggen zu vermeiden
+    \end{itemize}
+    \item Bei Anfrage wird Cookie von Browser automatisch mitgeschickt
+\end{itemize}
+\subsubsection*{CSRF - Angriffsidee:}
+\begin{itemize}
+    \item Bringe Opfer dazu, eine ungewollte Anfrage an eine Webseite zu stellen (z.B. Löschen von Emails bei Gmail.com)
+    \item Nutze Cookie-basierte Authentifizierung aus, um Aktionen im Namen des Opfer auszuführen
+    \begin{itemize}
+        \item Browser schickt Cookie automatisch mit
+        \item Server denkt, dass Anfrage von tatsächlichem Benutzer kommt
+    \end{itemize}
+\end{itemize}
+\subsubsection*{CSRF Ablauf Übersicht}
+\begin{enumerate}
+    \item Benutzer authentifiziert sich gegenüber Server
+    \begin{itemize}
+        \item Benutzer erhält Cookie
+    \end{itemize}
+    \item Angreifer bringt den Benutzer dazu, eine ungewollte Anfrage an Server zu schicken (\red{Wie kann der Angreifer das erreichen?})
+    \item Server akzeptiert ungewollte Anfrage von Benutzer
+    \begin{itemize}
+        \item Da Browser gültigen Cookie mitschickt
+    \end{itemize}
+\end{enumerate}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_7_Images/CSRF Ablauf Übersicht.jpeg}
+\end{figure}
+\subsubsection*{CSRF Ausfürhen}
+\fatsf{Häufig über Social Engineering, der zu Aufruf von manipulierter URL führt}\\
+\fatsf{Strategie Nr. 1:} Bringe Opfer dazu auf einen \fatsf{Link} zu klicken
+\begin{itemize}
+    \item Der \fatsf{Link} kann direkt eine GET Anfrage schicken
+    \url{ https://www.bank.com/transfer?amount=100&to=Eve}
+    \item Der \fatsf{Link} kann auf eine Webseite des Angreifers verlinken, dort kann mit JS eine ungewollte Anfrage ausgeführt werden
+\end{itemize}
+\fatsf{Strategie Nr 2:} Boshaftes HTML auf Webseite einbinden, die Opfer besucht
+\begin{itemize}
+    \item Beispiel: Opfer besucht ein Forum. Angreifer kann einen Beitrag schreiben, der boshaftes HTML beinhaltet
+    \item <img scr=\enquote{\url{https://ww.bank.com/transfer?amount=100\&to=Eve}} width=0 height=0>
+    \begin{itemize}
+        \item Es wird kein Bild geladen, aber Anfrage wird ausgeführt (Fehlermeldung wegen fehlendem Bild nicht sichtbar): Hier nur GET-Anfragen gezeigt, aber mit JS können auch POST Anfragen gesendet werden!
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsubsection*{Praxisbeispiel: WLAN im ICE}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/WLAN im ICE 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_7_Images/WLAN im ICE 2.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_7_Images/WLAN im ICE 3.jpeg}
+\end{figure}
+\subsubsection*{CSRF ist weit verbreitet in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_7_Images/csfr.jpeg}
+\end{figure}
+\subsection{CSRF verhindern}
+\subsubsection*{CSRF Tokens (\red{Server-seitige} Gegenmaßnahme)}
+\begin{itemize}
+    \item Pseudozufälliges Token wird in HTML-Seite eingebettet
+    \item Token authentisiert die nächste Anfrage
+    \item Kann von Angreifer nicht vorhergesagt werden
+\end{itemize}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/CSRF Tokens.jpeg}
+\end{figure}
+\subsubsection*{CSRF Token Beispiel}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_7_Images/CSRF Token Beispiel.jpeg}
+\end{figure}
+\subsubsection*{Weitere Techniken}
+\begin{itemize}
+    \item \blue{Referer Header} (Typo im HTTP-Standard (eigentlich Referrer))
+    \begin{itemize}
+        \item Bei Anfrage wird ein HTTP header mitgeschickt, \fatsf{von welcher Seite} die Anfrage kommt
+        \item Falls JS von Angreiferseite die Anfrage macht, ist der \red{Wert des headers nicht wie erwartet}
+        \item z.B. erlaube nur Anfragen mit referer header Wert https://blank.com/
+        \item \fatsf{Nachteile:}
+        \begin{itemize}
+            \item Kann private Informationen preisgeben (z.B. über aktuelle Webseite, die an Webserver geschickt wird)
+            \item Header sind in Anfrage optional. Was wenn Angreifer header weglässt? (Anfrage erlauben oder verhindern?)
+        \end{itemize}
+    \end{itemize}
+    \item \blue{SameSite Cookie Attribut}
+    \begin{itemize}
+        \item Falls auf \fatsf{strict} gesetzt, dann wird \fatsf{Cookie nur mitgeschickt}, wenn Anfrage \fatsf{von der gleichen Domain} kommt
+    \end{itemize}
+\end{itemize}
+\subsection{Cross-Site Scripting (XSS)}
+\fatsf{Ziel:} Einbettung von \fatsf{bösartigem JavaScript Code} auf einer Webseite, die vom Nutzer besucht und in Browser ausgeführt wird
+\begin{itemize}
+    \item Browser führt schädlichen Code im Kontext der legitimen Webseite aus 
+    \item Damit: \fatsf{Umgehen der Same-Origin Policy}
+    \begin{itemize}
+        \item Erinnerung: JavaScript darf nicht auf Inhalte von Webseiten anderer Herkunft zugreifen
+    \end{itemize}
+    \item Ermöglicht z.B. Manipulation der Darstellung oder das Auslesen von Cookies
+\end{itemize}
+\fatsf{Varianten:}
+\begin{itemize}
+    \item Stored XSS und Reflected XSS
+\end{itemize}
+\subsubsection*{XSS Problematik}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_7_Images/XSS Problematik 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_7_Images/XSS Problematik 2.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Prinzip von XSS Angriffen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_7_Images/Prinzip von XSS-Angriffen.jpeg}
+\end{figure}
+\subsubsection*{Varianten von XSS}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Varianten von XSS.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \fatsf{Reflected XSS}
+    \begin{itemize}
+        \item Angreifer bringt Opfer dazu Anfrage mit schädlichem Code abzuschicken
+        \item Schädlicher Inhalt der Anfrage ist \blue{zurückgegeben (reflected)} in der Antwort des Servers
+        \item Bsp.: \url{https://insecurewebsite.com/search?term=<script>/*+Bad+stuff+here...+*/</script>}
+        \item \red{Voraussetzung:} Opfer macht Anfrage mit schädlichem Code (z.B. indem Angreifer sein Opfer dazu bringt auf einen Link zu klicken (Phishing))
+    \end{itemize}
+    \item \fatsf{Persistent XSS}
+    \begin{itemize}
+        \item Anfrage von Angreifer veranlasst Server den schädlichen Code \blue{dauerhaft zu speichern}
+        \item Opfer lädt Seite von Server mit schädlichem Code
+        \item Bsp.: Forum-Seite: ein Benutzer erstellt Inhalte und andere Benutzer laden diese
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Unterschied XSS und CSRF}
+\fatsf{Gemeinsamkeit:} In Reflected XSS- und in CSRF-Angriffen muss das \blue{Opfer eine Anfrage ausführen}\\
+\red{Aber:}
+\begin{itemize}
+    \item XSS: HTTP Antwort enthält schädlichen Code, der \red{client-seitig} ausgeführt wird
+    \begin{itemize}
+        \item z.B. \url{https://insecure-website.com/search?term=<script>/*+Bad+stuff+here...+*/</script>}
+    \end{itemize}
+    \item CSRF: Schädliche HTTP Anfrage ist erstellt worden (enthält Cookie des Benutzer), die einen \red{server-seitigen} Effekt hat
+    \begin{itemize}
+        \item z.B. \url{https://insecure-website.com/account?new_password=12345}
+    \end{itemize}
+\end{itemize}
+$\rightarrow$ Reflected XSS ist nicht gleich CSRF
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5} % Adjust row height
+    \begin{tabular}{|p{3.5cm}|p{6cm}|p{6cm}|}
+        \hline
+        \fatsf{Kriterium} & \fatsf{XSS (Cross-Site Scripting)} & \fatsf{CSRF (Cross-Site Request Forgery)}\\
+        \hline
+        \fatsf{Ziel des Angreifers} & Führt bösartigen JavaSript-Code im Browser des Opfers aus & Täuscht das Opfer, eine ungewollte Aktion auf einer legitimen Website auszuführen \\
+        \hline
+        \fatsf{Opfer} & Der Nutzer selbst (Angreifer übernimmt Kontrolle über dessen Browser) & Der Server / die Webseite (Angreifer missbraucht Sitzung des Nutzers) \\
+        \hline
+        \fatsf{Technik} & Eingeschleuster Code wird auf der Webseite ausgeführt & Ein gültiges Nutzer-Login wird ausgenutzt, um Aktionen auszuführen \\
+        \hline
+        \fatsf{Erfordert Authentifizierung?} & Nein, funktioniert auch ohne Login & Ja, funktioniert nur, wenn der Nutzer eingeloggt ist \\
+        \hline
+        \fatsf{Angriffsweg} & Über Formulare, Suchfelder, URLs oder gespeicherte Daten - Browser führt bösartige Code aus & Über manipulierte Links, Bilder, Formulare oder Skripte - Opfer klickt auf einen Link oder besucht eine infizierte Seite \\
+        \hline
+        \fatsf{Gefahren} & Session Hijacking (Cookies stehlen) - Keylogging (Tastatureingaben aufzeichnen) - Webseiten-Manipulation & Geldüberweisungen ohne Zustimmung - Passwortänderung durch Opfer ohne Wissen - Unerwünschte Postings in sozialen Medien\\
+        \hline
+        \fatsf{Schtzmaßnahmen} & Eingaben validieren und escapen - Content Security Policy (CSP) - HttpOnly für Cookies setzen & CSRP-Token (z.B. Synchronizer Token Pattern) - SameSite-Cookies aktivieren - Referrer-Header und Origin-Check nutzen \\
+        \hline
+    \end{tabular}
+\end{table}
+\clearpage
+\subsubsection*{XSS in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/XSS in der Praxis.jpeg}
+\end{figure}
+\subsubsection*{Der Twitter Wurm}
+\begin{itemize}
+    \item JavaSript als Tweet einschleusen
+    \item Alle Followers, die den Tweet sehen, sind betroffen, da sie den JavaSript-Code ausführen
+    \item Verbreitung durch automatische Re-Tweets
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Der Twitter Wurm.jpeg}
+\end{figure}
+\subsubsection*{Naive Gegenmaßnahmen}
+Verbiete <script>...</script> als Parameter zu übergeben\\
+Angriffe sind auch ohne <script>-Tag möglich:
+\begin{itemize}
+    \item <a href=“http://foo.com“ onmouseover=“alert(1);“>Link</a>
+    \item <img src=“http://foo.com/image.png“ onload=“alert(1);“>
+    \item ...
+\end{itemize}
+Es gibt unzählige Varianten wie JavaScript in Webseiten eingebettet werden kann
+\subsubsection*{XSS verhindern}
+\begin{itemize}
+    \item Eingabe muss \red{gefiltert} werden!
+    \begin{itemize}
+        \item Beim Entwickeln: Betrachte jede mögliche Eingabe als schädlich!
+    \end{itemize}
+    \item Eine Möglichkeit: \blue{Blacklisting} (aber es gibt sehr viele Möglichkeiten, XSS durchzuführen)
+    \item Weitere Möglichkeit: \blue{HTML Escaping / Sanitization}
+    \begin{itemize}
+        \item Spezielle Zeichen werden durch eine Sequenz aus Zeichen anstatt von reinem HTML dargestellt 
+        \begin{itemize}
+            \item \fatsf{Beachte:} Verwende \red{Bibliotheken} anstatt eigener Implementierung! (ähnlich zur Verwendung von Kryptographie)
+        \end{itemize}
+        \item Start mit UND-Zeichen (\&) und Ende mit Semikolon (;)
+        \item Bsp.: < wir zu \&lt;
+        \item Bsp.:" wird zu \&quot;
+        \item <script>alert(1)</script> wird zu \&lt;script\&gt;alert(1)\&lt;/script\&gt;
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Gegenmaßnahme: Content Security Policy (CSP)}
+\fatsf{HTTP Header} mit dem Webserver dem Browser mitteilt, welche dynamischen Ressourcen (z.B. JavaScript) erlaubt sind\\
+\fatsf{Idee:} Whitelisting ist sicherer als Blacklisting\\
+\fatsf{Beispiel:} Content-Security-Policy: script-scr 'self'
+\begin{itemize}
+    \item JavaSript Code kann nur von der gleichen Domäne geladen werden wie die aufgerufene Webseite
+    \item Kein JavaSript Code von anderen Herkunftsadressen
+    \item Keine Ausführung von inline JavaScript (<script>...</script>)
+\end{itemize}
+\clearpage
+\subsection{SQL Injection}
+\subsubsection*{Struktur von Webservices}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Struktur von Webservices.jpeg}
+\end{figure}
+\subsubsection*{SQL-Basierte Datenbanken}
+\begin{itemize}
+    \item Eine \fatsf{Datenbank} speichert Daten in \fatsf{Tabellen}
+    \begin{itemize}
+        \item Tabelle besteht aus Spalten und jeder Datensatz wird als Zeile gespeichert
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=1\textwidth]{Thema_7_Images/SQL-Basierte Datenbanken.jpeg}
+        \end{figure}
+    \end{itemize}
+    \item \fatsf{Structured Query Language (SQL):} Sprache, um mit Datenbank zu interagieren\begin{itemize}
+        \item CRUD-Operationen (Create, Read, Update, Delete)
+        \item Management von Rechten
+        \item ...
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Exkurs SQL Syntax}
+\begin{itemize}
+    \item Abfrage: SELECT <columns> FROM <table> [WHERE <conditions>]
+    \item Speichern: INSERT INTO <table> (<columns>) VALUES <new data>
+    \item Aktualisieren: UPDATE <table> SET <column> = <value> [WHERE <conditions>]
+    \item Löschen: DELETE FROM <table> [WHERE <conditions>]
+    \item Erstellen von Tabellen: CREATE TABLE <table> (<column definitions>)
+    \item Löschen von Tabellen: DROP TABLE <table>
+    \item Kommentare: -- (zwei Striche)
+    \item Semikolons trennen zwei Statements
+\end{itemize}
+\subsubsection*{Vereinfachtes Login-Skript}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Vereinfachtes Login-Skript.jpeg}
+\end{figure}
+\begin{codeBlock}{}
+    $query = "SELECT id, name, size FROM products WHERE size=’".$size."’";
+\end{codeBlock}
+\begin{itemize}
+    \item In PHP benutzt man den Punkt (.) zur String-Konkatenation
+\end{itemize}
+\fatsf{python:}
+\begin{codeBlock}{}
+    query = f"SELECT * FROM users WHERE username=’{username}’ AND password=’{password}’"
+\end{codeBlock}
+\begin{enumerate}
+    \item Das f vor dem String bedeutet, dass alles innerhalb der {} durch den aktuellen Wert der Variable ersetzt wird
+\end{enumerate}
+\clearpage
+\subsubsection*{Ablauf einer Anfrage}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/Ablauf einer Anfrage.jpeg}
+\end{figure}
+\subsubsection*{SQL Injection Angriff}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_7_Images/SQL Injection Angriff.jpeg}
+\end{figure}
+\subsubsection*{SQL Injection: Varianten}
+Schwachstellen ermöglicht dem Angreifer eine Vielzahl an Befehlen auszuführen:
+\begin{itemize}
+    \item ...pwd=test; DROP Table Accounts; \fatsf{Tabelle löschen}
+    \item ...pwd=test; INSERT INTO Accounts (...) VALUES ...; \fatsf{Einträge hinzufügen}
+    \item ...pwd=test; UPDATE Accounts SET ... WHERE ...; \fatsf{Einträge aktualisieren}
+    \item ...UNION SELECT '1', 'flake', 'falke@mail.de', 'login'; \fatsf{beliebige Werte in die Abfrage hinzufügen}
+\end{itemize}
+\subsubsection*{Naive Gegenmaßnahme}
+Verwendung von Quoting in der SQL-Abfrage
+\begin{itemize}
+    \item SELECT * FROM Accounts WHERE username='\$username' AND password='\$password'; (Nun gültiger Syntax)
+\end{itemize}
+Was kann Angreifer tun?
+\begin{itemize}
+    \item Übergabe an PHP: ...pwd=\red{test' OR '123} (String aus Ziffern wird als Zahl interpreteiert; Zahl != 0 wird als Wahr interpretiert (ähnlich C))
+    \begin{itemize}
+        \item SELECT * FROM Accounts WHERE username='Bob' AND password='\red{test' OR '123}';
+    \end{itemize}
+    \item Übergabe an PHP: ...pwd=\red{test'; DROP TABLE Accounts; --}
+    \begin{itemize}
+        \item SELECT ' FROM Accounts WHERE username='Bob' AND password='\red{test'; DROP TABLE Accounts; --}'; (Angreifer kann Anführungszeichen oder Kommentar in Eingabe integrieren)
+    \end{itemize}
+\end{itemize}
+\begin{infoBox}
+    \begin{enumerate}
+        \item \fatsf{Löschen einer Tabelle (DROP TABLE)}\\
+        Der Angreifer fügt eine SQL-Anweisung hinzu, die eine Tabelle löscht. Beispiel:\\
+        \fatsf{Eingabe:}
+        \begin{codeBlock}{}
+            ' OR '1' = '1'; DROP TABLE users; --
+        \end{codeBlock}
+        \fatsf{Vollständige SQL-Abfrage:}
+        \begin{codeBlock}{}
+            SELECT * FROM users WHERE username = '' OR '1'='1'; DROP TABLE users; --
+        \end{codeBlock}
+        \item \fatsf{Hinzufügen von Einträge (INSERT INTO)}
+        Der Angreifer fügt einen neuen Benutzer in die Datenbank ein.\\
+        \fatsf{Eingabe:}
+        \begin{codeBlock}{}
+            ' OR 1=1; INSERT INTO users (username, password) VALUES ('attacker', 'password123'); --
+        \end{codeBlock}
+        \item \fatsf{Aktualisieren von Einträgen (UPDATE)}\\
+        \fatsf{Eingabe:}
+        \begin{codeBlock}{}
+            ' OR '1'='1'; UPDATE users SET password='new password' WHERE username='victim'; --
+        \end{codeBlock}
+        \item \fatsf{Datenabfrage mit UNION SELECT}\\
+        \fatsf{Eingabe:}
+        \begin{codeBlock}{}
+            ' UNION SELECT username, password FROM users; --
+        \end{codeBlock}
+        \begin{itemize}
+            \item UNION SELECT kombiniert die ursprüngliche Abfrage mit einer neuen Abfrage, die alle Benutzernamen und Passwörter aus der Tabelle users extrahiert und anzeigt
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{SQL Injection verhindern}
+Wie bei XSS: \red{Eingaben müssen gefiltert werden!}
+\begin{itemize}
+    \item Schwierig alle Spezialzeichen korrekt zu escapen
+\end{itemize}
+Besser: \blue{Prepared statements}
+\begin{itemize}
+    \item Definiere SQL-Statement mit Platzhalter für Daten (typischerweise mit Symbol ?)
+    \begin{itemize}
+        \item z.B. SELECT * FROM Accounts WHERE username=? AND password=?;
+    \end{itemize}
+    \item Idee: Zuerst wird das Statement geparst, dann die Daten hinzugefügt
+    \begin{itemize}
+        \item Damit werden die Daten nicht als Teil des Statements geparst und können dieses nicht verändern
+    \end{itemize}
+\end{itemize}

@@ -1,0 +1,244 @@
+\section{Einführung Kryptographie}
+\subsection{Was ist Kryptographie}
+\enquote{Theorie der IT-Sicherheit}\\
+Aber unzählige Anwendungen in der Praxis:
+\begin{itemize}
+    \item Grundlegender Baustein jedes Sicherheitssystems
+    \item z.B. ohne Kryptographie keine Sicherheit im Internet
+\end{itemize}
+\subsubsection*{Klassische VS moderne Kryptographie}
+\begin{minipage}[t]{0.5\textwidth}
+    \fatsf{Klassische Kryptographie:}
+    \begin{itemize}
+        \item Sichere Kommunikation über unsichere Kanäle
+        \item Hauptanwendung: Militär
+    \end{itemize}
+    \vfill
+    \includegraphics[width=\linewidth]{Thema_2_Images/Klassische Kryptographie.jpeg}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \fatsf{Moderne Kryptographie:}
+    \begin{itemize}
+        \item Liefert starke Sicherheitsgarantie für Daten und Berechnungen in Anwesenheit eines Angreifers
+        \item Anwendungen in nahezu jedem Lebensbereich
+    \end{itemize}
+    \vfill
+    \includegraphics[width=\linewidth]{Thema_2_Images/Moderne Kryptographie.jpeg}
+\end{minipage}
+\clearpage
+\subsubsection*{Motivation: Sichere Kommunikation}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Sichere Kommunikation}
+\end{figure}
+\subsection{Ziele der Kryptographie}
+Drei wesentliche Ziele der Kryptographie:
+\begin{itemize}
+    \item \fatsf{Vertraulichkeit:} Angreifer kann Inhalt der Nachrichten \red{nicht} lernen
+    \item \fatsf{Integrität:} Angreifer kann Nachricht \red{nicht} ändern, ohne dass Änderung erkannt wird
+    \item \fatsf{Authentizität:} Angreifer kann \red{nicht} behaupten, dass eine Nachricht von Alice kam, die diese nicht gesendet hat
+\end{itemize}
+\clearpage
+\subsubsection*{Wesentlicher Baustein: Schlüssel}
+\begin{itemize}
+    \item \fatsf{Kurzer Schlüssel:} Kryptoverfahren verwenden zufällig gewählten, kurzen Schlüssel
+    \item \fatsf{Symmetrische Kryptogrphie:} Gleicher Schlüssel zum Ver- und Entschlüsseln
+    \item \fatsf{Asymmetrische Kryptographie:}
+    \begin{itemize}
+        \item Öffentlicher Schlüssel: z.B. veröffentliche im Internet
+        \item Geheimer Schlüssel: Nur einzelnen Nurzern eines Kryptoverfahren bekannt
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Kerckhoff.jpeg}
+\end{figure}
+\subsubsection*{Warum Kerckhoff?}
+\begin{itemize}
+    \item In kommerziell eingesetzten Produkten ist es schwer, die Spezifikation geheim zu halten (z.B. \blue{reverse engineering})
+    \item Kurze Schlüssel sind einfacher zu \blue{schützen}, zu \blue{erzeugen} und \blue{auszutauschen}
+    \item Die Sicherheit des Designs kann \blue{öffentlich analysiert} werden
+\end{itemize}
+Kerckhoffs Grundsatz verletzt $\rightarrow$ Sicherheit bei Verschleierung
+\begin{infoBox}
+    \enquote{\fatsf{Sicherheit bei Verschleierung}} heißt, dass die Sicherheit nur dadurch entsteht, dass man hofft, die Angreifer wüssten nicht, wie das System funktioniert. Das gilt als schlechte Praxis, weil es gegen Kerckhoffs geht und in der Regel unsichere Systeme erzeugt
+\end{infoBox}
+\clearpage
+\subsection{Klassische Chiffren}
+\subsubsection*{Verschlüsselung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Verschlüsselung.jpeg}
+\end{figure}
+\subsubsection*{Shift-Chiffre}
+\fatsf{Allgemeine Idee:} zyklischer Shift jedes Buchstabens um \red{k} Stellen im Alphabet\\
+\fatsf{Bekanntestes Beispiel:} Caesars Chiffre (\red{k=3})
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Shift-Chiffre.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Shift-Chiffre: Angriff}
+Wie kann die Shift-Chiffre gebrochen werden?
+\begin{itemize}
+    \item Alle Schlüssel ausprobieren!
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Shift-Chiffre: Angriff.jpeg}
+\end{figure}
+Dieser Angriff wird \blue{Brute-Force-Angriff} genannt!\\
+\blue{Hier:} wir brauchen nur 26 Schlüssel ausprobieren!
+\subsubsection*{Weiteres Beispiel: Erweitere Shift-Chiffre}
+Benutze Wort als Schlüssel und verschiebe jeden Buchstaben, um die durch den Schlüssel gegebene Differenz.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Vegenere Chiffre.jpeg}
+\end{figure}
+\frage{Wenn der Klartext \fatsf{\enquote{HELLO}} und der Schlüssel \fatsf{\enquote{KEY}} ist, was ist die verschlüsselte Nachricht unter der Vigenere Chiffre}
+\antwort{Da der Schlüssel kürzer ist als der Klartext, wiederholen wir den Schlüssel so oft wie nötig: \fatsf{KEYKE}}
+\clearpage
+\subsubsection*{Weiteres Beispiel: Substitutionschiffre}
+Beliebige Permutation \red{$\pi$} des Eingabealphabetes
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{Thema_2_Images/Substitutionschiffre.jpeg}
+\end{figure}
+\\
+Anzahl an Schlüsseln: \red{26! $\approx$ $2^{88}$}\\
+$\rightarrow$ Zu viele Schlüssel für ausprobieren
+\subsubsection*{Angriff: Häufigkeitsanalyse}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Thema_2_Images/Substitutionschiffre: Angriff.jpeg}
+\end{figure}
+\subsection{Moderne Kryptographie}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{itemize}
+        \item Sichere Kommunikation im Internet z.B. in Messenger Diensten
+        \item Digitale Zertifikate 
+        \item Sichere Datenspeicherung z.B. für die Cloud oder Festplattenverschlüsselung
+        \item Zugriffskontrolle z.B. als Autoschlüssel
+        \item E-Commence und Online-Banking
+        \item Anonyme Internetkommunikation
+        \item eVoting
+        \item Anwendungen im Bereich Blockchain \& AI
+        \item ...
+    \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{itemize}
+        \item Digitale Signaturen
+        \item Hashfunktionen
+        \item Broadcast Verschlüsselung
+        \item Verteilte Verschlüsselung
+        \item Sichere Mehrparteienberechnung
+        \item Zero-Knowledge Beweise
+        \item eCash Protokolle
+        \item Obfuscation
+        \item ...
+    \end{itemize}
+\end{minipage}
+\subsubsection*{Art VS. Science}
+\blue{Früher:} Kein exaktes Verständnis, was Sicherheit bedeutet, ad-hoc Designs, häufig unsicher\\
+\blue{Heute:} Formale Definition, systematische Design, sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen
+\subsubsection*{Ansazt der modernen Kryptographie}
+\begin{enumerate}
+    \item \fatsf{Formale Defintion}
+    \begin{itemize}
+        \item Es wird präzise definiert, was Sicherheit bedeutet
+        \item Beispiel: Bei einer Verschlüsselung soll ein Angreifer nichts über den Klartext erfahren können
+        \item Außerdem wird ein \fatsf{Angreifermodell} festgelegt, also was der Angreifer sehen oder tun darf (z.B. er sieht nur die Chiffretexte, aber keine Klartexte)
+    \end{itemize}
+    \item \fatsf{Konstruktion}
+    \begin{itemize}
+        \item Komplexe kryptographische Verfahren werden aus einfachen, gut verstandenen Bausteinen, sogenannten \fatsf{Kryptoprimitiven}, zusammengesetzt
+        \item Ziel ist es, auf dieser Grundlage sichere Verfahren zu entwickeln
+    \end{itemize}
+    \item \fatsf{Sicherheitsbeweis}
+    \begin{itemize}
+        \item Unter bestimmten Annahmen (z.B. einer mathematischen Schwierigkeit wie der Faktorisierung großer Zahlen) wird bewiesen, dass das Verfahren sicher ist
+        \item Dazu verwendet man einen \fatsf{Reduktionsbeweis}: Man zeigt, dass ein Angreifer, der das Verfahren erfolgreich angreifen kann, damit auch die zugrunde liegende Annahme widerlegen würde
+        \item Da die Annahme als sicher gilt, gilt auch das Verfahren als sicher
+    \end{itemize}
+\end{enumerate}
+\subsubsection*{Was sind kryptographische Annahmen}
+\begin{itemize}
+    \item Kryptoverfahren nutzen Annahmen, auf denen Sicherheit basiert: Wäre \fatsf{Annahme falsch}, wäre Verfahren \fatsf{nicht mehr sicher}
+    \item Ein Beipsiel: Einwegfunktionen
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\linewidth]{Thema_2_Images/Annahmen.jpeg}
+    \end{figure}\\
+    \begin{itemize}
+        \item Annahme: Praktisch unmöglich, Eingabe aus Ausgabe zu berechnen
+    \end{itemize}
+    \item Häufig genutzte Annahmen:
+    \begin{itemize}
+        \item Primfaktorzerlegung großer natürlicher Zahlen ist \enquote{schwer}
+        \item Berechnung des diskreten Logarithmus ist \enquote{schwer}
+        \item Allgemein: Schwierigkeit mathmatischer Probleme
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Kryptographische Primitive und Konstruktionen}
+\begin{itemize}
+    \item \fatsf{Kryptographische Primitive:}
+    \begin{itemize}
+        \item \fatsf{Definition:} Abstrakte, fundamentale Funktion mit spezifischen kryptographischen Eigenschaften
+        \item \fatsf{Beispiele:} Blockchiffren, Hash Funktionen, Digitale Signaturen, etc.
+    \end{itemize}
+    \item \fatsf{Kryptographische Konstruktion:}
+    \begin{itemize}
+        \item \fatsf{Definition:} Beschreibt, wie kryptographische Primitive instanziiert werden
+        \item \fatsf{Beispiele:} AES, SHA-256, Schnorr-Signaturen, etc.
+    \end{itemize}
+    \item \fatsf{Kryptographische Verfahren:}
+    \begin{itemize}
+        \item \fatsf{Definition:} Komplexe Systeme oder Protokolle, die aus einer oder mehreren Kryptographischen Konstruktionen bestehen und eine bestimmte Sicherheitsfunktion erfüllen
+        \item \fatsf{Beispiele:} TLS, PGP, etc.
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Kryptographische Primitive}
+Folgende Kryptographische Konstruktionen betrachten wir in der Vorlesung:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_2_Images/Kryptographische Primitive.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \fatsf{Hash Funktionen:} Weder symmetrische noch asymmetrische Kryptoprimitive (Arbeiten \fatsf{ohne Schlüssel}). Sie nehmen eine Eingabe beliebiger Länge und erzeugen daraus eine \fatsf{feste, meist kurze Ausgabewert} (Hashwert)
+\end{itemize}
+\clearpage
+\subsubsection*{Kryptographische Konstruktionen}
+Folgende Kryptographische Konstruktionen betrachten wir in der Vorlesung:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_2_Images/Kryptographische Konstruktionen.jpeg}
+\end{figure}
+\subsection{Warnung zum Einsatz der Kryptographie in der Praxis}
+\subsubsection*{Was kann trotzdem alles schiefgehen?}
+\begin{itemize}
+    \item Schwache oder unsichere Verfahren
+    \begin{itemize}
+        \item Beispiel: Benutzung von MD5-Hashfunktion
+    \end{itemize}
+    \item Fehler in der Implementierung
+    \begin{itemize}
+        \item Beispiel: Heartbleed-Bug in OpenSSL
+    \end{itemize}
+    \item Falsche Annahmen über den Angreifer
+    \begin{itemize}
+        \item Beispiel: Timing Angriffe auf RSA
+    \end{itemize}
+    \item Schlüsselmanagement-Probleme
+    \begin{itemize}
+        \item Beispiel: SSH-Key versehentlich veröffentlicht
+    \end{itemize}
+    \item Veraltete Technologien verwenden
+    \begin{itemize}
+        \item Beispiel: WEP zur Sicherung von WLAN
+    \end{itemize}
+    \item Verletzung des Kerckhoff`schen Prinzips
+    \begin{itemize}
+        \item Beispiel: CSS zum Schutz von DVDs
+    \end{itemize}
+\end{itemize}

@@ -1,0 +1,2447 @@
+\section{Netzwerksicherheit}
+\subsubsection*{LAN vs. WAN}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/LAN VS. WAN.jpeg}
+\end{figure}
+\subsubsection*{Kommunikation mittels eines Protokolls}
+\red{Protokoll:} Vereinbarung wie einzelne Knoten im Netzwerk miteinander kommunizieren:
+\begin{itemize}
+    \item \red{Syntax:} Wie ist die Kommunikation strukturiert und spezifiziert (z.B. Nachrichtenformat)
+    \item \red{Semantik:} Bedeutung der Kommunikation (z.B. Aktionen beim Senden und Empfangen von Nachrichten)
+\end{itemize}
+\fatsf{Beispiel:} Protokoll um in der Vorlesung eine Frage zu stellen
+\begin{enumerate}
+    \item Student hebt die Hand
+    \item Warte bis Dozent Student aufruft
+    \item Wenn aufgerufen dann Frage stellen
+    \item Falls der Student nach einer bestimmten Zeit nicht aufgerufen wurde, dann bemerkbar machen durch Rufen
+\end{enumerate}
+\clearpage
+\subsection{Netzwerkgrundlagen}
+\subsubsection*{Kommunikation im Schichtenmodell}
+Kommunikation in Netzwerken funktioniert über Schichten
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Kommunikation im Schichtenmodell.jpeg}
+\end{figure}
+\subsubsection*{Netzwerkschichtenmodelle: OSI}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Netzwerk-Schichtenmodelle: OSI.jpeg}
+\end{figure}
+Änderung in einer der Schichten beeinflusst nicht Protokolle in anderen Schichten
+\clearpage
+\subsubsection*{Netzwerkschichtenmodelle: TCP/IP}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Netzwerkschichtenmodelle: TCP.jpeg}
+\end{figure}
+\subsubsection*{Netzwerkschichtenmodelle}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Netzwerkschichtenmodelle.jpeg}
+\end{figure}
+\subsubsection*{Link Layer}
+\fatsf{Bietet an:} Übertragung zwischen zwei Punkten inklusive Konvertierung in physikalische Signale\\
+\fatsf{Beispiele:}
+\begin{itemize}
+    \item Ethernet (IEEE 802.3)
+    \item Wi-Fi (IEEE 802.11)
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Link Layer.jpeg}
+\end{figure}
+\fatsf{LAN (Local Area Network):} Netzwerk an Computern, die direkt miteinander kommunizieren können.
+\subsubsection*{Identifikation im Link Layer}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Identifikation im Link Layer.jpeg}
+\end{figure}
+\fatsf{MAC (Media Access Control) Adressen:} 6 Byte Adresse, die jedes netzwerkfähige Gerät im Internet besitzt (z.B. Netzwerkart oder Wi-Fi Antenne)
+\begin{itemize}
+    \item Weltweit eindeutige Adresse der \fatsf{Hardware:} Repräsentation als Byte (2 hex Zeichen): \fatsf{13:37:ca:fe:f0:0d}
+    \item Die ersten 3 Bytes geben den \fatsf{Hardwarehersteller} an
+    \begin{itemize}
+        \item Apple: 20-c9-d0-xx-xx-xx, a8-20-66-xx-xx-xx, ...
+        \item Intel: 00-07-e9-xx-xx-xx, ...
+        \item Cisco: 00-60-2f-xx-xx-xx, ...
+    \end{itemize}
+    \item Die letzten 3 Bytes sind gerätespezifisch
+    \item Eigene Adresse herausfinden:
+    \begin{itemize}
+        \item ipconfig -a (Linux, OSX)
+        \item ipconfig /all (Windows)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Internet Layer}
+\fatsf{Bietet an:} Sendung von \fatsf{Paketen} von jedem Quellgerät zu jedem Zielgerät\\
+Erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
+\begin{itemize}
+    \item Jede Verbindung kann unterschiedliche Technologie im Link Layer verwenden (z.B. Ethernet oder Wi-Fi)
+    \item Pakete beinhalten: Sender- \& Zieladresse, Daten
+    \item Router leiten Pakete zwischen einzelnen Knoten weiter
+    \item \fatsf{Bemerkung:} Pakete mit gleicher Sender- \& Zieladresse können unterschiedliche Routen nehmen
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Internet Layer.jpeg}
+\end{figure}
+\subsubsection*{Internet Protocol (IP)}
+\fatsf{Internet Layer Protokoll} zur Kommunikation zwischen Geräten im Internet\\
+Eindeutige Identifikation von Geräten im Internet mittels \fatsf{IP Adresse}
+\begin{itemize}
+    \item \blue{IPv4:} 32 Bit Adresse der Form: 120.19.22.00
+    \item \blue{IPv6:} 128 Bit Adresse der Form: 2607:f140:8801::1:23
+\end{itemize}
+IP ist \fatsf{unzuverlässiges} Protokoll:
+\begin{itemize}
+    \item Pakete können \fatsf{verloren} gehen
+    \item Pakete können \fatsf{Fehler} aufweisen
+    \item Pakete können in \fatsf{falscher Ordnung} beim Empfänger eintreffen
+\end{itemize}
+Protokolle auf höherer Ebene garantieren Zuverlässigkeit!
+\subsubsection*{Transport Layer}
+\fatsf{Bietet an:} Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste
+\begin{itemize}
+    \item Ermöglicht unterschiedliche Anwendungen auf einem Host durch \fatsf{Ports:} 120.19.22.00:\fatsf{443}
+    \begin{infoBox}[title=Was sind Ports?]
+        Ein \fatsf{Port} ist eine nummerierte Schnittstelle, die von einem Host zur Kommunikation mit Anwendungen genutzt wird.
+        \begin{itemize}
+            \item \fatsf{IP-Adresse:} Identifiziert ein Gerät im Netzwerk (z.B. 192.168.1.1)
+            \item \fatsf{Portnummer:} Identifiziert eine spezifische Anwendung/Dienst auf diesem Gerät
+        \end{itemize}
+        Jedes Paket im Netzwerk hat eine \fatsf{Quell-IP} und eine \fatsf{Quell-Portnummer} sowie eine \fatsf{Ziel-IP} und eine \fatsf{Ziel-Portnummer}.\\
+        Beispiel:\\
+        Wenn du eine Webseite öffnest, sendet dein Computer eine Anfrage mit:
+        \begin{itemize}
+            \item \fatsf{Ziel-IP:} Die Adresse des Webservers
+            \item \fatsf{Ziel-Port:} 80 (für HTTP) oder 443 (für HTTPS)
+            \item \fatsf{Quell-Port:} Ein temporärer Port auf deinem Gerät, um die Verbindung zu identifizieren
+        \end{itemize}
+    \end{infoBox}
+    \begin{infoBox}[title=Portnummern: Kategorien]
+        Es gibt \fatsf{65.536 Ports} (Nummern von \fatsf{0 bis 65.535}) pro IP-Adresse. Sie sind in drei Kategorien unterteilt:
+        \begin{enumerate}
+            \item \fatsf{Well-Known Ports (0-1023):}
+            \begin{itemize}
+                \item Reserviert für \fatsf{standardisierte Dienste} und \fatsf{Protokolle}
+                \item Diese Ports sind festgelegt und weltweit bekannt
+                \item Beispiele:
+                \begin{itemize}
+                    \item 20, 21: FTP (File Transfer Protocol)
+                    \item 22: SSH (Secure Shell, Ferzugriff)
+                    \item 25: SMTP (E-Mail-Versand)
+                    \item 53: DNS (Namensauflösung)
+                    \item 80: HTTP (Unverschlüsseltes Web)
+                    \item 443: HTTPS (Verschlüsseltes Web)
+                    \item ...
+                \end{itemize}
+            \end{itemize}
+            \item \fatsf{Registered Ports (1024-49151):}
+            \begin{itemize}
+                \item Werden für spezifische Anwendungen registriert
+                \item Beispiele:
+                \begin{itemize}
+                    \item 3306: MySQL-Datenbank
+                    \item 8080: Alternative HTTP-Port für Webserver
+                    \item ...
+                \end{itemize}
+            \end{itemize}
+            \item \fatsf{Dynamic/Private Ports (49152-65535):}
+            \begin{itemize}
+                \item Werden dynamisch von Betriebssystemen oder Anwendungen verwendet, um temporäre Verbindungen (z.B. Quell-Ports) zu erstellen
+                \item Beispiel:
+                \begin{itemize}
+                    \item Dein Computer könnte Port \fatsf{50345} verwenden, um eine Verbindung zu einem Webserver herzustellen, während der Webserver Port \fatsf{443} nutzt
+                \end{itemize}
+            \end{itemize}
+        \end{enumerate}
+    \end{infoBox}
+    \begin{infoBox}[title=Multiplexing und Demultiplexing mit Ports]
+        \begin{itemize}
+            \item \fatsf{Multiplexing:}\\
+            Wenn ein Gerät Daten an verschiedene Ziele sendet, verwendet es \fatsf{verschiedene Quell-Ports}, um die Datenströme zu unterscheiden. \\
+            Beispiel: Dein Laptop könnte zeitgleich eine Verbindung zu einer Website (Port 443) und einem Mailserver (Port 25) aufbauen. Die Ports trennen diese Verbindungen.
+            \item \fatsf{Demultiplexing:}\\
+            Wenn Daten auf deinem Gerät ankommen, sorgt der Transport Layer dafür, dass sie anhand der \fatsf{Portnummern} der richtigen Anwendung zugeordnet werden\\
+            Beispiel: HTTP-Daten gehen an deinen Browser, E-Mail-Daten an dein E-Mail-Programm
+        \end{itemize}
+    \end{infoBox}
+    \begin{infoBox}[title=Firewall und Ports]
+        \begin{itemize}
+            \item Firewalls kontrollieren den Datenverkehr basierend auf \fatsf{Portnummern}
+            \item Eine Firewall kann bestimmte Ports blockieren oder zulassen, um die Sicherheit zu erhöhen\\
+            Beispiel:
+            \begin{itemize}
+                \item Blockiere \fatsf{Port 23} (Telnet), weil er unsicher ist
+                \item Erlaube nur den Datenverkehr auf \fatsf{Port 442}(HTTPS), um sichere Webkommunikation zu gewährleisten
+            \end{itemize}
+        \end{itemize}
+    \end{infoBox}
+\end{itemize}
+\begin{itemize}
+    \item \fatsf{Transmission Control Protocol (TCP):}
+    \begin{itemize}
+        \item Stellt \fatsf{Verbindung} zwischen zwei Endpunkten her
+        \item \fatsf{Zuverlässige} Kommunikation: Übertragung korrekter Pakete in korrekter Ordnung
+        \item \fatsf{Langsamere} Übertragung
+    \end{itemize}
+    \item \fatsf{User Datagram Protocol (UDP):}
+    \begin{itemize}
+        \item \fatsf{Verbindungsloses} Protokoll
+        \item Kommunikation ist \fatsf{unzuverlässig:} keine Garantie, dass ein einmal gesendetes Paket auch ankommt
+        \item \fatsf{Schnellere} Übertragung
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Application Layer}
+\fatsf{Bietet an:} Funktion für netzbasierte Software (\fatsf{nicht} die Anwendung selbst)
+\begin{itemize}
+    \item HTTP/HTTPS -> Webseiten
+    \item FTP -> Filesharing
+    \item SMTP -> Emailversand
+\end{itemize}
+Adressierung der Anwendung mittels Ports\\
+Gängige Ports:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Application Layer.jpeg}
+\end{figure}
+\subsubsection*{Verschachtlung der einzelnen Schichten}
+\begin{infoBox}[title=Das Beispiel: Aufruf einer Webseite]
+    \begin{enumerate}
+        \item \fatsf{Application Layer}
+        \begin{itemize}
+            \item \fatsf{Protokoll: HTTP} (Hypertext Transfer Protocol)
+            \item \fatsf{Aufgabe:}
+            \begin{itemize}
+                \item Dein Browser erstellt einen \fatsf{HTTP-Request}, z.B. GET /index.html HTTP/1.1, um die Startseite der Webseite anzufordern
+                \item Dieser HTTP-Request enthält:
+                \begin{itemize}
+                    \item Den \fatsf{Pfad} der gewünschten Daten (/index.html)
+                    \item Die \fatsf{HTTP-Version} (HTTP/1.1)
+                    \item Zusätzliche Header, z.B. Host: www.example.com
+                \end{itemize}
+            \end{itemize}
+            \fatsf{Output der Schicht:}\\
+            Der HTTP-Request wird als Payload an die nächste Schicht weitergegeben
+        \end{itemize}
+        \item \fatsf{Transport Layer}
+        \begin{itemize}
+            \item \fatsf{Protokoll: TCP} (Transmission Control Protocol)
+            \item \fatsf{Aufgabe:}
+            \begin{itemize}
+                \item Die Transportschicht sorgt für eine \fatsf{zuverlässige Ende-zu-Ende-Verbindung}
+                \item Sie teilt die Daten (falls sie zu groß sind) in \fatsf{Segmente} auf
+                \item Ein \fatsf{TCP-Header} wird hinzugefügt, der enthält:
+                \begin{itemize}
+                    \item \fatsf{Quell-Port} (z.B. 51000): Temporärer Port deines Computers
+                    \item \fatsf{Ziel-Port} (443): HTTPS-Port des Servers
+                    \item \fatsf{Sequenznummern:} Zum Zusammensetzen der Daten in der richtigen Reihenfolge
+                    \item \fatsf{Checksum:} Prüft die Integrität der Daten
+                \end{itemize}
+            \end{itemize}
+            \fatsf{Output der Schicht:}\\
+            Das HTTP-Request-Payload wird in ein TCP-Segment verpackt und an die nächste Schicht weitergeleitet
+        \end{itemize}
+        \item \fatsf{Internet Layer}
+        \begin{itemize}
+            \item \fatsf{Protokoll: IP} (Internet Protocol)
+            \item \fatsf{Aufgabe:}
+            \begin{itemize}
+                \item Die Internetschicht stellt sicher, dass die Datenpakete an die richtige IP-Adresse gesendet werden
+                \item Ein \fatsf{IP-Header} wird hinzugefügt, der enthält:
+                \begin{itemize}
+                    \item \fatsf{Quell-IP-Adresse:} Die IP deines Computers (z.B. 192.168.1.10)
+                    \item \fatsf{Ziel-IP-Adresse:} Die IP des Webservers (z.B. 93.184.216.34)
+                    \item \fatsf{TTL (Time To Live):} Maximale Anzahl von Hops (Zwischenstationen), bevor das Paket verworfen wird
+                \end{itemize}
+            \end{itemize}
+            \fatsf{Output der Schicht:}\\
+            Das TCP-Segment wird in ein IP-Paket verpackt und an die nächste Schicht weitergegeben
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}
+    \begin{enumerate}[start=4]
+        \item \fatsf{Link Layer}
+        \begin{itemize}
+            \item \fatsf{Protokoll: Ethernet} (oder Wi-Fi, je nach Verbindungstyp)
+            \item \fatsf{Aufgabe:}
+            \begin{itemize}
+                \item Die Netzwerkschicht sorgt dafür, dass die Datenpakete physisch über das lokale Netzwerk übertragen werden
+                \item Ein \fatsf{Ethernet-Frame} wird erstellt, der enthält:
+                \begin{itemize}
+                    \item \fatsf{Quell-MAC-Adresse:} Die MAC-Adresse deiner Netzwerkkarte
+                    \item \fatsf{Ziel-MAC-Adresse:} Die MAC-Adresse des nächsten Geräts im Netzwerk (z.B. Router)
+                    \item \fatsf{Ethernet-Typ:} Gibt an, dass die Daten ein IP-Paket enthalten
+                \end{itemize}
+            \end{itemize}
+            \fatsf{Output der Schicht:}\\
+            Das IP-Paket wird in einem Ethernet-Frame verpackt, der dann als \fatsf{Bits} (elektrische Signale oder Funkwellen) auf die Leitung gesendet wird
+        \end{itemize}
+        \item \fatsf{Physical Layer}
+        \begin{itemize}
+            \item \fatsf{Protokoll:} physische Verbindung (z.B. Ethernet-Kabel oder Wi-Fi)
+            \item \fatsf{Aufgabe:}
+            \begin{itemize}
+                \item Die Daten (Ethernet-Frame) werden in \fatsf{Bits} umgewandelt und physisch über das Medium (Kabel oder Funk) übertragen
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\fatsf{Beispiel:} HTTP Request
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Verschachtelung der einzelnen Schichten 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Verschachtelung der einzelnen Schichten 2.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Verschachtelung der einzelnen Schichten 3.jpeg}
+\end{figure}
+\clearpage
+\subsection{Angriffe auf den Link Layer}
+\subsubsection*{Übersicht: Link Layer}
+\underline{Angebotene Dienste für nächst höhere Schicht}
+\begin{itemize}
+    \item Punkt zu Punkt Datenübertragung mit elementarem Fehlererkennungsmechanismus
+\end{itemize}
+\underline{Benutzte Dienste von nächst niedrigerer Schicht:}
+\begin{itemize}
+    \item Keine, da unterste Schicht
+\end{itemize}
+\underline{Adressierung:} mittels MAC Adresse\\
+\underline{Protokolle:}
+\begin{itemize}
+    \item Ethernet (IEEE 802.3)
+    \item WiFi (IEEE 802.11)
+    \item \red{ARP (Address Resolution Protocol)}
+\end{itemize}
+\underline{Angriffe:}
+\begin{itemize}
+    \item MAC Flooding
+    \item ARP Spoofing
+\end{itemize}
+\subsubsection*{Paket Sniffing in Broadcast-Netzen}
+Manche LANs nutzen \fatsf{Broadcast Kommunikation}
+\begin{itemize}
+    \item Jedes Paket wird an jedes Gerät gesendet
+    \item Lauschangriff ist trivial: Angreifer muss \red{nur \enquote{zuhören}}
+    \begin{itemize}
+        \item Netzwerkkarte in \enquote{promiscuous mode}, um gesamten Datenverkehr abzuhören
+        \item Analyse mit \enquote{\fatsf{Packet Sniffer}} (z.B. Wireshark)
+    \end{itemize}
+    \item Anschließend auch Replay leicht möglich
+\end{itemize}
+\begin{infoBox}[title=Warum kann Paket-Sniffing in Broadcast-Netzen auftreten?]
+    In \fatsf{Broadcast-basierten Netzwerken} wie traditionellen LANs mit \fatsf{Hub-Technologie} oder bestimmten WLANs:
+    \begin{itemize}
+        \item \fatsf{Broadcast-Kommunikation:} Alle Geräte im Netzwerk teilen sich denselben Kommunikationskanal. Datenpakete, die für ein bestimmtes Zielgerät gesendet werden, werden trotzdem an \fatsf{alle Geräte im Netzwerk} geschickt.
+        \item \fatsf{Promiscuous Mode der Netzwerkkarte:} Eine normale Netzwerkkarte ignoriert Pakete, die nicht für sie bestimmt wird. Im \fatsf{promiscuous mode} jedoch nimmt die Netzwerkkarte \fatsf{alle Pakete} auf, die sie sieht - unabhängig davon, ob sie die Zieladresse sind.
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Funktionsweise von Paket-Sniffing]
+    \begin{enumerate}
+        \item \fatsf{Netzwerkkarte in den Promiscuous Mode setzen:}
+        \begin{itemize}
+            \item Der Angreifer konfiguriert die Netzwerkkarte seines Geräts, um alle Pakete im Netzwerk zu empfangen, nicht nur die für ihn bestimmen.
+        \end{itemize}
+        \item \fatsf{Nutzung eines Packet Sniffers:}
+        \begin{itemize}
+            \item Tools wie \fatsf{Wireshark, tcpdump} oder ähnlich analysieren den aufgezeichneten Datenverkehr
+            \item Der Sniffer kann sensible Informationen wie:
+            \begin{itemize}
+                \item \fatsf{Benutzernamen/Passwörter} (bei unverschlüsselten Protokollen wie HTTP, FTP)
+                \item \fatsf{Cookies} (um Sitzungen zu kapern)
+                \item \fatsf{Gesendete Daten} (z.B. E-Mails, Dateien)
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Replay-Angriffe:}
+        \begin{itemize}
+            \item Der Angreifer kann Pakete, die er aufgezeichnet hat, erneut senden (z.B. eine Sitzung neu initiieren oder eine Anfrage manipulieren)
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Voraussetzung für Paket-Sniffing]
+    \begin{itemize}
+        \item \fatsf{Angreifer muss Zugang zum Netzwerk haben:}
+        \begin{itemize}
+            \item Physischer Zugriff auf das LAN (z.B. durch einen angeschlossenen Laptop)
+            \item Zugang zum WLAN, entweder legal (z.B. als Teilnehmer) oder durch Umgebung von Sicherheitsmaßnahmen
+        \end{itemize}
+        \item \fatsf{Broadcast-Kommunikation:}
+        \begin{itemize}
+            \item Paket-Sniffing ist besonders effektiv in \fatsf{Hubs} oder \fatsf{unsicheren WLAN-Netzwerken} (ohne WPA2/WPA3-Verschlüsselung)
+            \item In modernen Switch-Netzwerken ist das schwieriger, das Switches Datenpakete gezielt an das Zielgerät senden (außer in Fällen wie \fatsf{ARP-Spoofing})
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Paket Sniffing in Broadcast-Netzen.jpeg}
+\end{figure}
+\subsubsection*{Datenübertragung in \enquote{geswitchten}-Netzen}
+\begin{itemize}
+    \item Angreifer erhält \fatsf{nur die Frames}, die für ihn bestimmt sind
+    \item Wie kann der Angreifer hier den \fatsf{Datenverkehr zwischen zwei Parteien} belauschen?
+\end{itemize}
+$\rightarrow$ MAC Flooding (mehr dazu gleich)
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Datenübertragung in geswitchten-Netzen.jpeg}
+\end{figure}
+\subsubsection*{Erinnerung: MAC Adressen}
+\fatsf{IP-Adressen}
+\begin{itemize}
+    \item 32-Bit (IPv4) oder 128-Bit (IPv6)
+    \item Netzwerkschicht
+    \item Kommunikation global, d.h. \fatsf{über Subnetze} hinweg
+\end{itemize}
+\fatsf{MAC-Adresse}
+\begin{itemize}
+    \item 48-Bit: Weltweit eindeutige Adresse der Hardware
+    \begin{itemize}
+        \item \enquote{Früher} in die Netzwerkkarte eingebrannt
+    \end{itemize}
+    \item Link Layer
+    \item Kommunikation \fatsf{innerhalb eines Subnetzes}
+\end{itemize}
+\clearpage
+\subsubsection*{MAC-Adressen Beispiel}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Thema_6_Images/MAC-Adressen Beispiel.jpeg}
+\end{figure}
+\subsubsection*{Angriffstechniken}
+\begin{enumerate}
+    \item MAC Spoofing
+    \item MAC Flooding
+    \item ARP Spoofing
+\end{enumerate}
+\subsubsection*{Zugriffskontroller per MAC Adresse?}
+\begin{infoBox}
+    \fatsf{Zugriffskontroller per MAC-Adresse} ist eine Methode, um den Zugang zu einem Netzwerk (z.B. einem WLAN) auf Geräte mit bestimmten MAC-Adressen zu beschränken. Sie wird oft als zusätzliche Sicherheitsmaßnahme genutzt, insbesondere in Unternehmenumgebungen.
+\end{infoBox}
+\begin{itemize}
+    \item Häufig empfohlen zur \enquote{Absicherung} von WLANs
+    \item In Unternehmen oft genutzt, z.B. Filterung von privaten Geräten
+\end{itemize}
+\subsubsection*{MAC Spoofing}
+MAC-Adressen sind leicht per Software zu ändern.\\
+- MAC-Filter z.B. bei Heim-WLANs sind (alleine) keine verlässlichen Zugriffskontrolle
++ randomisierte MACs erleichtern anonymes Surfen
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{MAC-Spoofing} macht die reine MAC-Filterung \fatsf{unsicher}
+        \item Für private Netzwerke ist MAC-Filterung eine \fatsf{zusätzliche Maßnahme}, aber \fatsf{niemals ein Ersatz} für starke Verschlüsselung (z.B. WPA3)
+        \item Unternehmen sollten auf professionellere Sicherheitsmaßnahmen setzen, z.B. \fatsf{802.1X}, VLANs und Monitoring
+    \end{itemize}
+\end{infoBox}
+\clearpage
+\subsubsection*{MAC Flooding}
+\begin{infoBox}[title=Was ist MAC Flooding?]
+    \fatsf{MAC Flooding} ist eine Angriffsmethode, die darauf abzielt, die \fatsf{MAC-Adresstabelle} eines Netzwerk-Switches zu überlasten. Ziel ist es, den Switch in einen Modus zu zwingen, in dem er den Datenverkehr an alle Ports weiterleitet, wodurch der Angreifer die Möglichkeit erhält, den gesamten Netzwerkverkehr abzufangen.
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/MAC Flooding.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/MAC Flooding 2.jpeg}
+\end{figure}
+\begin{infoBox}
+    \begin{itemize}
+        \item Netzwerke können durch \fatsf{Port-Security}, VLANs, dynamische ARP-Inspektion und den Einsatz von Managed Switches geschützt werden
+        \item \fatsf{Wichtig:} Prävention ist entscheidend, da ein Angreifer MAC Flooding nur ausführen kann, wenn er bereits Zugriff auf das Netzwerk hat
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{Übersetzung IP <-> MAC}
+\fatsf{Beispiel:} Alice möchte eine Nachricht an Bob über LAN schicken und kennt nur Bob's IP Adresse\\
+$\rightarrow$ Alice muss Bob's MAC Adresse lernen, um Link Layer Protokoll zu nutzen
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Übersetzung IP MAC.jpeg}
+\end{figure}
+\subsubsection*{Address Resolution Protocol}
+Schritte des Protokolls:
+\begin{enumerate}
+    \item Alice überprüft ihren Cache, ob sie bereits Bob's MAC Adresse kennt
+    \item Falls Bob's MAC Adresse nicht im Cache, broadcasted Alice im LAN: \enquote{Was ist die MAC Adresse von 192.168.0.2?}
+    \item Bob antwortet an Alice: \enquote{Meine IP ist 192.168.0.2 und meine MAC Adresse ist 02:00:00:0A:08:08}. Alle anderen Geräte im LAN reagieren nicht.
+    \item Alice speichert Bob's MAC im Cache
+\end{enumerate}
+\fatsf{Lokaler ARP-Cache} eines Systems speichert diese Zuordnung (z.B. für 20 Minuten)
+\begin{itemize}
+    \item Auslesen des Caches z.B. mit 
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Address Resolution Protocol.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{ARP Ablauf}
+\begin{infoBox}[title=Wie funktioniert ARP?]
+    \begin{enumerate}
+        \item \fatsf{ARP-Request}\\
+        Ein Gerät (z.B. ein Computer) möchte ein Datenpaket an eine bekannte IP-Adresse senden, kennt aber die MAC-Adresse nicht. Es sendet daher eine \fatsf{ARP-Anfrage (ARP-Request)} an das gesamte Netzwerk (Broadcast):
+        \begin{itemize}
+            \item \fatsf{Inhalt des ARP-Requests:}
+            \begin{itemize}
+                \item \enquote{Wer hat die IP-Adresse 192.168.1.5? Bitte sende mir deine MAC-Adresse!}
+            \end{itemize}
+            \item Der ARP-Request wird im lokalen Netzwerk als Broadcast gesendet, d.h., \fatsf{alle Geräte im Subnetz} empfangen die Anfrage.
+        \end{itemize}
+        \item \fatsf{ARP-Reply}\\
+        Das Gerät mit der angefragten IP-Adresse antwortet mit einem \fatsf{ARP-Replay (ARP-Antwort):}
+        \begin{itemize}
+            \item \fatsf{Inhalt des ARP-Replies:}
+            \begin{itemize}
+                \item \enquote{Ich habe die IP-Adresse 192.168.1.5, und meine MAC-Adresse ist 00:1A:2B:3C:4D:5E}
+            \end{itemize}
+            \item Der ARP-Reply wird direkt (als Unicast) an das anfragende Gerät gesendet
+        \end{itemize}
+        \item \fatsf{ARP-Cache}\\
+        Damit ein Gerät nicht bei jeder Kommunikation eine neue ARP-Anfrage senden muss, speichert es die Zuordnung von IP- und MAC-Adressen in einem \fatsf{ARP-Cache}\\
+        Einträge im ARP-Cache haben eine begrenzte Lebensdauer und werden regelmäßig aktualisiert
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/ARP Ablauf.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{ARP Spoofing: Alias ARP Cache Poisoning}
+Spoofing = Identität einer anderen Partei vortäuschen
+\begin{itemize}
+    \item \fatsf{Angriffstechnik}, um Datenverkehr anderer Nutzer \fatsf{über den eigenen Rechner} zu leiten
+    \begin{itemize}
+        \item Bei Weiterleitung an eigentlichen Empfänger, kann Angriff unentdeckt bleiben
+        \begin{itemize}
+            \item Man-in-the-Middle (MitM) Angriff
+        \end{itemize}
+        \item Verwerfen der Pakete auch möglich
+        \begin{itemize}
+            \item Denial-of-Service (DoS) Angriff
+        \end{itemize}
+    \end{itemize}
+    \item Idee: \fatsf{Manipulation der ARP Caches} der Opfer
+\end{itemize}
+\begin{infoBox}
+    \fatsf{ARP Spoofing} ist eine Angriffsform in Computernetzwerken, bei der ein Angreifer manipulierte ARP-Nachrichten sendet, um den Netzwerkverkehr zwischen Geräten abzufangen, umzuleiten oder zu blockieren. Dieser Angriff nutzt Schwachstellen im \fatsf{Address Resolution Protocol (ARP)} aus, das keine Sicherheitsmechanismen wie Authentifizierung bietet.
+\end{infoBox}
+\subsubsection*{ARP Spoofing: Ablauf}
+\begin{infoBox}[title=Wie funktioniert ARP Spoofing?]
+    \begin{enumerate}
+        \item \fatsf{Falsche ARP-Antworten senden:}
+        \begin{itemize}
+            \item Der Angreifer sendet gefälschte ARP-Antworten ins Netzwerk
+            \item Diese Antworten enthalten eine falsche Zuordnung, z.B.:
+            \begin{itemize}
+                \item \enquote{\fatsf{Ich bin der Router mit der IP-Adresse 192.168.1.1, meine MAC-Adresse ist 00:11:22:33:44:55}} (Die MAC-Adresse gehört tatsächlich dem Angreifer)
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Manipulation der ARP-Tabellen:}
+        \begin{itemize}
+            \item Geräte im Netzwerk aktualisieren ihre ARP-Tabellen basierend auf den falschen Antworten
+            \item Sie denken nun, dass die IP-Adresse des Routers (oder eines anderen Ziels) zur MAC-Adresse des Angreifers gehört
+        \end{itemize}
+        \item \fatsf{Angreifer wird zum \enquote{Man-in-the-Middle} (MITM)}
+        \begin{itemize}
+            \item Der Datenverkehr zwischen den Geräten und dem echten Router wird über den Angreifer geleitet
+            \item Der Angreifer kann den Datenverkehr:
+            \begin{itemize}
+                \item \fatsf{Abhören (Packet Sniffing):} Zugang zu Passwörtetrn, Nachrichten, oder sensiblen Daten
+                \item \fatsf{Manipulieren:} Datenpakete ändern oder Verkehr umleiten
+                \item \fatsf{Blockieren:} Den Verkehr vollständig stoppen
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Konsequenzen von ARP Spoofing]
+    \begin{enumerate}
+        \item \fatsf{Abhören von Datenverkehr (Paket Sniffing)}
+        \begin{itemize}
+            \item Der Angreifer kann unverschlüsselte Informationen wie Passwörter, Login-Daten und andere sensible Daten auslesen
+        \end{itemize}
+        \item \fatsf{Man-in-the-Middle-Angriffe (MITM)}
+        \begin{itemize}
+            \item Der Angreifer kann den Datenverkehr manipulieren, z.B.:
+            \begin{itemize}
+                \item Benutzer auf gefälschte Webseiten weiterleiten
+                \item E-Mails oder Nachrichten ändern
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Denial-of-Service (DoS)}
+        \begin{itemize}
+            \item Durch Blockieren des Verkehrs kann der Angreifer bestimmte Geräte oder Dienste im Netzwerk unbrauchbar machen
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Thema_6_Images/ARP Spoofing: Ablauf.jpeg}
+\end{figure}
+\subsubsection*{ARP Spoofing: Gegenmaßnahmen}
+\begin{itemize}
+    \item Angriff ist durch \fatsf{Monitoring} leicht erkennbar
+    \begin{itemize}
+        \item Angreifer sendet falsche Informationen
+        \item Typischerweise kommt es zu viele ARP-Responses (Race condition: Angreifer muss schneller antworten als der Empfänger!)
+        \item \fatsf{Intrusion Detection Systeme} erkennen so etwas
+    \end{itemize}
+    \item Kernproblem: \fatsf{Kein Integritätsschutz} in ARP
+    \item Gegenmaßnahmen:
+    \begin{itemize}
+        \item \fatsf{Verschlüsselung} des Datenverkehrs auf höheren Schichten (IPSec, TLS) \fatsf{gegen MitM-Angriff}
+    \end{itemize}
+    \item In IPv6 wird ARP durch das \fatsf{Neighbor Descovery Protocol} ersetzt
+    \begin{itemize}
+        \item NDP-Nachrichten sind auch nicht geschützt -> \enquote{\fatsf{Neighbor Spoofing}} in IPv6 möglich
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsection{Wireshark}
+\subsubsection*{Wireshark}
+\begin{itemize}
+    \item \fatsf{Was ist Wireshark?}
+    \begin{itemize}
+        \item Ein grafisches Tool zur Analyse der Netzwerkpakete
+    \end{itemize}
+    \item \fatsf{Verwendung}
+    \begin{itemize}
+        \item Fehlerbehebung bei Netzwerkproblemen
+        \item Kennenlernen der Interna von Netzwerkprotokollen
+        \item Protokoll-/Programmimplementierung debuggen
+        \item Untersuchung von netzwerkbezogenen Sicherheitsproblemen
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Wireshark UI}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Wireshark UI.jpeg}
+\end{figure}
+\subsubsection*{Packet List}
+\fatsf{No.:} Index der aufgezeichneten Pakete\\
+\fatsf{Time:} Zeitstempel, zu dem das Paket die Schnittstelle überquert hat\\
+\fatsf{Source:} Ursprungshost des Pakets\\
+\fatsf{Host:} Host, an den das Paket gesendet wurde\\
+\fatsf{Protokoll:} Protokoll der höchsten Ebene, das Wireshark erkennen kann\\
+\fatsf{Length:} Länge des Pakets in Bytes\\
+\fatsf{Info:} Details über das gesendete Paket
+\subsubsection*{Analyse Einzelner Pakete}
+\begin{itemize}
+    \item \fatsf{Packet Details:}
+    \begin{itemize}
+        \item Detaillierte Informationen über das aktuell ausgewählte Paket werden im Detailbereich des Pakets angezeigt
+        \item Alle Schichtenebene werden im Baummenü angezeigt
+        \item Daten können exportiert werden durch Rechtsklick und Auswahl von \enquote{Export Selected Packet Bytes}
+    \end{itemize}
+    \item \fatsf{Packet Bytes:}
+    \begin{itemize}
+        \item Zeigt die rohen Paketbytes an
+        \item Die ausgewählte Paketebene ist hervorgehoben
+    \end{itemize}
+\end{itemize}
+\subsection{Angriffe auf den Internet Layer}
+\subsubsection*{Übersicht: Internet Layer}
+\underline{Angebotene Dienste für nächst höhere Schicht:}
+\begin{itemize}
+    \item Endpunkt zu Endpunkt kommunikation
+\end{itemize}
+\underline{Benutzt Dienste von nächst niedrigerer Schicht:}
+\begin{itemize}
+    \item Übertragung zwischen zwei benachbarten Geräten
+\end{itemize}
+\underline{Adressierung:} mittels IP Adresse (v4 oder v6)\\
+\underline{Protokolle:}
+\begin{itemize}
+    \item IP
+    \item ICMP
+\end{itemize}
+\underline{Angriffe:}
+\begin{itemize}
+    \item DHCP Spoofing
+\end{itemize}
+\subsection{Wie erhalten Geräte ihre IP-Adresse?}
+\subsubsection*{IP Zuweisung}
+\begin{itemize}
+    \item Manuelle Konfiguration
+    \begin{itemize}
+        \item IP-Adresse
+        \item Subnetzmaske
+        \item Standardgateway
+        \item DNS-Server
+    \end{itemize}
+    \item DHCP: Dynamic Host Configuration Protocol
+    \begin{itemize}
+        \item \enquote{Plug-and-Play}
+        \item RFC 2131
+        \item Gehört zur Anwendungsschicht
+    \end{itemize}
+\end{itemize}
+\begin{infoBox}[title=Grundfunktion von DHCP]
+    \begin{enumerate}
+        \item \fatsf{Automatische IP-Zuweisung}
+        \begin{itemize}
+            \item DHCP weist Geräten automatisch eine IP-Adresse zu, die für eine bestimmte Zeit (Lease-Zeit) gültig ist
+            \item Dadurch entfällt die Notwendigkeit, IP-Adressen manuell zu konfigurieren
+        \end{itemize}
+        \item \fatsf{Bereitstellung weiterer Netzwerkeinstellungen}
+        Neben der IP-Adresse stellt DHCP folgende Parameter bereit:
+        \begin{itemize}
+            \item \red{Subnetzmaske:} Gibt an, wie das Netzwerk in Subnetze aufgeteilt ist
+            \item \fatsf{Standardgateway:} Adresse des Routers, über den der Internetzugang erfolgt
+            \item \fatsf{DNS-Server:} Server zur Namensauflösung (z.B. example.xom $\rightarrow$ 93.184.216.34)
+            \item \fatsf{Weitere Einstellungen:} WINS-Server, NTP-Server (Zeitsynchronisation), usw.
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Subnetzmaske]
+    \begin{enumerate}
+        \item \fatsf{Was ist eine Subnetzmaske?}
+        Die Subnetzmaske teilt eine IP-Adresse in zwei Teile auf:
+        \begin{itemize}
+            \item \fatsf{Netzwerkanteil (Network ID):} Gibt an, zu welchem Netzwerk die IP-Adresse gehört
+            \item \fatsf{Hostanteil (Host ID):} Gibt an, welches Gerät (Host) innerhalb dieses Netzwerks angesprochen wird
+        \end{itemize}
+        \item \fatsf{Beispiel mit einer IP-Adresse und Subnetzmaske}
+        \begin{itemize}
+            \item \fatsf{IP-Adresse:} 192.168.1.10
+            \item \fatsf{Subnetzmaske:} 255.255.255.0
+        \end{itemize}
+        \fatsf{Netzwerk und Hostanteil:}
+        \begin{itemize}
+            \item \fatsf{Netzwerkanteil:} Die Bits, die in der Subnetzmaske auf 1 stehen, gehören zum Netzwerk.
+            \begin{itemize}
+                \item Netzwerkanteil: 192.168.1.0 (Erste drei Oktette, da 255.255.255.0 24 Einsen hat)
+            \end{itemize}
+            \item \fatsf{Hostanteil:} Die Bits, die in der Subnetzmaske auf 0 stehen, gehören zu den Hosts
+            \begin{itemize}
+                \item Hostanteil: 10 (letztes Oktett der IP-Adresse)
+            \end{itemize}
+            Die IP-Adresse 192.168.1.10 gehört zum Netzwerk \fatsf{192.168.1.0}. Das Gerät hat die \fatsf{Hostnummer 10}
+        \end{itemize}
+        \item \fatsf{Netzwerkbereich}\\
+        Die Subnetzmaske bestimmt, wie viele Geräte (Hosts) in einem Netzwerk Platz finden:
+        \begin{itemize}
+            \item Subnetzmaske: 255.255.255.0 (24 Bits für Netzwerk, 8 Bits für Hosts)
+            \item Anzahl der möglichen Hosts: $2^{8}$ - 2 = 254
+            \begin{itemize}
+                \item $2{8}$: Insgesamt 256 Adressen (von 0 bis 255)
+                \item Zwei Adressen sind reserviert:
+                \begin{itemize}
+                    \item \fatsf{Netzwerkadresse:} 192.168.1.0 (identifiziert das Netzwerk selbst)
+                    \item \fatsf{Broadcast-Adresse:} 192.168.1.255 (an alle Geräte im Netzwerk)
+                \end{itemize}
+            \end{itemize}
+            \fatsf{Beispiel:} Gültige Hostadressen im Netzwerk: \fatsf{192.168.1.1} bis \fatsf{192.168.1.254}
+        \end{itemize}
+        \item \fatsf{Fazit: Warum Subnetze?}
+        Subnetzmasken erlauben es, große Netzwerke in kleinere Subnetze aufzuteilen, um:
+        \begin{itemize}
+            \item \fatsf{Ressourcen effizient zu nutzen:} Nicht jedes Netzwerk benötigt Hunderte von Adressen
+            \item \fatsf{Sicherheits und Organisation zu verbessern:} Subnetze isolieren Grupen von Geräten
+            \item \fatsf{Broadcast-Traffic zu minimieren:} Broadcasts bleiben innerhalb eines Subnetzes
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Thema_6_Images/IP Zuweisung.jpeg}
+\end{figure}
+\subsubsection*{DHCP Ablauf}
+\begin{enumerate}
+    \item \blue{Discover}
+    \begin{itemize}
+        \item Client schickt via Broadcast Anfrage nach Konfiguration
+    \end{itemize}
+    \item \red{Offer}
+    \begin{itemize}
+        \item Jeder DHCP-Server kann Client ein Angebot für die Konfiguration machen (IP-Adresse, Gateway, ...)
+    \end{itemize}
+    \item \blue{Request}
+    \begin{itemize}
+        \item Client schickt via Broadcast Antwort welches Angebot ausgewählt
+    \end{itemize}
+    \item \red{Acknowledgement}
+    \begin{itemize}
+        \item Ausgewählter Server bestätigt Konfiguration
+    \end{itemize}
+\end{enumerate}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Thema_6_Images/DHCP Ablauf.jpeg}
+\end{figure}
+\begin{infoBox}
+    Der DHCP-Server befindet sich im lokalen Netzwerk, in Heimnetzen meist direkt im Router integriert; in größeren Netzwerk kann er auch zentral stehen, wobei Router oder Layer-3-Switches als DHCP-Relay die Anfragen weiterleiten
+\end{infoBox}
+\clearpage
+\subsubsection*{DHCP Spoofing}
+\begin{enumerate}
+    \item \blue{Discover}
+    \item \red{Offer}
+    \begin{itemize}
+        \item Jeder DHCP-Server kann Client ein Angebot für die Konfiguration machen
+        \item \fatsf{Angreifer schickt eigenes Angebot} (Kann z.B. IP des Angreifer als Gateway haben)
+    \end{itemize}
+    \item \blue{Request}
+    \begin{itemize}
+        \item Client kann unehrlich/ehrliche Angebote nicht unterscheiden $\rightarrow$ wähle erstes Angebot
+    \end{itemize}
+    \item \red{Acknowledgement}
+\end{enumerate}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/DHCP Spoofing.jpeg}
+\end{figure}
+\underline{Viele Angriffsvarianten, wie z.B.}
+\begin{itemize}
+    \item Denial of Service (Client kann keine Nachrichten senden und empfangen)
+    \item MitM-Angriff (Angreifer gibt sich selbst als Gateway aus)
+    \item ...
+\end{itemize}
+\underline{Ähnlichkeit zu ARP Spoofing:}
+\begin{itemize}
+    \item Nutzt Tatsache, dass Nachricht mit \fatsf{Broadcast} verschickt wird
+    \item \fatsf{Race condition:} Welche Antwort trifft zuerst ein?
+\end{itemize}
+\fatsf{Gegenmaßnahmen:}
+\begin{itemize}
+    \item Monitoring, IDS
+    \item DHCP Snooping (Switch-Konfiguration, um nur DHCP-Offers von vertrauenswürdigen Ports weiterzuleiten)
+    \item Verwendung von Schutzmechanism auf höheren Ebenen (z.B. Verschlüsselung mittels TLS) $\rightarrow$ verhindert MitM
+\end{itemize}
+\subsection{Border Gateway Protocol}
+\subsubsection*{Routing}
+\fatsf{Wiederholung:} In lokalen Netzen (LAN) basiert Routing (im Switch) auf MAC Adressen
+\begin{itemize}
+    \item MAC Adresse gibt an auf welcher Schnittstelle gesendet werden soll
+    \item Falls MAC Adresse unbekannt: Broadcast auf allen Schnittstellen
+\end{itemize}
+Im \fatsf{Internet} basiert Routing (in Routern) auf \fatsf{IP Adressen:}
+\begin{itemize}
+    \item \fatsf{Ähnliches Prinzip:} Routingtabelle mit Einträge von IP-Adressbereichen und Schnittstellen auf denen Pakete weitergeleitet werden sollen
+    \item \fatsf{Ziel:} Bringe die Pakete \enquote{näher} zum Empfänger
+\end{itemize}
+\subsubsection*{Autonome Systeme}
+\begin{infoBox}
+    Ein \fatsf{Autonomes System (AS)} ist eine Sammlung von IP-Netzwerken und Routern.
+\end{infoBox}
+\fatsf{Internet} ist ein Netz von Netzen, sogenannte \fatsf{autonomen Systemen}
+\begin{itemize}
+    \item AS ist ein \fatsf{Zusammenschluss von IP Präfixen} mit einheitlicher Routingrichtlinie und zentraler Administration
+    \item Jedes AS erhält eindeutige Nummer von \fatsf{RIR} (Regional Internet Registries)
+    \item Ein AS kann Pakete an anderes AS weiterleiten
+\end{itemize}
+\fatsf{Beispiele:} Netzwerk der TU Darmstadt, Telekom, ...\\
+InternetRouting Protokoll: \fatsf{Border Gateway Protocol} (BGP)
+\begin{itemize}
+    \item Kümmert sich um Routing zwischen einzelnen AS
+\end{itemize}
+\begin{infoBox}[title=Warum ist BGP wichtig?]
+    \begin{itemize}
+        \item Das Internet besteht aus Tausenden von autonomen Systemen (AS), die unter der Kontrolle von verschiedenen Organisationen stehen
+        \item Jedes AS hat eigene Netzwerke und Routing-Strategien: \fatsf{BGP koordiniert den Datenaustausch zwischen diesen autonomen Systemen}
+        \item Ohne BGP wäre die globale Kommunikation im Internet unmöglich, da kein Protokoll die Verbindung zwischen diesen Netzwerken steuern würde
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Aufgaben von BGP]
+    BGP ist ein \fatsf{Path-Vector-Protokoll}, das Informationen über die besten Wege zwischen autonomen Systemen verteilt
+    \begin{itemize}
+        \item \fatsf{Route Advertisements:}\\
+        BGP-Router teilen anderen BGP-Routern mit, welche IP-Adressbereiche sie erreichen können\\
+        Beispiel:
+        \begin{itemize}
+            \item AS1 teilt AS2 mit: \enquote{Ich kenne den Weg zu 192.168.1.0/24}
+        \end{itemize}
+        \item \fatsf{Pfadbewertung:}\\
+        BGP wählt den besten Weg zu einem Ziel basierend auf \fatsf{Policies} und \fatsf{Metriken}, nicht immer basierend auf der kürzesten physischen Strecke
+        \item \fatsf{Flexibilität:}
+        \begin{itemize}
+            \item Betreiber können ihre eigene \fatsf{Routing-Strategien} definieren, z.B. bevorzugte Partner oder günstigere Routen
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{BGP Idee}
+AS 1 kann zwischen AS 2, AS 3 und AS 4 entscheiden
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Thema_6_Images/BGP Idee.jpeg}
+\end{figure}
+\begin{itemize}
+    \item Bester Pfad: Sender - AS 1 - AS 2 - AS 7 - Empfänger
+    \item Falls Pfad ausfällt: AS 3 - AS 6 - AS 7, AS 4 - AS 6 - AS 7 oder AS 4 - AS 5 - AS 7
+\end{itemize}
+\subsubsection*{BGP Routing}
+BGP besteht aus zwei \fatsf{Komponenten:}
+\begin{itemize}
+    \item \fatsf{Bekanntmachung:} Jedes AS teilt seine aktuellen Routen mit seinen Nachbarn
+    \item Paket \fatsf{Routing} gemäß einer Metrik:
+    \begin{itemize}
+        \item Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
+        \item Noch wichtiger: Länge des Präfix (Anzahl der IP Adressen in einem Netzwerk)
+    \end{itemize}
+\end{itemize}
+\fatsf{Beispiel:} Routing zu 1.1.1.19
+\begin{itemize}
+    \item AS 2 kennt 2 Routen: AS 1 mit 1.1.0.0/16 und AS 4 mit 1.1.1.0/24
+    \item 1.1.1.0/24 gewinnt, da /24 das spezifischere Prädikat \\
+    $\rightarrow$ würde sogar gewinnen, wenn längere Route zum Ziel
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Thema_6_Images/BGP Routing.jpeg}
+\end{figure}
+\begin{infoBox}[title=Was bedeutet das Präfix in einer IP-Adresse?]
+    \begin{enumerate}
+        \item Eine IP-Adresse besteht aus zwei Teilen:
+        \begin{itemize}
+            \item \fatsf{Netzwerkanteil:} Identifiziert das Netzwerk
+            \item \fatsf{Hostanteil:} Identifiziert die Geräte (Hosts) im Netzwerk
+        \end{itemize}
+        \item Das Präfix, angegeben durch \fatsf{/x}, bestimmt, wie viele Bits zur Netzwerkteil gehören.
+        \begin{itemize}
+            \item Beispiel:
+            \begin{itemize}
+                \item \fatsf{1.1.0.0/16:} Die ersten \fatsf{16 Bits} gehören zum Netzwerkanteil, und die restlichen \fatsf{16 Bits} stehen für Hosts
+                \item \fatsf{1.1.1.0/24:} Die ersten \fatsf{24 Bits} gehören zum Netzweranteil, und die restlichen \fatsf{8 Bits} stehen für Hosts
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Warum ist ein spezifischeres Präfix genauer?]
+    \begin{itemize}
+        \item Je größer die Präfixzahl, desto mehr Bits gehören zum Netzwerkanteil und desto weniger Hosts sind im Netzwerk möglich
+        \item Dies führt zu einem kleineren und präziser definierten Adressbereich:
+        \begin{itemize}
+            \item \fatsf{1.1.0.0/16} deckt 65536 Adressen ab (von 1.1.0.0 bis 1.1.255.255)
+            \item \fatsf{1.1.1.0/24} deckt nur 256 Adressen ab (von 1.1.1.0 bis 1.1.1.255)
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}[title=Warum hat das Priorität?]
+    Das Internet funktioniert effizienter, wenn Pakete über genauere Routen geleitet werden. Das spezifischere Präfix stellt sicher, dass die Pakete direkt an ein spezifisches Netzwerksegment weitergeleitet werden, anstatt durch ein breiter definiertes Netzwerk zu gehen.
+\end{infoBox}
+\subsubsection*{BGP Hijacking}
+\fatsf{Idee:} Korrumpiertes AS macht falsche Angaben zur Erreichbarkeit von Netzen
+\begin{infoBox}[title=Der Angriff]
+    \begin{enumerate}
+        \item Ein Angreifer (z.B. ein böswilliger Netzwerkbetreiber (ISP) oder jemand mit Zugang zu einem Router) sendet falsche BGP-Updates
+        \item Diese Updates geben vor, dass der Angreifer die beste Route zu bestimmten IP-Adressbereichen kennt
+        \item Die falschen Informationen verbreiten sich im Internet, da BGP-Router normalerweise Vertrauen in die empfangenen Updates haben
+        \item Datenverkehr, der ursprünglich an das legitime Ziel geschickt werden sollte, wird nun an den Angreifer umgeleitet
+    \end{enumerate}
+\end{infoBox}
+\fatsf{Ziel des Angreifers:} Man-in-the-Middle (z.B. Abhören/Abändern der Kommunikation, DoS, ...)
+\begin{infoBox}[title=Arten von BGP Hijacking]
+    \begin{itemize}
+        \item \fatsf{Man-in-the-Middle-Angriff}
+        \begin{itemize}
+            \item Der Angreifer leitet den Datenverkehr über seine Systeme, bevor er ihn an das eigentliche Ziel weiterleitet
+            \item Ziel: Überwachung, Abfragen oder Manipulation der Daten
+        \end{itemize}
+        \item \fatsf{Datenverkehr-Blockade}
+        \begin{itemize}
+            \item Der Angreifer beansprucht eine Route, leitet den Verkehr aber nicht weiter
+            \item Ziel: Den Datenverkehr zu unterbrechen (Denial of Service, DoS)
+        \end{itemize}
+        \item \fatsf{IP-Adress-Diebstahl}
+        \begin{itemize}
+            \item Der Angreifer beansprucht Adressbereiche, die ihm nicht gehören, um Spam oder Phishing-Angriffe zu starten
+            \item Ziel: Missbrauch von IP-Adressen für kriminelle Zwecke
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\begin{infoBox}
+    \fatsf{ISP:} Internet Service Provider
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/BGP Hijacking.jpeg}
+\end{figure}
+\subsubsection*{BGP Hijacking: Gegenmaßnahmen}
+\begin{itemize}
+    \item Im Allgemeinen:
+    \begin{itemize}
+        \item Schwierig zu verhindern
+        \item Aber auch schwierig durchführbar: Benötigt Kontrolle über \enquote{BGP Speaker} (Router im Kernetz eines ISPs)
+    \end{itemize}
+    \item Mögliche Gegenmaßnahmen:
+    \item Überwachung des Intenetverkehrs: z.B. langsame und fehlerhafte Routen
+    \item RIR speichern wem welche Präfixe gehören
+    \item Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachung (bisher kaum genutzt)
+\end{itemize}
+\subsubsection*{BGP Hijacking in der Praxis}
+4. Oktober 2021: Facebook und Tochterfirmen gehen komplett offline
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/BGP Hijacking in der Praxis.jpeg}
+\end{figure}
+\clearpage
+\subsection{Denial of Service mittels Internet Control Message Protocol}
+\subsubsection*{Internet Control Message Protocol (ICMP)}
+Internet Control Message Protocol (ICMP) für Informations- und Fehlermeldungen des Netzwerks
+\begin{itemize}
+    \item Typischerweise nicht für Endnutzer (außer \fatsf{ping} und \fatsf{traceroute})
+\end{itemize}
+ICMP-Beispiel: per \fatsf{ping} Verbindungslatenz prüfen
+\begin{infoBox}[title=Hauptaufgaben von ICMP]
+    ICMP wird vor allem für folgende Zwecke verwendet:
+    \begin{enumerate}
+        \item \fatsf{Fehlermeldungen}
+        \begin{itemize}
+            \item ICMP informiert den Absender eines Pakets über Probleme, die während der Übertrgung aufgetreten sind
+            \item Beispiele:
+            \begin{itemize}
+                \item Ziel ist nicht erreichbar (z.B. Host nicht verfügbar, Netzwerkproblem)
+                \item TTL (Time-To-Live) eines Pakets ist abgelaufen
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Diagnose und Netzwerkverwaltung}
+        \begin{itemize}
+            \item ECMP hilft Administratoren, die Netzwerkkonnektivität und -leistung zu überprüfen
+            \item Beispiele:
+            \begin{itemize}
+                \item \fatsf{Ping:} Testet, ob ein Host erreichbar ist
+                \item \fatsf{Traceroute:} Zeigt den Weg eines Pakets durch das Netzwerk
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Steuerung und Informationen}
+        \begin{itemize}
+            \item ICMP unterstützt Router beim Weiterleiten von Paketen
+            \item Beispiel: router können ICMP verwenden, um mitzuteilen, dass sie eine bessere Route für ein Paket kennen
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Aufbau eines ICMP-Pakets]
+    Ein ICMP-Paket ist relativ einfach aufgebaut und enthält:
+    \begin{enumerate}
+        \item \fatsf{Typ:} Gibt die Art der ICMP-Nachricht an (z.B. Ping-Anfrage, Fehler)
+        \item \fatsf{Code:} Liefert zusätzliche Informationen über den Typ (z.B. genauer Fehlergrund)
+        \item \fatsf{Checksum:} Prüft die Integrität des ICMP-Pakets
+        \item \fatsf{Daten:} Zusätzliche Informationen (abhängig vom Typ und Code)
+    \end{enumerate}
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Internet Control Message Protocol.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Ping of Death (PoD)}
+\begin{infoBox}
+    Der \fatsf{Ping of Death (PoD)} ist ein Denial-of-Service (DoS)-Anriff, bei dem ein Angreifer übergroße oder fehlerhafte ICMP-Pakete an ein Zielsystem sendet. Diese Pakete können bei älteren oder schlecht konfigurierten Systemen Pufferüberläufe versuchen, wodurch das Ziel abstürzt oder sich ungewöhnlich verhält
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Ping of Death.jpeg}
+\end{figure}
+\subsection{Transport Layer}
+\subsubsection*{Übersicht: Transport Layer}
+\underline{Angebotene Dienste für nächst höhere Schicht:}
+\begin{itemize}
+    \item Prozess zu Prozess Kommunikation
+    \item optional \blue{verlässliche} Kommunikation (TCP)
+\end{itemize}
+\underline{Benutzt Dienste von nächst niedrigerer Schicht:}
+\begin{itemize}
+    \item Endpunkt zu Endpunkt Kommunikation
+\end{itemize}
+\underline{Adressierung:} mittels IP Adresse und Ports\\
+\underline{Protokolle:}
+\begin{itemize}
+    \item TCP (Transmission Control Protocol)
+    \item UDP (User Datagram Protocol)
+    \item QUIC
+\end{itemize}
+Angriffe:
+\begin{itemize}
+    \item TCP Hijacking
+    \item TCP Flooding
+\end{itemize}
+\subsection{TCP \& UDP: Grundpfeiler des Internets}
+\subsubsection*{Rückblick: Unzuverlässigkeit von IP}
+IP ist \fatsf{unzuverlässiges} Protokoll:
+\begin{itemize}
+    \item Pakete können \fatsf{zu groß} sein
+    \item Pakete können \fatsf{verloren} gehen
+    \item Pakete können in \fatsf{falscher Ordnung} beim Empfänger eintreffen
+\end{itemize}
+Protokolle auf \fatsf{höherer Ebene} garantieren Zuverlässigkeit!
+\begin{itemize}
+    \item \fatsf{User Datagram Protocol (UDP)}
+    \item \fatsf{Transmission Control Protocol (TCP)}
+\end{itemize}
+\subsubsection*{User Datagram Protocol (UDP)}
+\begin{itemize}
+    \item \fatsf{Verbindungsloses} Protokoll mit \fatsf{unzuverlässiger} Kommunikation
+    \item \fatsf{schnelle} Kommunikation durch fehlenden Verbindungsaufbau
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/User Datagram Protocol.jpeg}
+\end{figure}
+\subsubsection*{Transmission Control Protocol (TCP)}
+\begin{itemize}
+    \item \fatsf{Verbindungsorientiertes} Protokoll mit \fatsf{zuverlässiger} Kommunikation
+    \item \fatsf{Langsamere} Kommunikation durch Handshake
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Transmission Control Protocol.jpeg}
+\end{figure}
+\subsubsection*{Wie löst TCP die Probleme von IP?}
+\fatsf{Problem 1:} IP-Pakete haben eine begrenzte Größe und können keine längeren Nachrichten versenden\\
+\fatsf{Lösung:} TCP teilt beim Sender die Nachricht in kleinere Pakete auf und setzt diese beim Empfänger wieder zusammen\\
+\fatsf{Problem 2:} Pakete können beim Empfänger in falscher Ordnung eintreffen\\
+\fatsf{Lösung:} Verwendung von Sequenznummern, um Ordnung beim Empfänger wieder herzustellen\\
+\fatsf{Problem 3:} Pakete können verloren gehen\\
+\fatsf{Lösung:} Empfänger antwortet mit Empfangsbestätigung ACK (Acknowledgement). Wenn ACK nicht beim Sender eintrifft, sende das Paket erneut
+\subsubsection*{Sequenznummern}
+Jede TCP-Verbindung erfordert zwei Arten von \red{Sequnznummern}:
+\begin{itemize}
+    \item Ein Sequenznummer (ISN: Initial Sequence Number) für Nachrichten vom Client an den Server (\red{\{client\_isn\}})
+    \item Eine Sequenznummer für Nachrichten vom Server an den Client (\red{\{server\_isn\}})
+\end{itemize}
+Bei Verbindungsaufbau einigen sich Server und Client auf zwei anfängliche \fatsf{Sequenznummern}
+\begin{itemize}
+    \item ISNs zufällig gewählt für jede neue Verbindung (Ziel: Verhinderung von TCP hijacking)
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Sequenznummern.jpeg}
+\end{figure}
+\subsubsection*{TCP: Drei-Wege-Handshake}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/TCP: Drei-Wege-Handshake.jpeg}
+\end{figure}
+\subsubsection*{TCP: Datenübertragung}
+\begin{infoBox}[title=Ablauf der Datenübertragung]
+    \begin{enumerate}
+        \item \fatsf{Segmentierung und Sequenznummern}
+        \begin{itemize}
+            \item Die Daten werden in Segmente aufgeteilt, die normalerweise eine maximale Größe von 1500 Bytes (MTU - Header) haben
+            \item Jedes Segment erhält eine Sequenznummer, die angibt, welches Byte im Datenstrom es repräsentiert
+            \begin{itemize}
+                \item Beispiel:
+                \begin{itemize}
+                    \item \fatsf{Segment 1:} Sequenznummer = 1 (enthält Bytes 1-1500)
+                    \item \fatsf{Segment 2:} Sequenznummer = 1501 (enthält Bytes 1501-3000)
+                \end{itemize}
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Senden der Segmente}
+        \begin{itemize}
+            \item Der Sender sendet die Segmente nacheinander an den Empfänger
+            \item Die TCP-Header der Segmente enthalten wichtige Informationen:
+            \begin{itemize}
+                \item \fatsf{Quell- und Zielport:} Identifizieren die Kommunikation zwischen Anwendungen
+                \item \fatsf{Sequenznummer:} Gibt an, welches Byte das erste in diesem Segment ist
+                \item \fatsf{Prüfsumme:} Dient zur Fehlererkennung
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Empfang und Bestätigung (ACK)}
+        \begin{itemize}
+            \item Der Empfänger prüft jedes Segment:
+            \begin{itemize}
+                \item \fatsf{Ist die Prüfsumme korrekt?}\\
+                $\rightarrow$ Wenn nicht, wird das Segment verworfen
+                \item \fatsf{Sind die Daten vollständig?}\\
+                $\rightarrow$ Wenn ja, sendet der Empfänger eine \fatsf{Acknowledgment-Nummer (ACK)}, die das nächste erwartete Byte angibt
+            \end{itemize}
+            \item Beispiel:
+            \begin{itemize}
+                \item Empfänger erhält \fatsf{Segment 1 (Byte 1-1500)} und bestätigt mit ACK = 1501
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Wiederholung bei Paketverlust}
+        \begin{itemize}
+            \item Wenn der Sender innerhalb eines bestimmten Zeitrahmens (Timeout) keine Bestätigung für ein Segment erhält, wird das Segment erneut gesendet
+            \item Beispiel:
+            \begin{itemize}
+                \item \fatsf{Segment 2 (Bytes 1501-3000)} geht verloren
+                \item Sender wartet auf ACK = 3001, aber es kommt nicht
+                \item Sender sendet Segment erneut
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Flusskontroller mit dem Empfangsfenster}
+        \begin{itemize}
+            \item TCP verwendet ein \fatsf{Empfangsfenster (Receiver Window)}, das angibt, wie viele Daten der Empfänger aktuell verarbeiten kann
+            \item Der Sender passt die Menge der gesendeten Daten an die Größe des Empfangsfensters an
+        \end{itemize}
+        \item \fatsf{Staukontrolle}
+        \begin{itemize}
+            \item TCP reguliert die Übertragungsgeschwindigkeit basierend auf der Netzwerküberlastung
+            \item Bei Stau verringert der Sender die Anzahl der unbestätigten Segmente, um den Verkehr zu reduzieren
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+TCP ermöglicht den Aufbau eines Kommunikationskanals über den Bytes gesendet werden
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Datenübertragung.jpeg}
+\end{figure}
+\subsubsection*{TCP: Was passiert wenn Pakete verloren gehen?}
+Wenn ein Datenpaket \fatsf{verloren} geht während der Datenübertragung:
+\begin{itemize}
+    \item Der Empfänger sendet keine \fatsf{ACK} $\rightarrow$ Absender erhält nicht die Bestätigung
+    \item Der Absender versucht erneut das Paket zu senden, bis er die \fatsf{ACK} erhält
+\end{itemize}
+Wenn ein Datenpaket empfangen wird, aber das zugehörtige \fatsf{ACK verloren} geht:
+\begin{itemize}
+    \item Absender sendet Paket erneut, weil er die zugehörige \fatsf{ACK} nicht erhalten hat
+    \item Der Empfänger ignoriert die doppelt empfangenen Daten und sendet die \fatsf{ACK} erneut
+\end{itemize}
+\fatsf{Merke:} Wenn Pakete in \fatsf{TCP} verworfen werden, geht \fatsf{TCP} von einer Überlastung aus und sendet die Daten mit einer langsameren Geschwindigkeit
+\subsubsection*{TCP Flags}
+ACK
+\begin{itemize}
+    \item Indikator dafür, dass der Benutzer den Empfang von etwas bestätigt (in der ACK nummer)
+    \item Fast immer gesetzt, außer beim allerersten Paket
+\end{itemize}
+SYN
+\begin{itemize}
+    \item Indikator für den Beginn der Verbindung
+\end{itemize}
+FIN
+\begin{itemize}
+    \item Eine Möglichkeit, die Verbindung zu beenden
+    \item Erfordert eine Bestätigung (ACK)
+    \item Es werden keine Pakete mehr gesendet, aber weiterhin empfangen
+\end{itemize}
+RST
+\begin{itemize}
+    \item Eine Möglichkeit, eine Verbindung zu beenden
+    \item Erfordert keine Bestätigung (ACK)
+    \item Es werden keine Pakete mehr gesendet und empfangen
+\end{itemize}
+\subsection{Angriffe auf TCP}
+\subsubsection*{Angriffstechniken}
+\begin{enumerate}
+    \item TCP Hijacking
+    \item TCP Flooding
+\end{enumerate}
+\subsubsection*{TCP Hijacking}
+Manipulation einer bestehenden TCP Sitzung: Daten ändern oder einschleusen.\\ Zwei Arten:\\
+\fatsf{Dateninjektion:} Spoofing von Datenpaketen, um schädliche Daten in eine Verbindung einzuschleusen
+\begin{itemize}
+    \item Angreifer muss \fatsf{Sequenznummer} des Absenders kennen
+    \begin{itemize}
+        \item \fatsf{On-Path-Angreifer:} Verhältnismäßig einfach (Race-Condition mit legitimen Antwort des Servers)
+        \item \fatsf{Off-Path-Angreifer:} 32-Bit-Sequenznummer erraten (gilt als schwierig)
+    \end{itemize}
+\end{itemize}
+\fatsf{RST-Injektion:} Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden
+\begin{itemize}
+    \item Anforderungen wie bei Dateninjektion
+    \item Einsatz häufig zur Zensur (z.B. DoS von Webseiten)
+\end{itemize}
+\subsubsection*{TCP Dateninjektion}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/TCP Dateninjektion.jpeg}
+\end{figure}
+\subsubsection*{Gegenmaßnahmen}
+\begin{itemize}
+    \item TCP bietet keine Vertraulichkeit und keine Integrität der Daten an
+    \item Nutze Protokolle in höherer Schicht (z.B. TLS), um Angriffe zu verhindern
+    \item Zufällige Wahl der Sequenznummer schützt vor Off-Path Angreifer
+    \item Schlechte Zufälligkeit macht Systeme anfällig: z.B. nutzten frühe TCP Implementationen Systemzeit als \enquote{gute} Quelle für Zufälligkeit
+\end{itemize}
+\subsubsection*{Speicherreservierung beim TCP Handshake}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Speicherreservierung beim TCP Handshake.jpeg}
+\end{figure}
+SYN Speicher speichert nur beschränkte Anzahl an \enquote{nicht abgeschlossenen} TCP Verbindungen (früher ca. 100)
+\subsubsection*{TCP SYN Flooding}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/TCP SYN Flooding .jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Gegenmaßnahme: SYN Cookies}
+\begin{infoBox}[title=Ablauf mit SYN Cookies]
+    \begin{enumerate}
+        \item \fatsf{Angreifer sendet SYN-Pakete:}
+        \begin{itemize}
+            \item Der Angreifer sendet eine Reihe von SYN-Paketen an den Server
+        \end{itemize}
+        \item \fatsf{Server sendet SYN-ACK mit einem SYN-Cookie:}
+        \begin{itemize}
+            \item Anstatt die Verbindung in einer Warteschlange zu speichern, berechnet der Server einen \fatsf{SYN-Cookie}, der in das SYN-ACK-Paket eingefügt wird
+            \item Das SYN-Cookie enthält Informationen wie: Eine zufällige Zahl, Die IP-Adresse des Clients, Die Portnummer, Eine Zeitstempel- oder Ablaufbedingung
+        \end{itemize}
+        \item \fatsf{Angreifer antwortet nicht (falsche IP-Adresse)}
+        \begin{itemize}
+            \item Da der Angreifer gefälschte Absender-IP-Adressen verwendet, wird der Server nicht mit einer ACK-Antwort rechnen
+        \end{itemize}
+        \item \fatsf{Legitimer Client sendet ACK mit SYN-Cookie:}
+        \begin{itemize}
+            \item Ein echter Client, der das SYN-ACK mit dem SYN-Cookie erhält, muss das \fatsf{ACK}-Paket mit dem SYN-Cookie zurücksenden, das er in der Antwort empfängt
+            \item Der Server prüft das ACK und stellt sicher, dass das SYN-Cookie korrekt ist. Wenn ja, wird die Verbindung aufgebaut
+        \end{itemize}
+        \item \fatsf{Sicherstellung der Validität:}
+        \begin{itemize}
+            \item Das der SYN-Cookie Informationen enthält, die nur der Server und der legitime Client kennen (z.B. zufällige Zahlen), kann der Server sicherstellen, dass das ACK tatsächlich von einem echten Client stammt und keine Ressource in der Warteschlange verbraucht wurde, bis dies bestätigt wurde
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\fatsf{Beobachtung:} Alle Werte kann man aus später empfangenen Werten extrahieren, \fatsf{bis auf die SeqNr\_S}\\
+$\rightarrow$ Lege TCP-Buffer \fatsf{erst} an \fatsf{bei abgeschlossenem Handshake}\\
+$\rightarrow$ Verteuert den Angriff\\
+\fatsf{Schwierigkeit:} SeqNr\_S darf \fatsf{nicht vorhersagbar} sein (Siehe \enquote{Injecting} von TCP-Paketen)\\
+\fatsf{Idee:} Server leitet SeqNr\_S aus (IP-Adresse, TCP-Port, SeqNr\_C) \fatsf{des Clients} und Geheimnis \fatsf{$k_{s}$} mittels kryptographiesche Hashfunktion \fatsf{H} ab
+\begin{infoBox}
+    \begin{itemize}
+        \item Der Angreifer sendet massenhaft \fatsf{SYN-Pakete mit gespooften Quelladressen}
+        \item Das \fatsf{SYN-ACK} geht nicht zum Angreifer zurück, sondern zu den (zufälligen) Opfern an der Spoofing-Adressen
+        \item Da der Angreifer das SYN-ACK \fatsf{nie sieht}, kennt er die vom Server generierte ISN nicht
+        \item Er kann also kein korrektes ACK zurückschicken
+    \end{itemize}
+\end{infoBox}
+\clearpage
+\subsubsection*{Speicherreservierung mit SYN-Cookie}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/Speicherreservierung mit SYN Cookies.jpeg}
+\end{figure}
+\clearpage
+\subsection{Application Layer}
+\subsubsection*{Übersicht: Application Layer}
+\underline{Angebotene Dienste für nächst höhere Schicht:}
+\begin{itemize}
+    \item Keine, da höchste Schicht
+\end{itemize}
+\underline{Benutzt Dienste von nächst niedrigerer Schicht:}
+\begin{itemize}
+    \item (verlässliche) Prozess zu Prozess Kommunikation
+\end{itemize}
+\underline{Adressierung:} mittels IP Adresse und Ports, Domains\\
+\underline{Protokolle:}
+\begin{itemize}
+    \item HTTP / HTTPS (Hypertext Transfer Protocol / HTTP Secure)
+    \item DNS / DNSSec (Domain Name System / DNS Security Extension)
+    \item SMTP (Simple Mail Transfer Protocol)
+\end{itemize}
+\underline{Angriffe:}
+\begin{itemize}
+    \item TLS Rollback
+    \item TLS-RSA Angriff
+    \item CRIME Angriff
+\end{itemize}
+\subsubsection*{TLS: Transport Layer Security}
+Ermöglicht sichere Kommunikationskanäle für das Internet
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/TLS.jpeg}
+\end{figure}
+\begin{itemize}
+    \item \fatsf{Vertraulichkeit:} Angreifer kann Kommunikation nicht mitlesen
+    \item \fatsf{Integrität:} Verhindert Abänderung der Kommunikation (z.B. Replay Angriffe)
+    \item \fatsf{Authentizität:} Client kommuniziert mit dem legitimen Server
+\end{itemize}
+Eines der am häufigsten verwendet Kryptoprotokolle\\
+In allen gängigen Browsern integriert
+\begin{itemize}
+    \item Insbesondere \red{HTTP} über TLS (\blue{HTTPS}) und sicherer E-Mail-Abruf
+\end{itemize}
+\clearpage
+\subsubsection*{Geschichte von SSL/TLS}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Geschichte von SSL-TLS.jpeg}
+\end{figure}
+\subsubsection*{Einsatz von SSL/TLS}
+\fatsf{Theorie:}
+\begin{itemize}
+    \item SSL 2.0 soll seit 2011 nicht mehr verwendet werden
+    \item SSL 3.0 soll seit 2015 nicht mehr verwendet werden
+\end{itemize}
+\fatsf{Praxis:}
+\begin{itemize}
+    \item von ca. 135.000 populären Seiten:
+    \item 1.9\% unterstützen SSL 2.0 + SSL 3.0
+    \item 29.8\% unterstützten \fatsf{TLS 1.0}
+    \item 32.1\% unterstützen \fatsf{TLS 1.1}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/Einsatz von SSL-TLS.jpeg}
+\end{figure}
+\begin{defBox}
+    Das Updaten von Sicherheitsprotokollen ist ein \fatsf{sehr langsamer} Prozess $\rightarrow$ Erfordert sorgfältiges Design und gründliche Analyse
+\end{defBox}
+\subsubsection*{SSL/TLS Sicherheit in der Praxis}
+Analyse der Alexa Top 134.918 Web Sites
+\begin{itemize}
+    \item Zertifikatsfehler
+    \item Schwache Cipher Suites
+    \item Schlüssellänge zu kurz
+    \item Hertbleed
+    \item BEAST
+    \item CRIME
+    \item RC4
+    \item DROWN
+    \item POODLE
+    \item ...
+\end{itemize}
+Populäre Webseiten tendenziell besser administriert als \enquote{unbekannte} Webseiten
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/SSL-TLS Sicherheit in der Praxis.jpeg}
+\end{figure}
+\subsubsection*{Schwächste Unterstützte Schlüssellängen}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Thema_6_Images/schwächste unterstützte Schlüssellängen.jpeg}
+\end{figure}
+\subsubsection*{Der Aufbau von TLS}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Der Aufbau von TLS.jpeg}
+\end{figure}
+\fatsf{Handshake:}
+\begin{itemize}
+    \item Aushandlung \fatsf{kryptographischer Verfahren/Parameter} (Auswahl einer Cipher Suite) 
+    \item (Gegenseitige) \fatsf{Authentikation} Etablierung eines \fatsf{Sitzungsschlüssels} k
+\end{itemize}
+\begin{infoBox}[title=TLS Handshake]
+    Der \fatsf{Handshake} ist die erste Phase im TLS-Protokoll und dient dazu, eine sichere Verbindung zwischen Client und Server herzustellen. Er umfasst drei zentrale Aufgaben:
+    \begin{enumerate}
+        \item \fatsf{Aushandlung kryptographischer Verfahren und Parameter}
+        \begin{itemize}
+            \item Der Client und der Server einigen sich auf eine \fatsf{Cipher Suite}, die die folgenden Elemente definiert:
+            \begin{itemize}
+                \item \fatsf{Verschlüsselungsalgorithmus} (z.B. AES, ChaCha20)
+                \item \fatsf{Hashing-Funktion} für Integrität (z.B. SHA-256)
+                \item \fatsf{Schlüsselaustauschverfahren} (z.B. RSA, ECDHE)
+                \item \fatsf{Signaturalgoirthmus} für die Authentifizierung
+            \end{itemize}
+            \item Diese Aushandlung beginnt mit der ClientHello- und ServerHello- Nachricht
+        \end{itemize}
+        \item \fatsf{Authentifkation}
+        \begin{itemize}
+            \item Der Server wird mithilfe eines \fatsf{Zertifikats} authentifiziert, das von einer vertrauenswürdigen Zertifizierungsstelle (CA) signiert wurde. Der Client prüft, ob:
+            \begin{itemize}
+                \item Das Zertifikat gültig ist
+                \item Die Identität des Servers mit dem Zertifikat übereinstimmt
+            \end{itemize}
+            \item Optional kann auch der \fatsf{Client authentifiziert} werdne, indem er ein Zertifikat vorlegt, das der Server validiert
+        \end{itemize}
+        \item \fatsf{Etablierung eines Sitzungsschlüssels (k)}
+        \begin{itemize}
+            \item Der Client und der Server erzeugen gemeinsam einen \fatsf{sicheren Sitzungsschlüssel (k)}
+            \item Der Schlüssel wird verwendet, um die Kommunikation zu verschlüsseln und die Datenintegrität zu gewährleisten
+            \item Abhängig von der verwendeten Cipher Suite wird der Sitzungsschlüssel auf unterschiedliche Weise erzeugt:
+            \begin{itemize}
+                \item \fatsf{RSA-basierter Schlüsselaustausch:} Der Client generiert ein \enquote{Pre-Master Secret}, verschlüsselt es mit dem öffentlichen Schlüssel des sErvers und sendet es and den Server
+                \item \fatsf{Diffie-Hellman (DH) oder Elliptic Curve Diffie-Hellman (ECDHE):} Beide Seiten tauschen öffentliche Schlüssel aus und berechnen unabhängig voneinsander denselben Sitzungsschlüssel
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\fatsf{Record Layer:}
+\begin{itemize}
+    \item \fatsf{Datenverschlüsselung} und \fatsf{Authentikation} mit Schlüssel k
+\end{itemize}
+\begin{infoBox}[title=TLS Record Layer]
+    Der \fatsf{Record Layer} wird nach Abschluss des Hanshakes verwendet, um die tatsächliche Datenübertragung abzusichern. Er verwendet den im Hanshake erzeugten Sitzungsschlüssel (k) für:
+    \begin{enumerate}
+        \item \fatsf{Datenverschlüsselung}
+        \begin{itemize}
+            \item Alle gesendeten Daten werden mithilfe des Sitzungsschlüssels (k) verschlüsselt, um Vertrualichkeit zu gewährleisten
+        \end{itemize}
+        \item \fatsf{Beispiel für Verschlüsselungsalgorithmen:}
+        \begin{itemize}
+            \item \fatsf{AES-GCM} (Advanced Encryption Standard im Galois Counter Mode)
+            \item \fatsf{ChaCha20-Poly1305} (sicher und effizient, insbesondere für mobile Geräte)
+        \end{itemize}
+        \item \fatsf{Datenintegrität und Authentikation}
+        \begin{itemize}
+            \item Der Record Layer verwendet \fatsf{Message Authentication Codes (MACs)}, um sicherzustellen, dass die Daten während der Übertragung nicht manipuliert werden
+            \item Jeder Datenblock enthält einen Authentifizierungs-Tag, der es ermöglicht, die Integrität der Daten zu überprüfen
+        \end{itemize}
+        \item \fatsf{Fragmentierung}
+        \begin{itemize}
+            \item Der Record Layer fragmentiert große Datenblöcke in kleinere Pakete, die effizient übertragen werden können
+            \item Diese Pakete werden verschlüsselt, mit einem MAC versehen und dann an die darunterliegenden Protokollschichten (z.B. TCP) weitergeleitet
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Handshake von TLS 1.2}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Handschake von TLS 2.jpeg}
+\end{figure}
+\begin{infoBox}[title=Ablauf des TLS 1.2 Handshakes]
+    \begin{enumerate}
+        \item \fatsf{ClientHello}
+        \begin{itemize}
+            \item Der Client initiiert den Handshake, indem er eine ClientHello-Nachricht an den Server sendet. Diese Nachricht enthält:
+            \begin{itemize}
+                \item \fatsf{Protokollversion:} Die höchste Version, die der Client unterstützt (z.B. TLS 1.2)
+                \item \fatsf{Liste der unterstützten Cipher Suites:} Verschlüsselungsalgorithmen, die der Client verwenden kann (z.B. RSA, ECDHE, AES)
+                \item \fatsf{Client Random:} Eine zufällige Zahl, die für die Schlüsselgenerierung verwendet wird
+                \item \fatsf{Session ID:} Falls eine bestehende Sitzung wiederverwendet werden soll
+                \item \fatsf{Komprimierungsmethoden:} Eine List der unterstützten Komprimierungsalgorithmen (normalerweise keine)
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{ServerHello}
+            \begin{itemize}
+                \item Der server antwortet mit einer ServerHello-Nachricht, die Folgendes enthält:
+                \begin{itemize}
+                    \item \fatsf{Protokollversion:} Die ausgewählte TLS-Version
+                    \item \fatsf{Cipher Suite:} Die vom Server ausgewählte Verschlüsselungsmethode, die beide unterstützen
+                    \item \fatsf{Server Random:} Eine weitere zufällige Zahl, die für die Schlüsselgenerierung verwendet wird
+                    \item \fatsf{Session ID:} Falls eine Sitzung wiederverwendet wird
+                \end{itemize}
+            \end{itemize}
+        \item \fatsf{Zertifikatsübermittlung}
+        \begin{itemize}
+            \item Der Server sendet sein \fatsf{Zentifikat}, um sich gegenüber dem Client zu authentifizieren
+            \begin{itemize}
+                \item Das Zertifikat enthält den \fatsf{öffentlichen Schlüssel} des Servers und wird von einer vertrauenswürdigen Zertifizierungsstelle (CA) signiert
+                \item Der Client überprüft das Zertifikat, um sicherzustellen, dass:
+                \begin{itemize}
+                    \item Es gültig ist (nicht abgelaufen)
+                    \item Es von einer bekannten CA signiert wurde
+                    \item Der Domainname des Servers mit dem Zertifikat übereinstimmt
+                \end{itemize}
+            \end{itemize}
+            \item Optional kann der Server auch ein \fatsf{Client-Zertifikat} anfordern, falls die Authentifizierung des Clients erforderlich ist
+        \end{itemize}
+        \item \fatsf{Schlüsselaustausch:} Beide Parteien generieren gemeinsam einen Sitzungschlüssel
+        \item \fatsf{Change Cipher Spec (Client und Server)}
+        \begin{itemize}
+            \item Beide Parteien signalisieren, dass sie nun zur verschlüsselten Kommunikation übergehen:
+            \begin{itemize}
+                \item Der Client sendet eine ChangeCipherSpec-Nachricht, um zu signalisieren, dass alle nachfolgenden Nachrichten verschlüsselt werden
+                \item Anschließend sendet der Client eine verschlüsselte Finished-Nachricht, die einen Hash aller bisherigen Handshake-Nachrichten enthält, um die Integrität zu gewährleisten
+                \item Der Server sendet ebenfalls eine ChangeCipherSpec-Nachricht und anschließend seine verschlüsselte Finished-Nachricht
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Finished-Nachrichten:} Beide Seiten überprüfen die Integrität des Handshakes
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{Cipher Suites}
+Standardisierte Auswahl von Algorithmen
+\begin{itemize}
+    \item Schlüsselaustausch, digitale Signatur, Hashing, Verschlüsselung
+\end{itemize}
+Der Cipher Suite bestimmt 
+\begin{itemize}
+    \item die Folge und den Inhalt der Nachrichten im Handshake
+    \item das Verschlüsselungsverfahren für Payload-Daten
+\end{itemize}
+Es gibt \fatsf{3 Handshake-Familien:}
+\begin{itemize}
+    \item Ephemeral Diffie-Hellman (TLS\_DHE)
+    \item Static Diffie-Hellman (TLS\_DH)
+    \item RSA Verschlüsselung (TLS\_RSA)
+\end{itemize}
+\subsubsection*{Beispiel Cipher Suite}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Beispiel Cipher Suite.jpeg}
+\end{figure}
+\begin{itemize}
+    \item TLS: Das Protokoll
+    \item ECDHE: Protokoll für den Schlüsselaustausch
+    \item ECDSA: Signaturverfahren (z.B. für Zertifikate)
+    \item AES\_128\_GCM: Authentifizierte Verschlüsselung (für den Record Layer)
+    \item SHA256: Verwendete Hashfunktion
+\end{itemize}
+\subsubsection*{TLS-DHE Handshake (Vereinfacht)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/TLS-DHE Handshake.jpeg}
+\end{figure}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/TLS-DHE Handshake 2.jpeg}
+\end{figure}
+\subsubsection*{Klassische Angriffe auf TLS}
+\fatsf{Unsere Ziele:}
+\begin{itemize}
+    \item Klassische Angriffe auf Schlüsselaustauschprotokolle kennen lernen 
+    \item Aus den Fehlern der Protokolldesigner von TLS lernen (z.B. für die Entwicklung neuer Protokolle)
+    \item Ein Bewusstsein für verschiedene Angriffstypen entwickeln
+\end{itemize}
+Unzählige Angriffe auf SSL/TLS:
+\begin{itemize}
+    \item Cipher suite rollback
+    \item ChangeCipherSpec message drop
+    \item Version rollback
+    \item Bleichenbachers Angriff auf TLS-RSA
+    \item DROWN Angriff
+    \item CRIME Anriff
+    \item Heartbleed
+    \item ...
+\end{itemize}
+\subsubsection*{Cipher Suite Rollback Angriff}
+Angriff auf SSL 2.0 (und vorige Versionen)
+\begin{itemize}
+    \item Idee: Ein MitM-Angreifer \fatsf{ändert die Liste der Cipher Suites} in der ClientHello Nachricht
+    \item Er \fatsf{löscht alle \enquote{starken} Cipher Suites}
+    \item Der Server muss dann eine \enquote{schwache} Cipher Suite wählen
+\end{itemize}
+Seit SSL 3.0 nicht mehr anwendbar
+\begin{itemize}
+    \item Die Liste der Cipher Suites ist \fatsf{durch die Finished-Nachrichten geschützt}
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/Cipher Suite Rollback Angriff.jpeg}
+\end{figure}
+\subsubsection*{TLS-DHE Handshake (Vereinfacht)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/TLS-DHE Handshake (Vereinfacht).jpeg}
+\end{figure}
+\subsubsection*{SSL/TLS Versbindungsstatus}
+SSL/TLS arbeitet immer in einem aktuellen Verbindungsstatus (connection state). Der connection state beinhaltet:
+\begin{itemize}
+    \item Ausgewählte Algorithmen
+    \item Ausgehandelte Schlüssel
+\end{itemize}
+Start-Status ist NULL
+\begin{itemize}
+    \item Das Handshake-Protokoll handelt einen \enquote{pending state} aus
+    \item Durch \fatsf{[ChangeCipherSpec]} wird der \enquote{pending state} in \enquote{actual state} kopiert
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Thema_6_Images/SSL-TLS Verbindungsstatus.jpeg}
+\end{figure}
+\subsubsection*{Changecipherspec Message Drop Angriff}
+Angriff auf SSL 2.0 (und vorige Versionen)\\
+Idee:
+\begin{itemize}
+    \item Der MITM-Angreifer \fatsf{fängt die ChangeCipherSpec Nachrichten ab} und verwirft sie
+    \item Es wird \fatsf{niemals auf verschlüsselte Übertragung} umgeschaltet
+    \item Alle Daten werden dann \fatsf{im Klartext} übertragen
+\end{itemize}
+Seit TLS 1.0 nicht mehr anwendbar. TLS 1.0 verpflichtet beide Parteien, sich zu vergewissern, dass eine \fatsf{ChangeCipherSpec} eingegangen ist, bevor durch \fatsf{Finished} akzeptiert wird
+\clearpage
+\subsubsection*{ChangeCipherspec Message Drop Angriff}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Thema_6_Images/Changecipherspec Message Drop Angriff.jpeg}
+\end{figure}
+\subsubsection*{Version Rollback Angriff}
+\enquote{Rollback} von SSL 3.0 auf SSL 2.0: Angriff zeigt, dass Abwärtskompatibilität zweischneidiges Schwert ist\\
+\fatsf{Idee:}
+\begin{itemize}
+    \item MITM \fatsf{modifiziert die SSL 3.0 ClientHello Nachricht}, sodass sie wie ein SSL 2.0 ClientHello aussieht
+    \item Dies zwingt den Server \red{angreifbares SSL 2.0} zu benutzen (siehe später)
+\end{itemize}
+\fatsf{Gegenmaßnahme:}
+\begin{itemize}
+    \item Im Padding bei RSA-Ciphersuites integriert der Client eine \fatsf{SSL-Versionsnummer}
+    \item Der Server prüft ob die Versionsnummer korrekt ist
+    \item Ausreichend: SSL 2.0 unterstüzt nur RSA-Ciphersuites
+\end{itemize}
+\subsubsection*{Lessons Learned}
+\fatsf{Integritätsschutz} von kryptographisch relevanten Parametern, die über \fatsf{ungeschützte Kanäle} übertragen werden!
+\begin{itemize}
+    \item z.B. MACs oder Digitale Signaturen
+    \item Bei TLS: Finished-Nachrichten (\enquote{MAC über alle vorigen Daten})
+\end{itemize}
+\begin{defBox}
+    Notwendig, aber nicht hinreichend um sichere Protokolle zu entwickeln!
+\end{defBox}
+\subsubsection*{Bleichenbachers Angriff auf TLS-RSA}
+\fatsf{RSA-PKCS\#1 v1.5 Encryption}
+\begin{itemize}
+    \item Der häufigste verwendete Schlüsseltransportmechanismus vor TLS 1.3
+    \begin{itemize}
+        \item \enquote{Textbook-RSA Verschlüsselung} mit zusätzlichen \fatsf{randomisierten Padding}
+        \item Ein Ciphertext ist gültig, wenn er eine Nachricht mit korrektem Padding enthält
+    \end{itemize}
+    \item Veraltet in TLS 1.3
+\end{itemize}
+\subsubsection*{RSA\_PKCS\#1 V1.5}
+\begin{infoBox}[title=RSA PKCS\#1 v1.5]
+    \fatsf{PKCS\#1 v1.5} ist ein Padding-Standard, der bei der RSA-Verschlüsselung und Signatur verwendet wird. Er wurde von der RSA Laboratories im Rahmen der \textbf{Public-Key Cryptography Standards} (PKCS) spezifiziert und ist eine der frühen Implementierungen von Padding für RSA
+\end{infoBox}
+\begin{infoBox}[title=Zweck von PKCS\#1 v1.5]
+    Der Standard wurde eingeführt, um Sicherheitsprobleme bei der einfachen (Textbook-)RSA-Verschlüsselung zu lösen. Dazu fügt er \fatsf{strukturiertes Padding} hinzu, um:
+    \begin{enumerate}
+        \item Angriffe wie \fatsf{Chosen Plaintext Attacks (CPA)} zu verhindern
+        \item Zu gewährleisten, dass Nachrichten nicht deterministisch sind (jede Verschlüsselung derselben Nachricht ergibt einen anderen Chiffretext)
+        \item Kleine Nachrichten sicher zu verschlüsseln, indem sie auf die Blockgröße von RSA angepasst werden
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Ablauf von RSA-Padding nach PKCS\#1 v1.5]
+    \begin{enumerate}
+        \item \fatsf{Nachrichtengröße anpassen}\\
+        Bei RSA basiert die Verschlüsselung auf Blöcken. Die Größe eines Blocks wird durch die Länge des RSA-Moduls n in Bytes bestimmt. Um die Nachrciht sicher zu verschlüsseln, wird sie mit Padding auf die richtige Größe gebracht:
+        \begin{itemize}
+            \item Maximale Nachrichtengröße = Modulusgröße in Bytes - Padding-Länge
+        \end{itemize}
+        \item \fatsf{Struktur des gepaddeten Blocks}\\
+        Der resultierende Block für die Verschlüsselung hat folgendes Format:
+        \begin{codeBlock}{}
+            EM = 0x00 || 0x02 || PS || 0x00 || M
+        \end{codeBlock}
+        \begin{itemize}
+            \item \fatsf{EM (Encoded Message):} Der komplette gepaddete Block
+            \item \fatsf{0x00:} Ein einzelnes Null-Byte (Anfang des Blocks)
+            \item \fatsf{0x02:} Ein Indikator für einen Verschlüsselungsblock
+            \item \fatsf{PS (Padding String):} Eine zufällige Sequenz von mindestens 8 nicht-null Bytes (sorgt für Randomisierung)
+            \item \fatsf{0x00:} Ein Null-Byte als Trenner zwischen Padding und der Nachricht
+            \item \fatsf{M (Message):} Die ursprüngliche Nachricht
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\clearpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/RSA-PKCS.jpeg}
+\end{figure}
+\subsubsection*{Bleichenbachers Angriff auf TLS-RSA}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Bleichenbachers Angriff auf TLS-RSA.jpeg}
+\end{figure}
+\clearpage
+Der \fatsf{Bleichenbacher-Angriff auf RSA-PKCS\#1v1.5} nutzt einen \fatsf{Padding Oracle}, um verschlüsselte Nachrichten ohne Kenntnis des privaten Schlüssels zu entschlüsseln\\
+\fatsf{Funktionsweise:}
+\begin{enumerate}
+    \item Der Angreifer sendet gezielt manipulierte Chiffretexte $C'_{PKCS}$ an den Server
+    \item Der Server prüft das PKCS\#1 v1.5 Padding und gibt durch seine Antwort indirekt preis, ob das Padding korrekt ist (\enquote{Padding Ok}/\enquote{Padding not ok})
+    \item Durch systematisches Modifizieren des Chiffretextes und viele Anfragen kann der Angreifer schrittweise Rückschlüsse auf den Klartext ziehen
+    \item Am Ende kann der ursprüngliche Chiffretext $C_{PKCS}$ entschlüsselt werden
+\end{enumerate}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Bleichenbachers Angriff auf RSA-PKCS.jpeg}
+\end{figure}
+\fatsf{Warum funktioniert der Angriff?}
+\begin{itemize}
+    \item PKCS\#1 v1.5 Padding ist nicht perfekt zufällig, sondern folgt einem festen Format
+    \item Der Server unterscheidet zwischen gültigem und ungültigem Padding, was eine \fatsf{Seitenkanal-Information} für den Angreifer darstellt
+\end{itemize}
+\subsubsection*{Gegenmaßnahmen?}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Gegenmaßnahmen.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Gegenmaßnahmen 2.jpeg}
+\end{figure}
+\subsubsection*{Lessons Learned}
+RSA-PKCS\#1 v1.5 ist nur \fatsf{SEHR} schwer \enquote{sicher} zu implementieren\\
+Constant-Time Implementation funktioniert in TLS nur wenn ALLES richtig gemacht wird!... $\rightarrow$ Sehr Schwierig!\\
+\enquote{Chosen-Ciphertext} (CCA) Sicherheit ist praxisrelevant!
+\begin{itemize}
+    \item Am besten CCA-sichere Verfahren benutzen
+    \item z.B. PKCS\#1 v2.1 (aka. RSA-OAEP) [Bellare, Rogaway, Eurocrypt 1994]
+\end{itemize}
+\subsubsection*{Der Crime Angriff}
+Compression Ratio Info-leak Made Easy
+\begin{itemize}
+    \item Duong und Rizzo, The CRIME Attack, Ekoparty 2012
+    \item Anwendung auf TLS Versionen < 1.3: z.B. in Gmail, Twitter, Dropbox, ...
+\end{itemize}
+Angriff auf Verschlüsselung + Kompression
+\begin{itemize}
+    \item \fatsf{Ansatz:} Datenkomprimierung als Seitenkanal
+    \item \fatsf{Ziel:} Diebstahl von HTTP Cookies aus dem Browser wobei Cookies z.B. als Login-Token für Webseiten dienen
+\end{itemize}
+Angriffsprinzip bekannt seit 2002
+\begin{itemize}
+    \item Kelsey, Compression and Information Leakage of Plaintext, FSE 2002
+\end{itemize}
+\begin{infoBox}[title=HTTP Cookies: Grundlagen]
+    \fatsf{HTTP Cookies} sind kleine Datensätze, die von einer Webseite auf dem Computer eines Benutzers gespeichert werden. Sie dienen dazu, Informationen zwischen HTTP-Anfragen zu speichern, da HTTP selbst ein zustandsloses Protokoll ist
+\end{infoBox}
+\begin{infoBox}[title=Funktionen von Cookies]
+    HTTP-Cookies erfüllen verschiedene Zwecke, wie:
+    \begin{enumerate}
+        \item \fatsf{Sitzungsmanagement:}
+        \begin{itemize}
+            \item Bentuzeranmeldungen, Sitzungs-IDs, Einstellungen während einer Sitzung
+        \end{itemize}
+        \item \fatsf{Personalisierung:}
+        \begin{itemize}
+            \item Benutzerpräferenzen wie Sprache, Thema oder Layout
+        \end{itemize}
+        \item \fatsf{Tracking:}
+        \begin{itemize}
+            \item Verfolgen des Benutzerverhaltens über verschiedene Webseiten hinweg (z.B. für Werbung)
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Wie funktionieren Cookies?]
+    \begin{enumerate}
+        \item \fatsf{Erstellung eines Cookies:}
+        \begin{itemize}
+            \item Der Server sendet beim Laden einer Webseite ein Cookie an den Browser im HTTP-Header, z.B.:
+            \begin{codeBlock}{}
+                Set-Cookie: session_id=12345; Expires=Wed, 24 Jan 2025 12:00:00 GMT; Path=/; Secure; HttpOnly
+            \end{codeBlock}
+            \item Der Browser speichert das Cookie und sendet es bei jeder Anfrage an dieselbe Domain zurück
+        \end{itemize}
+        \item \fatsf{Versand eines Cookies:}
+        \begin{itemize}
+            \item Bei einer neuen Anfrage fügt der Browser das gespeicherte Cookie in den HTTP-Header ein, z.B.:
+            \begin{codeBlock}{}
+                Cookie: session_id=12345
+            \end{codeBlock}
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}[title=Wie funktioniert der CRIME-Angriff?]
+    \begin{enumerate}
+        \item \fatsf{Voraussetzungen:}
+        \begin{itemize}
+            \item Der Angriff erfordert, dass die TLS/SSL-Verbindung \fatsf{Kompression} aktiviert hat (z.B. Deflate oder gzip)
+            \item Der Angreifer kann die gesendeten Daten manipulieren oder kontrollieren (z.B. durch präparierte HTTP-Anfragen)
+        \end{itemize}
+        \item \fatsf{Grundlage des Angriffs:}
+        \begin{itemize}
+            \item Datenkompression reduziert die Größe von Daten, indem wiederholte Muster (z.B. gleiche Zeichenfolgen) erkannt und effizient kodiert werden
+            \item Der Angreifer beobachtet die Länge des verschlüsselten Datenverkehrs. Durch gezielte Manipulation der Anfragen kann er Muster identifizieren, die Rückschlüsse auf sensible Daten (wie Cookies) erlauben
+        \end{itemize}
+        \item \fatsf{Angriffsstrategie:}
+        \begin{itemize}
+            \item Der Angreifer fügt gezielt vermutete Teile eines Cookies (z.B. sessionid=12345) in seine eigenen Anfragen ein
+            \item Wenn der präparierte Text mit einem Teil des zu schützenden Cookies übereinstimmt, wird die komprimierte Nachricht kleiner
+            \item Durch schrittweise Anpassung der Eingaben kann der Angreifer die Inhalte des Cookies oder anderen sensibler Daten rekonstruieren
+        \end{itemize}
+        \item \fatsf{Beispielablauf:}
+        \begin{itemize}
+            \item Ein Cookie sessionid=secret123 wird in den HTTP-Headern gesendet.
+            \item Der Angreifer fügt den Text sessionid=secr in die HTTP-Anfrage ein
+            \item Wenn die Kompression die Länge der verschlüsselten Nachricht signifikant verringert, weiß der Angreifer, dass seine Vermutung über die Zeichenfolge korrekt ist
+            \item Dieser Prozess wird wiederholt, bis das gesamte Cookie entschlüsselt ist
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\clearpage
+\subsubsection*{HTTPS-Cookies}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/HTTPS-Cookies.jpeg}
+\end{figure}
+\subsubsection*{CRIME Angriff}
+\begin{itemize}
+    \item Bösartiges Javascript zwingt das Opfer, zahlreiche Anfragen zu senden
+    \item Angreifer kontrolliert Teile der Anfragedaten (wie den \fatsf{Pfad} oder die \fatsf{Abfrageparameter})
+    \item Angreifer beobachtet die \fatsf{Größe} der komprimierten Anfragen
+    \item Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Thema_6_Images/Crime Angriff.jpeg}
+\end{figure}
+\subsubsection*{Informations Leakage}
+\begin{infoBox}
+    \fatsf{Informationsleakage} (Informationsleck) bedeutet, dass ein System \fatsf{unbeabsichtigt geheime oder sensible Informationen preisgibt}, die ein Angreifer nutzen kann
+\end{infoBox}
+SSL/TLS verbirgt nicht die Länge der Anfrage/Antwort
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Informations Leakage.jpeg}
+\end{figure}
+\subsubsection*{Deflate Komprimierung LZ77 (ZIP, GZIP)}
+\fatsf{Option:} TLS Verbindung kann Daten komprimieren bevor sie verschlüsselt werden
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Deflate Komprimierung.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Der CRIME Angriff}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/Der Crime Angriff 1.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Thema_6_Images/Der Crime Angriff 2.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{TLS ist Komplex}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Thema_6_Images/TLS ist Komplex.jpeg}
+\end{figure}
+\subsubsection*{Viele weitere Probleme...}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Thema_6_Images/viele weitere Probleme.jpeg}
+\end{figure}
+\subsubsection*{TLS 1.3 Überblick}
+\fatsf{Erstmals:} Design-Entscheidungen basierend auf formalen theoretischen Argumenten
+\begin{itemize}
+    \item In kooperation mit akademischen Krypto-Forschern
+    \item z.B. TLS Ready or Not Workshop in 2016
+\end{itemize}
+\fatsf{Neuerungen:}
+\begin{itemize}
+    \item Keine Kompression mehr (\fatsf{CRIME})
+    \item Kein gebrochene Kryptoalgorithmen mehr: RC4, MD5, SHA1, RSA-PKCS \#1 v1.5 (Bleichenbacher)
+    \item Nur noch Authenticated Encryption Betriebsmodi im Record Layer
+    \item Keine \enquote{Custom DH Gruppen} mehr
+    \item Kein static RSA/DH: garantiert forward secrecy
+    \item Besser Privacy: Fast alle Nachrichten des Handshakes werden verschlüsselt
+    \item Verbesserte Latenzzeit:
+    \begin{itemize}
+        \item \enquote{1-RTT} Modus für Full Handshake (Client schickt mehrere DH-Teile für verschiedene Gruppen in erster Nachricht mit)
+        \item \enquote{0-RTT} Modus (nur Fortsetzung von Sessions)
+    \end{itemize}
+\end{itemize}
+\subsection{DNS - Domain Name System}
+\subsubsection*{Rückblick: Internet Protocol (IP)}
+\fatsf{Internet Protokoll} zur Kommunikation zwischen Geräten im Internet\\
+Eindeutige Identifikation von Geräten im Internet mittels \fatsf{IP Adresse}
+\begin{itemize}
+    \item \blue{IPv4:} 32 Bit Adresse der Form: 120.19.22.00
+    \item \blue{IPv6:} 128 Bit Adresse der Form: 2607:f140:8801::1:23
+\end{itemize}
+IP Adressen erlauben Weiterleitung von Paketen an das \fatsf{richtige Ziel}
+\begin{itemize}
+    \item Aber IP Adressen sind \fatsf{schwer zu merken}
+\end{itemize}
+Für Menschen lesbare Domänenamen
+\begin{itemize}
+    \item z.B. www.spiegel.de
+    \item Enthält keine relevanten Routing-Informationen
+\end{itemize}
+\begin{defBox}
+    \fatsf{Domain Name System:} Ein Internetprokoll zur Übersetzung von für Menschen lesbaren Domänenamen in IP-Adressen
+\end{defBox}
+\subsubsection*{DNS}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS.jpeg}
+\end{figure}
+\subsubsection*{Hierarchie der DNS-Nameserver}
+\fatsf{Idee:} Nameserver sind in einer \fatsf{Baumhierarchie} angeordnet
+\begin{itemize}
+    \item Nameserver leiten Anfragen durch den Baum, bis eine Antwort auf Anfrage gefunden wurde
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Hierarchie der DNS-Nameserver.jpeg}
+\end{figure}
+Welche Daten werden beim Nameserver gespeichert?
+\begin{infoBox}[title=Hierarchie der DNS Nameserver]
+    DNS Nameserver sind in einer Baumstruktur organisiert:
+    \begin{itemize}
+        \item \fatsf{Root (.):} Die oberste Ebene der Hierarchie. Boot Nameserver kennen die autoritativen Nameserver für Top-Level-Domains (TLDs) wie .org, .com, .de
+        \item \fatsf{Top-Level-Domains (TLDs):} org, com, de - Nameserver für diese Domains kennen die autoritativen Nameserver für darunterliegende Domains wie example.org oder tudarmstadt.de
+        \item \fatsf{Second-Level-Domain:} example, wikipedia, tu-darmstadt - Nameserver auf dieser Ebene kennen die IP-Adressen und andere Ressourcen für Subdomains wie www.example.org
+        \item \fatsf{Subdomains:} ftp, www, ns - Diese Nameserver enthalten spezifische Records, z.B. für Webserver, FTP-Server oder Nameserver
+    \end{itemize}
+    \fatsf{Beispiel für die Abfrage:}
+    \begin{enumerate}
+        \item Der Resolver fragt einen \fatsf{Root Nameserver:} \enquote{Welche Nameserver sind für .org verantwortlich?}
+        \item Root Nameserver antwortet: \enquote{Frage einen TLSNameserver für .org}
+        \item Der Resolver fragt den \fatsf{TLD Nameserver für .org}: \enquote{Welche Nameserver sind für example.org verantwortlich?}
+        \item Der autoritative Nameserver für example.org liefert schließlich die Antwort z.B. eine IP-Adresse
+    \end{enumerate}
+\end{infoBox}
+\subsubsection*{DNS Address Records}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Adress record.jpeg}
+\end{figure}
+\begin{itemize}
+    \item (\enquote{Owner}-)Name
+    \begin{itemize}
+        \item \enquote{Fully Qualified Domain Name}
+    \end{itemize}
+    \item Type
+    \begin{itemize}
+        \item Datentypbereichner - spezifiziert das Format des \enquote{Data}-Felds
+    \end{itemize}
+    \item Class
+    \begin{itemize}
+        \item Klassenbezeichner - heute praktisch nur noch \enquote{IN} (Internet) in Verwendung
+        \item Verschiedene parallele \enquote{Internets} möglich
+    \end{itemize}
+    \item TTL \enquote{Time to Live}
+    \begin{itemize}
+        \item Verfallsdatum - Gültigkeit eines Wertes ab Ausgabe durch den Dienst (in Sek.)
+        \begin{infoBox}
+            Gibt an, wie lange der Record im Cache gültig ist (in Sekunden)
+        \end{infoBox}
+    \end{itemize}
+    \item RDLength
+    \begin{itemize}
+        \item Länge des \enquote{Data}-Felds in Bytes (Bytes)
+    \end{itemize}
+    \item RData
+    \begin{itemize}
+        \item Der im Record abgelegte Wert zum Schlüssel (Name, Class, Type)
+        \begin{infoBox}
+            Die eigentliche Information z.B. eine IP-Adresse, ein Mailservername, Text usw.
+        \end{infoBox}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{DNS Record-Typen}
+\begin{infoBox}
+    \fatsf{DNS-Records} (Domain Name System Resource Records) sind \fatsf{Einträge in der DNS-Datenbank}, die Informationen über eine Domain enthalten
+\end{infoBox}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Record-Typen.jpeg}
+\end{figure}
+\begin{infoBox}[title=Beispiel zur Verdeutlichung]
+    \fatsf{Anfrage nach der IP-Adresse von www.example.org:}
+    \begin{enumerate}
+        \item \fatsf{Name:} www.example.org
+        \item \fatsf{Type:} A (IPv4-Adresse)
+        \item \fatsf{Class:} IN (Internet)
+        \item \fatsf{TTL:} 42 Sekunden (der Resolver darf die Antwort für 42 Sekunden cachen)
+        \item \fatsf{RData:}
+        \begin{itemize}
+            \item 93.184.216.34
+            \item 4.3.2.1 (zwei mögliche IP-Adressen für die gleiche Domain)
+        \end{itemize}
+    \end{enumerate}
+    \fatsf{Anfrage nach dem Mailserver für example.org:}
+    \begin{enumerate}
+        \item \fatsf{Name:} example.org
+        \item \fatsf{Type:} MX (Mailserver)
+        \item \fatsf{Class:} IN
+        \item \fatsf{RData:}
+        \begin{itemize}
+            \item 10.mail1.example.org (Priorität 10, Mailserver 1)
+            \item 20 mail2.example.org (Priorität 20, Mailserver 2)
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\begin{infoBox}
+    \begin{itemize}
+        \item DNS-Records sind die Datensätze, die Nameserver speichern, um Anfragen zu beantworten. Sie enthalten Felder wie Name, Typ, TTL und RData
+        \item Es gibt verschiedene Record-Typen, die je nach Anwendungsfall unterschiedliche Informationen speichern, wie IP-Adressen (A/AAAA), Mailserver (MX), oder Aliase (CNAME/DNAME)
+        \item Die Nameserver arbeiten in einer Hierarchie, um die richtigen Antworten für Anfragen zu liefern, entweder direkt oder durch Weiterleitung an autoritative Nameserver
+    \end{itemize}
+\end{infoBox}
+\subsubsection*{DNS Anfragen}
+\fatsf{Grundsätzliche Vorgehensweise:}
+\begin{itemize}
+    \item Client/Server-Modell: Client stellt Anfrage, Server antwortet auf sie
+    \item Anfragen und Antworten durch Austausch von Nachrichten im festen Format
+\end{itemize}
+\fatsf{Verschiedene Vorgehensweisen:}
+\begin{itemize}
+    \item Autoritative Server: haben Hoheit über die Werte
+    \item Resolver: suchen Werte im verteilten System und liefern sie an den Nutzer
+\end{itemize}
+\fatsf{Transport/Übertragung:}
+\begin{itemize}
+    \item DNS sollte \fatsf{leichtgewichtig} und \fatsf{schnell} sein: Viele Dienste benötigen Domänennamne Auflösung (Webseites, E-Mails usw.)
+    \item DNS verwendet \fatsf{UDP} anstatt TCP für \fatsf{bessere Performance} $\rightarrow$ keine TCP Drei-Weg Handshake
+\end{itemize}
+\begin{infoBox}[title=DNS Anfragen: Grundlegende Vorgehensweise]
+    \begin{enumerate}
+        \item \fatsf{Client/Server-Modell:}
+        \begin{itemize}
+            \item Der DNS-Client (z.B. ein Browser oder ein E-Mail-Client) stellt eine Anfrage (Query), um die IP-Adresse eines Domänennames zu finden
+            \item Der DNS-Server (z.B. autoritativer oder rekursiver Resolver) liefert eine Antwort basierend auf seiner Datenbank oder durch Weiterleitung der Anfrage an andere Nameserver
+        \end{itemize}
+        \item \fatsf{Nachrichtenformat:}
+        \begin{itemize}
+            \item Eine DNS-Nachricht besteht aus den folgenden Sektionen:
+            \begin{itemize}
+                \item \fatsf{Question:} Welche Informationen sucht der Client? (z.B. www.example.org IN A für IPv4-Adresse)
+                \item \fatsf{Answer:} Die angefragten Informationen (z.B. die IP-Adresse der Domain)
+                \item \fatsf{Authority:} Nameserver, die für die Zone zuständig sind
+                \item \fatsf{Additional:} Zusätzliche Informationen wie die IP-Adressen der autoritativen Nameserver
+            \end{itemize}
+        \end{itemize}
+        \item \fatsf{Arten von DNS-Servern:}
+        \begin{itemize}
+            \item \fatsf{Autoritativer Server:} Verwalten die DNS-Records für eine bestimmte Zone (z.B. example.org)
+            \item \fatsf{Resolver:} Suchen die Antwort für den Client, indem sie andere Nameserver befragen
+        \end{itemize}
+    \end{enumerate}
+\end{infoBox}
+\clearpage
+\subsubsection*{DNS Nachrichten in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Nachrichten in der Praxis.jpeg}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Nachrichten in der Praxis 2.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{Namensauflösung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Namensauflösung.jpeg}
+\end{figure}
+\subsubsection*{DNS Record Caching}
+Zur Steigerung der Leistung, \fatsf{speichern} Resolver Records im Cache zwischen 
+\begin{itemize}
+    \item Von Nameservern zurückgegebene Records werden \fatsf{zwischengespeichert}, bis ihre Time-to-Live abläuft
+    \begin{itemize}
+        \renewcommand{\labelitemi}{$\rightarrow$} % Nur für diese Liste
+        \item Für kürzlich gesehene Abfragen müssen keine DNS-Anfragen gesendet werden
+        \item Schnellere Antwortzeiten für Anfragen
+        \item Reduziert die Belastung der Nameserver
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsection{Angriffe auf DNS}
+\subsubsection*{DNS Cache Poisoning \& Spoofing}
+\fatsf{Cache Poisoning Angriff:} Speichert bösartige DNS Records bei einem DNS Server 
+\begin{itemize}
+    \item Cache des DNS Resolvers wird \enquote{vergiftet} durch z.B. Einfügen eines \fatsf{inkorrekten Typ A Records}
+    \item Möglich da DNS \fatsf{UDP} nutzt und \fatsf{keine (kryptographische) Verifikation} der Authentizität
+\end{itemize}
+\begin{infoBox}
+    \begin{itemize}
+        \item \fatsf{Ablauf von DNS Cache Poisoning}
+        \begin{enumerate}
+            \item Ein \fatsf{rekursiver Resolver} fragt nach einem DNS Record (z.B. \enquote{IP von bank.com?})
+            \item Angreifer schickt \fatsf{gefälschte DNS-Antworten} (UDP-Pakete), bevor die echte Antwort eintrifft
+            \item Wenn der Resolver die gefälschte Antwort akzeptiert, landet ein \fatsf{bösartiger Eintrag} (z.B. A-Record bank.com $\rightarrow$ 6.6.6.6) im \fatsf{Cache des DNS-Servers}
+            \item Alle Clients, die danach bank.com auflösen, landen beim Angreifer statt bei der echten Bank
+        \end{enumerate}
+        \item \fatsf{Warum möglich?}
+        \begin{itemize}
+            \item DNS basiert historisch auf \fatsf{UDP} (keine Verbindung, keine eingebaute Integritätssicherung)
+            \item Klassisch nur eine 16-Bit-Transaktions-ID + Quellport zur Zuordnung $\rightarrow$ leicht zu erraten
+            \item Früher: Keine Kryptographie, keine Signaturen
+            \item Deshalb: Angreifer konnte gültig aussehende Antworten \enquote{einschleusen}
+        \end{itemize}
+    \end{itemize}
+\end{infoBox}
+\fatsf{Cache Spoofing Angriff:} z.B. Ermöglicht durch Cache Poisoning Angriff
+\begin{itemize}
+    \item Anfragen an eine Domäne werden an die IP-Adresse des Angreifers weitergeleitet
+    \begin{itemize}
+        \renewcommand{\labelitemi}{$\rightarrow$} % Nur für diese Liste
+        \item Opfer will z.B. \fatsf{www.spiegel.de} besuchen, sendet Pakete tatsächlich aber an Angreifer (6.6.6.6), der als MitM agieren kann!
+    \end{itemize}
+\end{itemize}
+\fatsf{Verteidigung:}
+\begin{itemize}
+    \item \fatsf{Bailiwick-Überprüfung:} der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
+    \begin{itemize}
+        \item z.B. Nameserver \fatsf{de.} kann Rekord für \fatsf{spiegel.de} liefern, aber nicht für \fatsf{spiegel.com}
+    \end{itemize}
+    \item \fatsf{DNSSEC} (später mehr)
+\end{itemize}
+\clearpage
+\subsubsection*{DNS Spoofing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Spoofing.jpeg}
+\end{figure}
+\subsubsection*{DNS Spoofing in der Praxis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Spoofing in der Praxis.jpeg}
+\end{figure}
+\subsubsection*{DNS Reflection Angriff}
+\fatsf{Angriffsziel:} Überlastung von Endsystemen (z.B. Web-Servern) bzw. Zwischensystemen (z.B. Routern)
+\begin{itemize}
+    \item Durchführung mittels konzertiertem Fluten des Opfersystems mit Unmengen an Netzverkehr
+\end{itemize}
+\fatsf{Funktionsweise:}
+\begin{itemize}
+    \item Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Adresse DNS-Anfragen an Server
+    \item Ampflication: Antworten von Server an Opfer sind deutlich größer als Anfragen\\
+    $\rightarrow$ Volumen des Angriffsverkehrs überlastet Infrastruktur des Opfersystems
+\end{itemize}
+\subsubsection*{DNS Reflection Angriff}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/DNS Reflection Angriff.jpeg}
+\end{figure}
+\subsubsection*{Verteidigung auf verschiedenen Ebenen}
+\fatsf{Opfer:}
+\begin{itemize}
+    \item Kapazitätsreserven an Netz und Systemen bereitstellen
+    \item Filterung von gespooften IP-Paketen $\rightarrow$ zu aufwändig
+\end{itemize}
+\fatsf{Missbrauchter DNS-Dienst:}
+\begin{itemize}
+    \item Minimierung der Antwortgröße, um Amplification-Faktor (das Volumenverhältnis Antwort zu Anfrage) gering zu halten
+    \item Filterung von gespooften IP-Paketen $\rightarrow$ zu aufwändig
+\end{itemize}
+\fatsf{Gegen den Angreifer:}
+\begin{itemize}
+    \item Elimienierung von Paketen mit gespoofter IP-Adresse im Ursprungsnetzwerke
+    \begin{itemize}
+        \item Wird nur von wenigen Netzbetreibern durchgeführt
+    \end{itemize}
+    \item Stillegung von Botnetzen, z.B. durch Sicherheitsbehörden
+    \begin{itemize}
+        \item schwierig und es entstehen häufig neue Botnetze
+    \end{itemize}
+\end{itemize}
+\subsubsection*{DNS Tunneling}
+\fatsf{Angriffsziel:} Verdecktes Übertragen von beliebigen Daten über DNS-Anfragen
+\begin{itemize}
+    \item Extraktion von ausspionierten Informationen aus einem kompromittierten Netzwerk
+    \item Umgehung von Netzsperren und Firewalls
+    \item Verdeckte Kommunikation von Bots mit ihrem Master
+\end{itemize}
+\fatsf{Funktionsweise:}
+\begin{itemize}
+    \item Angreifer setzt autoritativen Server und Domain als Endpunkt auf 
+    \item Client codiert Daten in angefragten Namen
+    \item Resolver leiten Daten an autoritativen Server weiter
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Thema_6_Images/DNS Tunneling.jpeg}
+\end{figure}
+\subsubsection*{Verteidigung}
+\begin{itemize}
+    \item Angefragte Namen sind häufig \fatsf{auffällig}
+    \begin{itemize}
+        \item z.B. sehr lang oder nicht aussprechbar
+    \end{itemize}
+    \item Es fällt viel DNS-Verkehr zu einem oder wenigen Domains an
+    \item Einzelne Systeme verursachen auffällig viel DNS-Verkehr
+\end{itemize}
+$\rightarrow$ Filtern durch Firewall (bzw. IDS/IPS) mit statistischer Anomaliedetektion oft möglich
+\subsection{DNSSEC}
+\subsubsection*{Rückblick: DNS Sicherheit}
+DNS ist \fatsf{nicht sicher gegen Angriffe}, z.B.:
+\begin{itemize}
+    \item Bösartige Namenserver: Verwendet inkorrekte Einträge als DNS Records
+    \item Netzwerk-Angreifer (MITM, on-path, off-path): DNS Poisoning/Spoofing
+\end{itemize}
+Wir brauchen \fatsf{Integrität} bei der Antwort
+\begin{itemize}
+    \item Integrität bedeutet, dass Angreifer Ergebnisse nicht verfälschen kann\\
+    $\rightarrow$ Verhindert Cache-Poisoning-Angriffe
+\end{itemize}
+Wir brauchen keine \fatsf{Vertraulichkeit} der Antwort
+\begin{itemize}
+    \item DNS-Antworten sind öffentlich: Angreifer kann Antworten selbst nachfragen
+\end{itemize}
+\subsubsection*{DNS over TLS}
+\fatsf{Idee:}
+\begin{itemize}
+    \item TLS ist von Anfang bis Ende sicher: Sollten alle DNS-Anfragen und -Antworten über TLS gesendet werden?
+\end{itemize}
+\fatsf{Probleme:}
+\begin{itemize}
+    \item \fatsf{Leisungsfähigkeit:} DNS muss leicht und schnell sein. Aber TLS ist langsam
+    \item \fatsf{Caching:} DNS-Rekord werden zwischengespeichert. TLS hilft und nicht beim Caching
+    \item \fatsf{Sicherheit gegen bösartige Nameservern}
+    \begin{itemize}
+        \item DNS über TLS schützt nicht vor bösartigen Nameservern, weil bösartiger Nameserver den Cache immer noch vergiften kann
+    \end{itemize}
+\end{itemize}
+\fatsf{Hauptproblem von DNS über TLS:}
+\begin{itemize}
+    \item TLS \fatsf{sichert den Kommunikationskanal}, aber ermöglicht nicht \fatsf{Vertrauenswürdigkeit} der Daten zu prüfen
+\end{itemize}
+\subsubsection*{DNSSEC - DNS Security Extension}
+Erweiterung von DNS zur Gewährleistung der Integrität der Ergebnisse
+\begin{itemize}
+    \item Nutzt Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind
+    \begin{itemize}
+        \item Wird erreicht durch digitale Signaturen
+        \item Nameserver unterschreibt den Rekord mit seinem privaten Schlüssel und Client verifiziert Korrektheit der Signatur
+    \end{itemize}
+    \item Verwendet ein hierarchisches, verteiltes Vertrauenssystem zur Identifikation
+    \begin{itemize}
+        \item Schutz vor bösartigem Nameserver durch Zertifikatshierarchie
+        \item Übergeordnete DNS-Server muss den öffentlichen Schlüssel der untergeordneten DNS-Server signieren
+        \item \fatsf{Vertrauensanker:} Root-Nameserver
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsection{TOR - The Onion Router}
+\subsubsection*{Anonymität}
+\begin{itemize}
+    \item Anonymität = verbergen/verschleiern der Identität
+    \item Anonymität $\neq$ Vertraulichkeit in der Kryptographie
+    \begin{itemize}
+        \item Vertraulichkeit in der Kryptographie schützt den Inhalt der Kommunikation
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=1\textwidth]{Thema_6_Images/Vertraulichkeit.jpeg}
+        \end{figure}
+        \item Anonymität schützt die Identität der Kommunikationspartner
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=1\textwidth]{Thema_6_Images/Anonymität.jpeg}
+        \end{figure}
+    \end{itemize}
+\end{itemize}
+\subsubsection*{Anonymität im Internet}
+\begin{itemize}
+    \item Anonymität im Internet ist \fatsf{schwierig} zu garantieren
+    \begin{itemize}
+        \item Pakete enthalten \fatsf{Sender- und Zieladresse} (auch bei TLS, IPSec, ...)
+    \end{itemize}
+    \item Anonymität \fatsf{leichter für Angreifer}
+    \begin{itemize}
+        \item Hacken eines Computers oder Netzwerks und Nutzung dieses für Kommunikation
+        \item Annahme: Ehrliche Nutzer brechen nicht in andere Computer ein
+    \end{itemize}
+    \item \fatsf{Strategie} für Anonymität im Internet
+    \begin{itemize}
+        \item Frage jemanden \fatsf{anderes}, Nachrichten für Dich zu senden
+    \end{itemize}
+\end{itemize}
+\clearpage
+\subsubsection*{Proxies}
+Alice möchte eine Nachricht an Bob senden
+\begin{itemize}
+    \item Ziel 1: Bob weiß nicht, dass Nachricht von Alice kommt
+    \item Ziel 2: Angreifer erfährt nicht, dass Alice mit Bob kommuniziert
+\end{itemize}
+\fatsf{Proxy:} Vertrauenswürdige Partei, die Netzwerkkommunikation weiterleitet
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Proxies.jpeg}
+\end{figure}
+\subsubsection*{Onion-Routing via TOR}
+\fatsf{Idee:} Sende Pakete über mehrere Proxies
+\begin{itemize}
+    \item Angreifer muss alle Knoten auf dem Pfad korrumpieren
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/Onion-Routing via Tor.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{TOR Browser}
+Um anonym mit einem Server zu kommunizieren, bildet der Tor-Browser einen \red{Circuit}, der aus \fatsf{3 Relays} besteht
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_6_Images/Tor Browser.jpeg}
+\end{figure}
+Garantiert Client Anonymität
+\begin{itemize}
+    \item Einzelner korrumpierter Proxy lernt nicht wer mit wem kommuniziert
+    \item Server lernt nicht, von welchem Client Anfrage kommt
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Thema_6_Images/Tor Browser 2.jpeg}
+\end{figure}
+\clearpage
+\subsubsection*{The Onion Routing}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Thema_6_Images/The Onion Routing.jpeg}
+\end{figure}
+\subsubsection*{Anonymität durch Tor?}
+Tor erschwert es, Datenströme zuzuordnen\\
+Bietet aber keine perfekte Anonymität
+\begin{itemize}
+    \item Seitenkanalangriffe durch z.B. Zeitinformationen
+    \item Ein- und Ausgangsdaten korrelierbar, sofern große Menge von Knotenpunkten in Besitz eines Angreifers
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Thema_6_Images/Anonymität durch Tor.jpeg}
+\end{figure}
+\clearpage
+\subsection{WLAN Sicherheit}
+\subsubsection*{Wireless LAN}
+\fatsf{WLAN:} Protokoll auf der ersten Netzwerkschicht
+\begin{itemize}
+    \item Verbindet zwei Computer über kabellose Kommunikation
+    \item Alternative est Ethernet, welches Computer mit Kabelverbindung verbindet
+\end{itemize}
+Typische Komponenten eines WLAN Netzwerkes:
+\begin{itemize}
+    \item \fatsf{Access point:} Ein Gerät, das die Verbindung zum Netzwerk ermöglicht
+    \item \fatsf{SSID} (serveice set identifier): Name des WLAN Netzwerkes
+    \item \fatsf{Password:} Um kommunikation abzusichern (optional)
+\end{itemize}
+\subsubsection*{Warum WLAN Sicherheit?}
+\begin{itemize}
+    \item Funk ist ein \fatsf{Broadcast-Medium!}
+    \begin{itemize}
+        \item Jeder \fatsf{in Reichweite} kann übertragene Daten mitschneiden
+        \item Ausbreitung von Frames ist \fatsf{kaum kontrollierbar}
+        \begin{itemize}
+            \item Angreifer mit Richtantennen, etc. ?
+            \item \fatsf{Wesentlicher Unterschied} zu kabelgebundenen Netzen wie Ethernet
+        \end{itemize}
+    \end{itemize}
+    \item \fatsf{Alternative} zu WLAN-Verschlüsselung
+    \begin{itemize}
+        \item \fatsf{Verschlüsselung auf höherer Schicht:} IPSec, TLS, ...
+        \item \fatsf{Aber:} Nicht für alle Szenarien hilfreich!
+        \begin{itemize}
+            \item Ich kann Nutzer meines Netztes nicht (ohne weiteres) zwingen über TLS zu kommunizieren!
+        \end{itemize}
+    \end{itemize}
+    \item Filesharing durch Fremde in eigenem Netz?
+    \begin{itemize}
+        \item \fatsf{BGH-Urteil, 12.5.2010:}\\
+        Ein un- oder ein schlechtgesichertes WLAN führt bei dessen Betreiber zur \fatsf{Störerhaftung} (mittlerweile wieder abgeschafft ...)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{WLAN Verschlüsselung}
+\fatsf{Design Ziele:}
+\begin{itemize}
+    \item Jeder mit dem WLAN-Passwort kann dem Netzwerk beitreten
+    \item Ohne Kenntnis des Passworts können Nachrichten nicht mitgelesen werden
+\end{itemize}
+\fatsf{Geschichte:}
+\begin{itemize}
+    \item \blue{WEP:} ab 1997; heute \fatsf{unsicher}
+    \item \blue{WPA:} ab 2003; heute \fatsf{unsicher}
+    \item \blue{WPA2:} ab 2004; sicher aber mit \fatsf{Schwachstellen}
+    \item \blue{WPA3:} ab 2018; \fatsf{sicherer als WPA2}, aber mit Schwachstellen
+\end{itemize}
+\subsubsection*{WEP}
+\fatsf{WEP = Wired Equivalent Privacy}
+\begin{itemize}
+    \item Stromchiffre \fatsf{RC4}
+    \item Schlüssellänge von \fatsf{40/104} bit
+    \item Effiziente Key-Recovery Angriffe $\rightarrow$ \fatsf{vollkommen unsicher:} z.B. kurze IV wodurch sich Ausgabe er Stromchiffre \fatsf{RC4} bereits nach ca. 5000 Paketen wiederholt
+    \begin{itemize}
+        \item Fluhrer, Mantin, Shamir (2001)
+        \item KoreK (2004)
+        \item Pyshkin, Tews, Weinmann (2007)
+        \item Beck, Tews (2009)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{WPA}
+\fatsf{WPA = Wi-Fi Protected Access}
+\begin{itemize}
+    \item WPA = WEP Verschlüsselung + Per-Packet Key Mixing + Message Integrity Check
+    \begin{itemize}
+        \item Per-Packet Key Mixing: neuer Schlüssel für jedes Paket
+        \item Message Integrity Check: Ersetzt CRC durch verbessertes Verfahren
+        \item Hardware-kompatibel zu WEP (nutzt auch RC4)
+    \end{itemize}
+    \item Bekannte Angriffe:
+    \begin{itemize}
+        \item Wörterbuchangriff für \fatsf{Key Recovery}, wenn schwaches Passwort verwendet wird
+        \item Druch Angriff auf \fatsf{Temporal Key Integrity Protocol} (TKIP) kann eine eingeschränkte \fatsf{Packet Injection} durchgeführt werden $\rightarrow$ ermöglicht z.B. ARP Poisonning (Beck, Tews 2009)
+        \item \fatsf{Statistische Schwächen} in ersten Bytes von RC4 (AlFardan e.a., 2013)
+    \end{itemize}
+\end{itemize}
+\subsubsection*{WPA2}
+\begin{itemize}
+    \item Verwendet \fatsf{AES statt RC4}
+    \item Bekannt Angriffe:
+    \begin{itemize}
+        \item Wörterbuchattacke für \fatsf{Key Recovery}, wenn schwaches Passwort verwendet wird
+        \item \fatsf{Rogue Access Points:} Angreifer kann sich selbst als Access Point ausgeben
+        \item \fatsf{KRACKATTACK:} Fehler im Standard führt zu \enquote{0}-Schlüsseln bei Replay von Nachrichten
+    \end{itemize}
+    \item Keine \fatsf{Forward Secrecy}
+\end{itemize}
