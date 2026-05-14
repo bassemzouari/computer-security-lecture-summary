@@ -4,6 +4,8 @@ Comprehensive LaTeX-based lecture summary for a university-level
 Computer Security course covering cryptography, authentication,
 network security, web security, and systems security.
 
+> Language: German 🇩🇪
+
 The project focuses on structured technical documentation,
 formal security concepts, and concise explanations of attacks,
 protocols, and cryptographic constructions.
